@@ -2,7 +2,7 @@ import express from "express"
 import mongoose from "mongoose"
 import cors from 'cors'
 import crypto from 'crypto'
-import brypt from 'bcrypt'
+import bcrypt from 'bcrypt'
 
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
@@ -15,52 +15,73 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
+
 const UserSchema = new mongoose.Schema({
-    profileType:{
-        type: String,
-       // required: true,
+
+    profileType: {
+      type: String,
+      required: true,
+      enum: ['petowner', 'petsitter'],
     },
     username: {
-        type: String,
-        required: true,
-        unique: true,
+      type: String,
+      required: true,
+      unique: true,
     },
-    //for later to check the email validation
     email: {
-        type: String,
-        //required: true,
-        unique: true,
-    },
-    password: {
-        type: String,
-        required: true,
-    }, 
-    accessToken: {
-        type: String,
-        default: () => crypto.randomBytes(128).toString("hex"),
+      type: String,
+      required: true,
+      unique: true,
     },
     animalType: {
-        type: String,
+      type: Array,
+      required: true,
     },
-    time:{
-        type: String,
+    location: {
+      type: String,
+      required: true,
+    },
+    duration:{
+      type: Array,
+      required: true,
     },
     startDate:{
-        type: String,
+      type: String,
+      required: true,
     },
-    EndDate:{
-        type: String,
+    endDate:{
+      type: String,
+      required: true,
     },
-    review: {
-        type: String,
+    password: {
+      type: String,
+      required: true,
+    },
+  
+    accessToken: {
+      type: String,
+      default: () => crypto.randomBytes(128).toString("hex"),
     },
     image: {
-        type: String,
-    }
+      type: String,
+    },
+    reviews: {
+      type: Array,
+    },
+    createdAt: {
+      type: Date,
+      default: () => new Date()
+    },
 })
+//QUESTION FOR 1:1 session
+//1) When the type is array and required true, it still allows to post without including them, why?
+//2) is the type for dates also a string?
+//3) how we upload and strorage an image?
+//4) should the reviews be an object, because later we will storage the review and the username who gave that review, is this done my nested schema?
+//5) how much data we can storage to mongo database with images?
 
 
- const User = mongoose.model("User", UserSchema)
+const User = mongoose.model("User", UserSchema)
 
 
  const authenticateUser = async (req, res, next) => {
@@ -78,12 +99,20 @@ const UserSchema = new mongoose.Schema({
     }
   }
 
+//to test that the authentication is working
+app.get("/users", authenticateUser);
+app.get("/users", async (req, res) => {
+  const users = await User.find({})
+  .sort({createdAt: 'desc'})
+  res.status(201).json(users)
+});
+
 
 
 
 
  app.post('/signup', async (req, res) => {
-    const { username, password } = req.body
+    const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image, reviews} = req.body
     try {
       const salt = brypt.genSaltSync()
   
@@ -92,15 +121,33 @@ const UserSchema = new mongoose.Schema({
       }
   
       const newUser = await new User({
+        profileType,
         username,
-        password: brypt.hashSync(password, salt)
+        email,
+        animalType,
+        location,
+        duration,
+        startDate,
+        endDate,
+        password: bcrypt.hashSync(password, salt),
+        image, 
+        reviews,
       }).save()
   
       res.status(201).json({
         response: {
+          profileType: newUser.profileType,
           userId: newUser._id,
           username: newUser.username,
-          accessToken: newUser.accessToken
+          email: newUser.email,
+          animalType: newUser.animalType,
+          location: newUser.location,
+          duration: newUser.duration,
+          startDate: newUser.startDate,
+          endDate: newUser.endDate,
+          accessToken: newUser.accessToken,
+          image: newUser.image,
+          reviews: newUser.reviews,
         },
         success: true
         })
