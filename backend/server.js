@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import cors from 'cors'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
+import { stringify } from "querystring"
 
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
@@ -34,7 +35,7 @@ const UserSchema = new mongoose.Schema({
       unique: true,
     },
     animalType: {
-      type: Array,
+      type: [String],
       required: true,
     },
     location: {
@@ -42,7 +43,7 @@ const UserSchema = new mongoose.Schema({
       required: true,
     },
     duration:{
-      type: Array,
+      type: [String],
       required: true,
     },
     startDate:{
@@ -65,9 +66,6 @@ const UserSchema = new mongoose.Schema({
     image: {
       type: String,
     },
-    reviews: {
-      type: Array,
-    },
     createdAt: {
       type: Date,
       default: () => new Date()
@@ -82,6 +80,25 @@ const UserSchema = new mongoose.Schema({
 
 
 const User = mongoose.model("User", UserSchema)
+
+const ReviewSchema = new mongoose.Schema({
+  reviewerId: {
+    type:String,
+  },
+  revieweeId: {
+    type:String,
+  },
+  createdAt: {
+    type: Date,
+    default: () => new Date()
+  },
+  reviewText: {
+    type:String,
+  },
+})
+
+const Review = mongoose.model("Review", ReviewSchema)
+
 
 
  const authenticateUser = async (req, res, next) => {
@@ -99,7 +116,7 @@ const User = mongoose.model("User", UserSchema)
     }
   }
 
-//to test that the authentication is working
+//user endpoint
 app.get("/users", authenticateUser);
 app.get("/users", async (req, res) => {
   const users = await User.find({})
@@ -108,13 +125,11 @@ app.get("/users", async (req, res) => {
 });
 
 
-
-
-
+//signup endpoint
  app.post('/signup', async (req, res) => {
-    const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image, reviews} = req.body
+    const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
     try {
-      const salt = brypt.genSaltSync()
+      const salt = bcrypt.genSaltSync()
   
       if (password.length < 8) {
         throw 'Password must be at least 8 characters long'
@@ -131,24 +146,10 @@ app.get("/users", async (req, res) => {
         endDate,
         password: bcrypt.hashSync(password, salt),
         image, 
-        reviews,
       }).save()
   
       res.status(201).json({
-        response: {
-          profileType: newUser.profileType,
-          userId: newUser._id,
-          username: newUser.username,
-          email: newUser.email,
-          animalType: newUser.animalType,
-          location: newUser.location,
-          duration: newUser.duration,
-          startDate: newUser.startDate,
-          endDate: newUser.endDate,
-          accessToken: newUser.accessToken,
-          image: newUser.image,
-          reviews: newUser.reviews,
-        },
+        response: newUser,
         success: true
         })
     } catch(error) {
@@ -156,6 +157,7 @@ app.get("/users", async (req, res) => {
     }
 })
 
+//login endpoint
 app.post('/login', async (req, res) => {
     const { username, password } = req.body
   
@@ -182,16 +184,18 @@ app.post('/login', async (req, res) => {
     }
   })
 
-app.put("/edit", async (req,res) => {
+
+//update user information endpoint
+app.patch("/edituser", async (req,res) => {
  
-  const { userId, username }  = req.body;
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image}  = req.body;
 
   try {
-    const editingName = await User.findOneAndUpdate(userId, {username: username} );
+    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image} );
     
-    if (editingName) {
+    if (editingUser) {
       res.status(200).json({
-        response: editingName,
+        response: editingUser,
         success: true
       })
     } else {
@@ -209,12 +213,47 @@ app.put("/edit", async (req,res) => {
   }
   
 })
-       
 
-app.get("/", authenticateUser)
-app.get("/", (req, res) => {
-    res.send("Hello World!")
+//endpoint to detele the user
+app.delete("/deleteuser", async (req, res) => {
+  const { userId }  = req.body;
+  try {
+    const user = await User.deleteOne({ userId })
+    res.status(201).json({response: user, success: true})
+  } catch (error) {
+    res.status(400).json({ response: error, success: false })
+  }
 })
+
+//endpoint of reviews
+app.get("/reviews", authenticateUser);
+app.get("/reviews/:id", async (req, res) => {
+  const reviews = await Review.find(req.params.id)
+  .sort({createdAt: 'desc'})
+  res.status(201).json(reviews)
+});
+
+//endpoint to post review
+app.post("/reviews", async (req, res) =>{
+  const {reviewerId, revieweeId, reviewText} = req.body
+  const newReview = await new Review({reviewerId, revieweeId, reviewText}).save()
+  res.status(201).json({
+    response: newReview,
+    success:true
+  })
+})
+
+//endpoint to edit review
+
+
+//endpoint to remove review
+
+   
+
+// app.get("/", authenticateUser)
+// app.get("/", (req, res) => {
+//     res.send("Hello World!")
+// })
 
 
 
