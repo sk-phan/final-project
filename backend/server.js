@@ -17,6 +17,7 @@ app.use(express.json())
 
 
 const UserSchema = new mongoose.Schema({
+
     profileType: {
       type: String,
       required: true,
@@ -56,6 +57,7 @@ const UserSchema = new mongoose.Schema({
       type: String,
       required: true,
     },
+  
     accessToken: {
       type: String,
       default: () => crypto.randomBytes(128).toString("hex"),
@@ -108,10 +110,11 @@ app.get("/users", async (req, res) => {
 
 
 
+
  app.post('/signup', async (req, res) => {
     const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image, reviews} = req.body
     try {
-      const salt = bcrypt.genSaltSync()
+      const salt = brypt.genSaltSync()
   
       if (password.length < 8) {
         throw 'Password must be at least 8 characters long'
@@ -146,6 +149,7 @@ app.get("/users", async (req, res) => {
           image: newUser.image,
           reviews: newUser.reviews,
         },
+        success: true
         })
     } catch(error) {
         res.status(400).json({ response: error, success: false })
@@ -158,7 +162,7 @@ app.post('/login', async (req, res) => {
     try {
       const user = await User.findOne({ username })
   
-      if (user && bcrypt.compareSync(password, user.password)) {
+      if (user && brypt.compareSync(password, user.password)) {
         res.status(200).json({
           response: {
             userId: user._id,
@@ -178,13 +182,41 @@ app.post('/login', async (req, res) => {
     }
   })
 
+app.put("/edit", async (req,res) => {
+ 
+  const { userId, username }  = req.body;
 
-        
+  try {
+    const editingName = await User.findOneAndUpdate(userId, {username: username} );
+    
+    if (editingName) {
+      res.status(200).json({
+        response: editingName,
+        success: true
+      })
+    } else {
+      res.status(400).json({
+        response: 'Update Failed',
+        success: false
+      })
+    }
+  }
+  catch(error) {
+    res.status(404).json({
+      response: error,
+      success: false
+    })
+  }
+  
+})
+       
 
-
+app.get("/", authenticateUser)
 app.get("/", (req, res) => {
     res.send("Hello World!")
 })
+
+
 
 
 app.listen(port, () => {
