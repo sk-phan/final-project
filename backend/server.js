@@ -293,6 +293,11 @@ const ChatSchema = new mongoose.Schema({
     type: Date,
     default: () => new Date()
   },
+	
+  // Here we send the data as an array, update the data from frontend
+  // Using the push method to update data
+  // Example of what we send from frontend: ["hello", "hi", "I'm Suki"]
+  // We will pass user ID or message ID, or how? to display it in frontend ? I dont know yet
   message: {
     type: Array,
   }
