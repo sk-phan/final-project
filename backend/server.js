@@ -19,41 +19,41 @@ app.use(express.json())
 
 const UserSchema = new mongoose.Schema({
 
-    profileType: {
-      type: String,
-      required: true,
-      enum: ['petowner', 'petsitter'],
-    },
+    // profileType: {
+    //   type: String,
+    //   required: true,
+    //   enum: ['petowner', 'petsitter'],
+    // },
     username: {
       type: String,
       required: true,
       unique: true,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    animalType: {
-      type: [String],
-      required: true,
-    },
-    location: {
-      type: String,
-      required: true,
-    },
-    duration:{
-      type: [String],
-      required: true,
-    },
-    startDate:{
-      type: String,
-      required: true,
-    },
-    endDate:{
-      type: String,
-      required: true,
-    },
+    // email: {
+    //   type: String,
+    //   required: true,
+    //   unique: true,
+    // },
+    // animalType: {
+    //   type: [String],
+    //   required: true,
+    // },
+    // location: {
+    //   type: String,
+    //   required: true,
+    // },
+    // duration:{
+    //   type: [String],
+    //   required: true,
+    // },
+    // startDate:{
+    //   type: String,
+    //   required: true,
+    // },
+    // endDate:{
+    //   type: String,
+    //   required: true,
+    // },
     password: {
       type: String,
       required: true,
@@ -63,7 +63,7 @@ const UserSchema = new mongoose.Schema({
       type: String,
       default: () => crypto.randomBytes(128).toString("hex"),
     },
-    image: {
+    img: {
       type: String,
     },
     createdAt: {
@@ -127,7 +127,8 @@ app.get("/users", async (req, res) => {
 
 //signup endpoint
  app.post('/signup', async (req, res) => {
-    const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
+    // const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
+    const  { username, password, img} = req.body
     try {
       const salt = bcrypt.genSaltSync()
   
@@ -136,16 +137,16 @@ app.get("/users", async (req, res) => {
       }
   
       const newUser = await new User({
-        profileType,
+        // profileType,
         username,
-        email,
-        animalType,
-        location,
-        duration,
-        startDate,
-        endDate,
+        // email,
+        // animalType,
+        // location,
+        // duration,
+        // startDate,
+        // endDate,
         password: bcrypt.hashSync(password, salt),
-        image, 
+        img, 
       }).save()
   
       res.status(201).json({
@@ -197,6 +198,7 @@ app.patch("/edituser", async (req,res) => {
       res.status(200).json({
         response: editingUser,
         success: true
+
       })
     } else {
       res.status(400).json({
@@ -246,7 +248,7 @@ app.post("/reviews", async (req, res) =>{
 //endpoint to edit review
 
 
-//endpoint to remove review
+//endpoint to delete review
 
    
 
