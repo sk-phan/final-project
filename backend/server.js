@@ -3,7 +3,6 @@ import mongoose from "mongoose"
 import cors from 'cors'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
-import { stringify } from "querystring"
 
 
 const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
@@ -100,7 +99,6 @@ const ReviewSchema = new mongoose.Schema({
 const Review = mongoose.model("Review", ReviewSchema)
 
 
-
  const authenticateUser = async (req, res, next) => {
     const accessToken = req.header('Authorization')
   
@@ -128,7 +126,8 @@ app.get("/users", async (req, res) => {
 //signup endpoint
  app.post('/signup', async (req, res) => {
     // const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
-    const  { username, password, img} = req.body
+    const  { username, password} = req.body
+
     try {
       const salt = bcrypt.genSaltSync()
   
@@ -137,16 +136,8 @@ app.get("/users", async (req, res) => {
       }
   
       const newUser = await new User({
-        // profileType,
-        username,
-        // email,
-        // animalType,
-        // location,
-        // duration,
-        // startDate,
-        // endDate,
-        password: bcrypt.hashSync(password, salt),
-        img, 
+        username,  
+        password: bcrypt.hashSync(password, salt)
       }).save()
   
       res.status(201).json({
@@ -165,7 +156,7 @@ app.post('/login', async (req, res) => {
     try {
       const user = await User.findOne({ username })
   
-      if (user && brypt.compareSync(password, user.password)) {
+      if (user && bcrypt.compareSync(password, user.password)) {
         res.status(200).json({
           response: {
             userId: user._id,
@@ -229,6 +220,7 @@ app.delete("/deleteuser", async (req, res) => {
 
 //endpoint of reviews
 app.get("/reviews", authenticateUser);
+
 app.get("/reviews/:id", async (req, res) => {
   const reviews = await Review.find(req.params.id)
   .sort({createdAt: 'desc'})
@@ -237,6 +229,7 @@ app.get("/reviews/:id", async (req, res) => {
 
 //endpoint to post review
 app.post("/reviews", async (req, res) =>{
+  
   const {reviewerId, revieweeId, reviewText} = req.body
   const newReview = await new Review({reviewerId, revieweeId, reviewText}).save()
   res.status(201).json({
@@ -245,19 +238,96 @@ app.post("/reviews", async (req, res) =>{
   })
 })
 
-//endpoint to edit review
+//endpoint to for reviewer to edit review
+app.patch("/editReview", async (req,res) => {
 
+  const {reviewId, reviewText} = req.body;
 
-//endpoint to delete review
+  try {
+    const editReview = await Review.findByIdAndUpdate(reviewId, { reviewText });
 
+    if (editReview) {
+      res.status(200).json({
+        response: editReview,
+        success: true
+      })
+    } 
+    else {
+      res.status(400).json({
+        response: 'Update Failed',
+        success: false
+      })
+    }
+  } catch (error) {
+     res.status(404).json({
+       response: error,
+       success: false
+     })
+  }  
+})
+
+//endpoint for both reviewer & reviewee to delete review
+app.delete('/deleteReview', async (req,res) => {
+
+  const { reviewId } = req.body;
+  
+  try {
+    const deleteReview = await Review.findByIdAndDelete(reviewId);
+    res.status(201).json({response: deleteReview, success: true})
+  } catch (error) {
+    res.status(400).json({ response: error, success: false })
+  }
+})
    
 
-// app.get("/", authenticateUser)
-// app.get("/", (req, res) => {
-//     res.send("Hello World!")
-// })
+//Chatbox endpoints
+
+const ChatSchema = new mongoose.Schema({
+  sender: {
+    type:String,
+  },
+  receiver: {
+    type:String,
+  },
+  createdAt: {
+    type: Date,
+    default: () => new Date()
+  },
+  message: {
+    type: Array,
+  }
+})
+
+const Chat = mongoose.model("Chat", ChatSchema)
 
 
+app.post("/send", async (req,res) => {
+
+  const { senderId, receiverId, message } = req.body
+
+  try {
+    const newMessage = await new Chat({ senderId, receiverId, message}).save();
+
+    if(newMessage) {
+      res.status(201).json({
+        response: newMessage,
+        success: true
+      })
+    } 
+    else {
+      res.status(404).json({
+        response: 'Fail to send',
+        success: false 
+      })
+    }
+  } catch (error) {
+    res.status(400).json({
+      response: error,
+      success: false 
+    })
+  }
+ 
+})
 
 
 app.listen(port, () => {
