@@ -126,7 +126,7 @@ app.get("/users", async (req, res) => {
 //signup endpoint
  app.post('/signup', async (req, res) => {
     // const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
-    const  { username, password} = req.body
+    const  { username, password, img} = req.body
 
     try {
       const salt = bcrypt.genSaltSync()
@@ -137,7 +137,8 @@ app.get("/users", async (req, res) => {
   
       const newUser = await new User({
         username,  
-        password: bcrypt.hashSync(password, salt)
+        password: bcrypt.hashSync(password, salt),
+        img
       }).save()
   
       res.status(201).json({

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
-
+import stylyed from 'styled-components'
 
 export const Signup = () => {
   const [mode, setMode] = useState("signup");
@@ -69,8 +69,6 @@ export const Signup = () => {
     fetch("http://localhost:8080/signup", options)
     .then((res) => res.json())
       .then((data) => {
-        console.log(data.response)
-        console.log("username", username)
         if (data.success) {
           batch(() => {
             dispatch(user.actions.setUserId(data.response.userId));
@@ -94,7 +92,7 @@ export const Signup = () => {
     <div className="App">
       <form onSubmit={onFormSubmit}>
 
-          <label>Username
+         <label>Username
          <input
           type='text'
           value={username}
