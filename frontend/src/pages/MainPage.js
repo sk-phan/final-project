@@ -8,6 +8,7 @@ const MainPage = () => {
     
     return (
         <Main>
+            <HeroSection>
                 <HeroContainer>
                         <HeroText>
                             <Logo>Logo</Logo>
@@ -266,6 +267,7 @@ const Comment = styled.p`
     width:30ch;
     text-align: center;
     
+`
 
 const HeroImgContainer = styled.div`
    position: relative;
