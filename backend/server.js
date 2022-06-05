@@ -126,7 +126,7 @@ app.get("/users", async (req, res) => {
 //signup endpoint
  app.post('/signup', async (req, res) => {
     // const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
-    const  { username, password} = req.body
+    const  { username, password, img} = req.body
 
     try {
       const salt = bcrypt.genSaltSync()
@@ -137,7 +137,8 @@ app.get("/users", async (req, res) => {
   
       const newUser = await new User({
         username,  
-        password: bcrypt.hashSync(password, salt)
+        password: bcrypt.hashSync(password, salt),
+        img
       }).save()
   
       res.status(201).json({
@@ -293,6 +294,11 @@ const ChatSchema = new mongoose.Schema({
     type: Date,
     default: () => new Date()
   },
+	
+  // Here we send the data as an array, update the data from frontend
+  // Using the push method to update data
+  // Example of what we send from frontend: ["hello", "hi", "I'm Suki"]
+  // We will pass user ID or message ID, or how? to display it in frontend ? I dont know yet
   message: {
     type: Array,
   }
