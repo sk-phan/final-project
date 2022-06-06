@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-import { Signup } from "./pages/Signup";
+import { Signup } from "./components/Signup";
 import { Userpage } from "./pages/Userpage";
 import MainPage from "./pages/MainPage";
 import { Login } from "./components/Login";
