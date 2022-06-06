@@ -63,7 +63,7 @@ const MainPage = () => {
                                 </ReviewComment>                
                             </ReviewCommentsContainer>
                         </ReviewContainer>
-                </ReviewSection>
+                </ReviewSection> 
 
 </Main>
 
@@ -81,6 +81,8 @@ const Container = styled.div`
     width: 1050px;
     margin: 0 auto;
     display: flex;
+    height: 100vh;
+    padding: 20px;
 
     @media (max-width: 375px) {
         width: 300px;
@@ -92,7 +94,7 @@ const HeroContainer = styled(Container)`
 
      &::after {
         content:'';
-        position: fixed;
+        position: absolute;
         width: 50rem;
         height: 100vh;
         background-color: #FD9951;
@@ -106,7 +108,7 @@ const HeroContainer = styled(Container)`
 
 const HeroSection = styled.section`
     background: #FFFFF6;
-    height: 100vh;
+
 
     @media (max-width: 375px) {
        width: 100%;
@@ -187,7 +189,7 @@ const SignupBtn = styled(Btn)`
 // Review sections style components:
 const ReviewSection = styled.section`
     background: #4C956C;
-    height: 100vh;
+    height: 75vh;
 `
 const ReviewContainer = styled(Container)`
     flex-direction: column;
@@ -195,12 +197,13 @@ const ReviewContainer = styled(Container)`
 
 const ReviewHeader = styled.div`
     width: 100%;
+    height: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 30vh;
 
+    
 `
 
 const ReviewTitle = styled.h2`
@@ -213,7 +216,7 @@ const ReviewTitle = styled.h2`
 const ReviewCommentsContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 70vh;
+    height: 55vh;
     align-items: center;
 `
 
@@ -289,8 +292,8 @@ const SecondHeroImg = styled.img`
 `
 
 const HeroImg = styled.img`
-    height: 735px;
-    width: auto;
+    width: 100%;
+    height: auto;
     border-radius: 18px;
     box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
 
