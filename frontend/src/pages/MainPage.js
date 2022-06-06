@@ -63,7 +63,7 @@ const MainPage = () => {
                                 </ReviewComment>                
                             </ReviewCommentsContainer>
                         </ReviewContainer>
-                </ReviewSection>
+                </ReviewSection> 
 
 </Main>
 
@@ -81,6 +81,8 @@ const Container = styled.div`
     width: 1050px;
     margin: 0 auto;
     display: flex;
+    height: 100vh;
+    padding: 20px;
 
     @media (max-width: 375px) {
         width: 300px;
@@ -106,7 +108,7 @@ const HeroContainer = styled(Container)`
 
 const HeroSection = styled.section`
     background: #FFFFF6;
-    height: 100vh;
+
 
     @media (max-width: 375px) {
        width: 100%;
@@ -195,12 +197,14 @@ const ReviewContainer = styled(Container)`
 
 const ReviewHeader = styled.div`
     width: 100%;
+    height: 20vh;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
     height: 20vh;
 
+    
 `
 
 const ReviewTitle = styled.h2`
@@ -289,8 +293,8 @@ const SecondHeroImg = styled.img`
 `
 
 const HeroImg = styled.img`
-    height: 735px;
-    width: auto;
+    width: 100%;
+    height: auto;
     border-radius: 18px;
     box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
 

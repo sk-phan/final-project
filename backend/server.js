@@ -18,41 +18,40 @@ app.use(express.json())
 
 const UserSchema = new mongoose.Schema({
 
-    // profileType: {
-    //   type: String,
-    //   required: true,
-    //   enum: ['petowner', 'petsitter'],
-    // },
+     profileType: {
+        type: String,
+        required: true,
+      },
     username: {
       type: String,
       required: true,
-      unique: true,
+      //unique: true,
     },
-    // email: {
-    //   type: String,
-    //   required: true,
-    //   unique: true,
-    // },
-    // animalType: {
-    //   type: [String],
-    //   required: true,
-    // },
-    // location: {
-    //   type: String,
-    //   required: true,
-    // },
-    // duration:{
-    //   type: [String],
-    //   required: true,
-    // },
-    // startDate:{
-    //   type: String,
-    //   required: true,
-    // },
-    // endDate:{
-    //   type: String,
-    //   required: true,
-    // },
+      email: {
+      type: String,
+      required: true,
+      //unique: true,
+    },
+    animalType: {
+      type: Array,
+      required: true,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+    preferableTime:{
+      type: Array,
+      required: true,
+    },
+    startDate:{
+      type: String,
+      required: true,
+    },
+    endDate:{
+      type: String,
+      required: true,
+    },
     password: {
       type: String,
       required: true,
@@ -125,9 +124,9 @@ app.get("/users", async (req, res) => {
 
 //signup endpoint
  app.post('/signup', async (req, res) => {
-    // const { profileType, username, email, animalType, location, duration, startDate, endDate, password, image } = req.body
-    const  { username, password, img} = req.body
-
+    const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img } = req.body
+    //const  { username, password } = req.body
+  
     try {
       const salt = bcrypt.genSaltSync()
   
@@ -136,9 +135,16 @@ app.get("/users", async (req, res) => {
       }
   
       const newUser = await new User({
+        profileType,
         username,  
+        email,
+        animalType,
+        location,
+        preferableTime,
+        startDate,
+        endDate,
         password: bcrypt.hashSync(password, salt),
-        img
+        img   
       }).save()
   
       res.status(201).json({
