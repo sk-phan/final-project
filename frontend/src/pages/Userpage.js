@@ -22,6 +22,10 @@ export const Userpage = () => {
     }
   }, [accessToken, navigate]);
 
+  console.log('img', img)
+  console.log("name", name)
+  console.log('accessToken', accessToken)
+
   return (
     <>
         <h1>Welcome {name}, this is your account!</h1>

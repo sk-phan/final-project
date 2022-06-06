@@ -6,6 +6,7 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { Signup } from "./pages/Signup";
 import { Userpage } from "./pages/Userpage";
 import MainPage from "./pages/MainPage";
+import { Login } from "./components/Login";
 
 
 import { user } from "./reducers/user";
@@ -22,6 +23,8 @@ export const App = () => {
       <BrowserRouter>
         <Routes>
            <Route path="/" element={<MainPage />} />
+           {/* For Kristiina's login component testing */}
+           <Route path="/logintesting" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/userpage" element={<Userpage />} />
           {/* <Route path="/*" element={<NotFound />} /> */}

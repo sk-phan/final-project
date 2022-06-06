@@ -70,6 +70,7 @@ export const Signup = () => {
     .then((res) => res.json())
       .then((data) => {
         if (data.success) {
+          console.log(data.response.img,'heyehd')
           batch(() => {
             dispatch(user.actions.setUserId(data.response.userId));
             dispatch(user.actions.setUsername(data.response.username));

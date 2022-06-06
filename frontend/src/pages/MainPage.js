@@ -92,7 +92,7 @@ const HeroContainer = styled(Container)`
 
      &::after {
         content:'';
-        position: fixed;
+        position: absolute;
         width: 50rem;
         height: 100vh;
         background-color: #FD9951;
@@ -187,7 +187,7 @@ const SignupBtn = styled(Btn)`
 // Review sections style components:
 const ReviewSection = styled.section`
     background: #4C956C;
-    height: 100vh;
+    height: 75vh;
 `
 const ReviewContainer = styled(Container)`
     flex-direction: column;
@@ -198,8 +198,8 @@ const ReviewHeader = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 30vh;
+    gap: 5px;
+    height: 20vh;
 
 `
 
@@ -213,14 +213,14 @@ const ReviewTitle = styled.h2`
 const ReviewCommentsContainer = styled.div`
     display: flex;
     justify-content: space-between;
-    height: 70vh;
+    height: 55vh;
     align-items: center;
 `
 
 const ReviewComment = styled.div`
     width: 28rem;
     height: 35rem;
-    background-color: #FFFFF6;
+    background-color: #FFFFF6; s
     border-radius: 2rem;
     display:flex;
     flex-direction: column;
