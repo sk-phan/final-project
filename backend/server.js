@@ -125,13 +125,16 @@ app.get("/users", async (req, res) => {
 //signup endpoint
  app.post('/signup', async (req, res) => {
     const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img } = req.body
-    //const  { username, password } = req.body
+    
   
     try {
       const salt = bcrypt.genSaltSync()
-  
+      const existingUser = await User.findOne({ email } || { username });
+
       if (password.length < 8) {
         throw 'Password must be at least 8 characters long'
+      } else if (existingUser) {
+        throw 'Account already exists, please log in'
       }
   
       const newUser = await new User({
