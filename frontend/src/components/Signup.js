@@ -1,9 +1,11 @@
 
 import React, { useState, useEffect } from 'react';
+import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import stylyed from 'styled-components'
+import Autocomplete from "react-google-autocomplete";
 
 //SIGNUP
 export const Signup = () => {
@@ -20,6 +22,9 @@ export const Signup = () => {
   const [rePassword, setRePassword] = useState("")
   const [img, setImg] = useState("")
   
+  const [emailValid, setEmailValid] = useState(false)
+
+  const [disabled, setDisable] = useState(false)
   const [allValid, setAllValid] = useState(false)
 
   const accessToken = useSelector((store) => store.user.accessToken);
@@ -51,47 +56,93 @@ export const Signup = () => {
     })
   }
 
+  const validateEmail = (e) => {
+    setEmail(e.target.value)
+
+    if(validator.isEmail(email)) {
+      setEmailValid(true)
+      dispatch(user.actions.setError(''))
+    } else {
+      setEmailValid(false)
+      dispatch(user.actions.setError('Enter valid email'))
+    }
+  }
+
+
   const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
-  const onFormSubmit = (e) => {
+  useEffect(() => {
+    if (allValid) {
+      const options = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          profileType: profileType,
+          username: username,  
+          email: email,
+          animalType: animalType,
+          location: location,
+          preferableTime: preferableTime,
+          startDate: startDate,
+          endDate: endDate,
+          password: password,
+          img: img,
+        }),
+      };
+      
+      fetch("http://localhost:8080/signup", options)
+      .then((res) => res.json())
+      .then((data) => {
+          if (data.success) {
+              dispatch(user.actions.setUserData(data.response));
+          } else {      
+              dispatch(user.actions.setError(data.response))
+              dispatch(user.actions.setUserData(null));
+          }
+        });
+    }
+  }, [allValid]);
 
-    console.log(username, password)
+
+  const onFormSubmit = (e) => {
     e.preventDefault();
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        profileType: profileType,
-        username: username,  
-        email: email,
-        animalType: animalType,
-        location: location,
-        preferableTime: preferableTime,
-        startDate: startDate,
-        endDate: endDate,
-        password: password,
-        img: img,
-      }),
-    };
-    
-    fetch("http://localhost:8080/signup", options)
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data)
-        if (data.success) {
-          batch(() => {
-            dispatch(user.actions.setUserData(data.response));
-  
-          });
-        } else {
-          batch(() => {
-            dispatch(user.actions.setUserData(null));
-          });
-        }
-      });
+
+    if (password === rePassword) {
+      setAllValid(true)
+    } else {
+      setAllValid(false);
+      dispatch(user.actions.setError('password does not match'))  
+    }
   };
+
+  //AIzaSyD1tl0DDxF9Y2-n49iIDyrrIPnrcxKQjGw
+
+
+  //Enable the submit button if all inputs are filled
+ 
+  useEffect(() => {
+    setDisable(false)
+
+    if (
+      email !== '' && 
+      emailValid &&
+      username !== '' &&
+      password !== '' &&
+      animalType !== [] &&
+      img !== '' &&
+      location !== '' &&
+      preferableTime !== [] &&
+      startDate !== '' &&
+      endDate !== '' &&
+      password !== ''      
+      ) {
+        setDisable(true)
+      }
+      else setDisable(false)
+  }, [ email, username, password, animalType, location, preferableTime, startDate, endDate, password])
+
 
 
   const onTimeCheckbox = (time) => {
@@ -102,11 +153,12 @@ export const Signup = () => {
 
       else setPreferableTime([...preferableTime, time])
   }
-  console.log(password, username, 'test')
+
+
 
   return (
        <div>
-         <h2> Create an account </h2>
+         <h2>Create an account </h2>
          <p> Make pet experience better </p>
 
          <form>
@@ -130,6 +182,7 @@ export const Signup = () => {
             />
             Pet owner
            </label>
+           Username
            <input 
              type='text'
              value={username}
@@ -141,7 +194,7 @@ export const Signup = () => {
               id='email'
               type='email'
               value={email}
-              onChange = {(e) => setEmail(e.target.value)}
+              onChange = {(e) => validateEmail(e)}
             />
            </label>
            <label htmlFor='password'>
@@ -160,6 +213,7 @@ export const Signup = () => {
                 type='password'
                 value={rePassword}
                 onChange = {(e) => setRePassword(e.target.value)}
+                required
             />
            </label>
            <label html='img'>
@@ -218,41 +272,16 @@ export const Signup = () => {
                 onChange = {(e) => setEndDate(e.target.value)}
               />
            </label>
-           <button type='submit' onClick={onFormSubmit}>Sign up</button>
+           <Autocomplete
+                apiKey='AIzaSyCx9GDxuqn4TaVuYIYTb4YGdRGI-YdZIiA'
+                onPlaceSelected={(place) => {
+                  console.log(place);
+                  setLocation(place.formatted_address)
+                }}
+           />;
+           <button type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</button>
          </form>
        </div>
-
-
-
-
-    // <div className="App">
-    //   <form onSubmit={onFormSubmit}>
-
-    //      <label>Username
-    //      <input
-    //       type='text'
-    //       value={username}
-    //       onChange={(e) => setUsername(e.target.value)}
-    //       />
-    //       </label>
-
-    //       <label>Password
-    //      <input
-    //       type='password'
-    //       value={password}
-    //       onChange={(e) => setPassword(e.target.value)}
-    //       />
-    //       </label>
-
-
-    //          <input
-    //           type="file"
-    //           name="myImage"
-    //           onChange={(e) => upload(e)}
-    //     />
-    //   <img src={img}  width="200px" />
-    //       <button type='submit'>Sign up</button>
-    //   </form>
-    // </div>
+  
   );
 }

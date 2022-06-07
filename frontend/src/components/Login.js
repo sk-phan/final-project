@@ -42,20 +42,11 @@ export const Login = () => {
     .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-            console.log(data, 'data login')
-          batch(() => {
-            dispatch(user.actions.setUserId(data.response.userId));
-            dispatch(user.actions.setUsername(data.response.username));
-            dispatch(user.actions.setImg(data.response.img));
-            dispatch(user.actions.setAccessToken(data.response.accessToken));
-          });
+          dispatch(user.actions.setUserData(data.response));
         } else {
-          batch(() => {
-            dispatch(user.actions.setUserId(null));
-            dispatch(user.actions.setUsername(null));
-            dispatch(user.actions.setAccessToken(null));
-          });
-        }
+          dispatch(user.actions.setError(data.response))
+          dispatch(user.actions.setUserData(null));
+          }
       });
   };
 
@@ -142,7 +133,7 @@ const FormContainer = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 2rem;    
     width: 35rem;
-    border-box: box-sizing;
+    box-sizing: border-box;
     padding: 2rem;
     background:rgba(255,255,255, 0.9);
     position:relative;
