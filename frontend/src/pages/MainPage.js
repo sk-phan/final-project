@@ -3,8 +3,12 @@ import styled from "styled-components";
 import QuotationStart from '../assets/quotation_start.svg';
 import QuotationEnd from '../assets/quotation_end.svg'
 import heroCat from '../asset/catHero.png'
+import { useNavigate } from "react-router-dom";
 
 const MainPage = () => {
+
+    const navigate = useNavigate();
+
     
     return (
         <Main>
@@ -18,8 +22,8 @@ const MainPage = () => {
                                 eiusmod tempor incididunt ut labore et dolore magna aliqua.
                             </Subheading> 
                             <BtnContainer>
-                                <LoginBtn>Log in</LoginBtn>
-                                <SignupBtn>Sign up</SignupBtn>
+                                <LoginBtn onClick={() => navigate('/login')}>Log in</LoginBtn>
+                                <SignupBtn onClick={() => navigate('/signup')}>Sign up</SignupBtn>
                             </BtnContainer>
                         </HeroText>
                         <HeroImgContainer>
