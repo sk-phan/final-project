@@ -7,8 +7,8 @@ export const Userpage = () => {
 
 
   const accessToken = useSelector((store) => store.user.accessToken);
-  const name = useSelector((store) => store.user.username);
-  const img = useSelector((store) => store.user.img)
+  const name = useSelector((store) => store.user.userData.username);
+  const img = useSelector((store) => store.user.userData.img)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -22,9 +22,7 @@ export const Userpage = () => {
     }
   }, [accessToken, navigate]);
 
-  console.log('img', img)
-  console.log("name", name)
-  console.log('accessToken', accessToken)
+ 
 
   return (
     <>

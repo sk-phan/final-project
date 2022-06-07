@@ -55,7 +55,6 @@ export const Signup = () => {
 
   const onFormSubmit = (e) => {
 
-    console.log(username, password)
     e.preventDefault();
     const options = {
       method: "POST",
@@ -79,15 +78,17 @@ export const Signup = () => {
     fetch("http://localhost:8080/signup", options)
     .then((res) => res.json())
     .then((data) => {
-        console.log(data)
+        console.log('accessTokenFetch', data.response.accessToken)
         if (data.success) {
           batch(() => {
             dispatch(user.actions.setUserData(data.response));
+            dispatch(user.actions.setAccessToken(data.response.accessToken));
   
           });
         } else {
           batch(() => {
             dispatch(user.actions.setUserData(null));
+            dispatch(user.actions.setAccessToken(null));
           });
         }
       });
@@ -102,15 +103,19 @@ export const Signup = () => {
 
       else setPreferableTime([...preferableTime, time])
   }
-  console.log(password, username, 'test')
+
+  console.log('accessToken', accessToken)
 
   return (
     <Main>
        <FormContainer>
+        <ExitButton>X</ExitButton>
          <FormTitle> Create an account </FormTitle>
          <FormSubTitle> Make pet experience better </FormSubTitle>
          <Form>
-             <div className="radio-container">
+             <div className="date-container">
+               <P>Choose profile type:</P>
+               <ProfileContainer>
               <RadioLabel htmlFor='Pet sitter'>
                 <RadioInput
                   id='Pet sitter'
@@ -131,6 +136,7 @@ export const Signup = () => {
               />
               Pet owner
             </RadioLabel>
+            </ProfileContainer>
            </div >
           <div className="input-container">
               <input
@@ -185,17 +191,21 @@ export const Signup = () => {
               </label>
             </div>
             
-            <div className="input-container">
-           
-             <input type='file'
-                     name="myImage"
-                     onChange={(e) => upload(e)}
-            />
-             <label htmlFor='img' className="user-label">
-               Profile image
-            </label>
+            <div className="date-container">
+              <DateLabel htmlFor='img'>
+                Profile image:
+              </DateLabel>
+              <input  className = "imageInput"
+                      type='file'
+                      name="myImage"
+                      onChange={(e) => upload(e)}
+              />
+             
           </div>
-          <div className="radio-container">
+
+          <div className="date-container">
+          <P>Choose your pet type:</P>
+          <ProfileContainer>
               <RadioLabel htmlFor='dog'>
                 <RadioInput
                   id='dog'
@@ -216,13 +226,16 @@ export const Signup = () => {
               />
               Cat
             </RadioLabel>
+            </ProfileContainer>
            </div >
            
            
            <div className="checkbox-container">
+             <P>Duration of pet sitting:</P>
            {preferTimeOption.map(item => {
              return <RadioLabel htmlFor={item}>
                     <RadioInput
+                      id={item}
                       type='checkbox'
                       value = {item}
                       checked = {preferableTime.includes(item)}
@@ -233,7 +246,10 @@ export const Signup = () => {
            })}
            </div>
 
-           <div className="input-container">
+           <div className="date-container">
+              <DateLabel htmlFor="start-date">
+                Start Date:
+              </DateLabel>
               <input
                 id="start-date"
                 className="input"
@@ -242,12 +258,13 @@ export const Signup = () => {
                 onChange={(e) => setStartDate(e.target.value)}
                 required
               />
-              <label className="user-label" htmlFor="start-date">
-                Start Date
-              </label>
+             
             </div>
            
-            <div className="input-container">
+            <div className="date-container">
+              <DateLabel htmlFor="end-date">
+                End Date:
+              </DateLabel>
               <input
                 id="end-date"
                 className="input"
@@ -256,9 +273,6 @@ export const Signup = () => {
                 onChange={(e) => setEndDate(e.target.value)}
                 required
               />
-              <label className="user-label" htmlFor="end-date">
-                End Date
-              </label>
             </div>
 
           
@@ -271,6 +285,20 @@ export const Signup = () => {
 
   );
 }
+
+const ExitButton = styled.button`
+    border-radius: 50%;
+    border: black solid;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    right:0;
+    top:0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: #F5F5F5;
+    font-weight: 600;
+    cursor:pointer;
+`
 
 const Main = styled.main`
     width: 100%;
@@ -336,7 +364,7 @@ const SignupButton = styled.button`
     cursor: pointer;
     color: #fff;
     padding: 1.5rem;
-    margin: 12px;
+    margin: 24px 12px 12px 12px;
     font-weight: 600;
     font-size: 1.6rem;
 `
@@ -365,4 +393,14 @@ const RadioLabel = styled.label`
 const RadioInput = styled.input`
   width: fit-content;
   color:#FD9951;
+`
+
+const DateLabel = styled(P)`
+  margin: 0 0 0.2rem 0.2rem;
+`
+
+
+const ProfileContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
 `

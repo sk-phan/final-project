@@ -44,15 +44,12 @@ export const Login = () => {
         if (data.success) {
             console.log(data, 'data login')
           batch(() => {
-            dispatch(user.actions.setUserId(data.response.userId));
-            dispatch(user.actions.setUsername(data.response.username));
-            dispatch(user.actions.setImg(data.response.img));
+            dispatch(user.actions.setUserData(data.response));
             dispatch(user.actions.setAccessToken(data.response.accessToken));
           });
         } else {
           batch(() => {
-            dispatch(user.actions.setUserId(null));
-            dispatch(user.actions.setUsername(null));
+            dispatch(user.actions.setUserData(null));
             dispatch(user.actions.setAccessToken(null));
           });
         }
