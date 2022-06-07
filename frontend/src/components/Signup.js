@@ -370,12 +370,17 @@ const ExitButton = styled.button`
     width: 3rem;
     height: 3rem;
     position: absolute;
-    right:0;
-    top:0;
+    right:1.5rem;
+    top:1.5rem;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     background-color: #F5F5F5;
     font-weight: 600;
     cursor:pointer;
+      background-color: #F5F5F5;
+    &:hover{
+      background-color: #FD9951;
+      cursor: pointer;
+    }
 `
 
 const Main = styled.main`
@@ -466,6 +471,7 @@ const LinkText = styled(Link)`
     font-size: 1.6rem;
     color: #FD9951;
     font-weight: 600;
+    text-decoration:none;
 `
 
 

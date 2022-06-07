@@ -182,11 +182,23 @@ const LoginBtn = styled(Btn)`
     background-color: transparent;
     border: solid 1.5px #4C956C;
     color: #4C956C;
+
+    &:hover{
+        background-color: #4C956C;
+        color: #FEFEE3;
+        cursor:pointer;
+    }
 `
 const SignupBtn = styled(Btn)`
     background-color: #FD9951;
     border: none;
     color: #FEFEE3;
+    &:hover{
+        background-color: transparent;
+        border: solid 1.5px #FD9951;
+        color: #FD9951;
+        cursor:pointer;
+    }
 `
 
 
