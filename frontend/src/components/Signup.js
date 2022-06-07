@@ -110,8 +110,16 @@ export const Signup = () => {
               dispatch(user.actions.setError(data.response))
               dispatch(user.actions.setUserData(null));
           }
-        });
+        })
+      .catch(error => console.log(error))
+      .finally(() => {
+        setUsername('')
+        setPassword('')
+      })
+      
+
     }
+
   }, [allValid]);
 
 
@@ -206,20 +214,21 @@ export const Signup = () => {
                 required
               />
               <label className="user-label" htmlFor="username">
-                Username
+                Username*
               </label>
             </div>
             <div className="input-container">
               <input
                 id="email"
-                className="input"
+                className="input-email"
                 type="email"
+                pattern=".+@globex\.com"
                 value={email}
                 onChange={(e) => validateEmail(e)}
                 required
               />
-              <label className="user-label" htmlFor="email">
-                Email
+              <label className="email" htmlFor="email">
+                Email*
               </label>
             </div>
             <div className="input-container">
@@ -232,7 +241,7 @@ export const Signup = () => {
                 required
               />
               <label className="user-label" htmlFor="password">
-                Password
+                Password*
               </label>
             </div>
             <div className="input-container">
@@ -242,16 +251,15 @@ export const Signup = () => {
                 type="password"
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
-                required
               />
               <label className="user-label" htmlFor="rePassword">
-                Re-enter password
+                Re-enter password*
               </label>
             </div>
             
             <div className="date-container">
               <DateLabel htmlFor='img'>
-                Profile image:
+                Profile image:*
               </DateLabel>
               <input  className = "imageInput"
                       type='file'
@@ -261,7 +269,7 @@ export const Signup = () => {
           </div>
 
           <div className="date-container">
-          <P>Choose your pet type:</P>
+          <P>Choose your pet type:*</P>
           <ProfileContainer>
               <RadioLabel htmlFor='dog'>
                 <RadioInput
@@ -288,7 +296,7 @@ export const Signup = () => {
            
            
            <div className="checkbox-container">
-             <P>Duration of pet sitting:</P>
+             <P>Duration of pet sitting:*</P>
            {preferTimeOption.map(item => {
              return <RadioLabel htmlFor={item}>
                     <RadioInput
@@ -305,7 +313,7 @@ export const Signup = () => {
 
            <div className="date-container">
               <DateLabel htmlFor="start-date">
-                Start Date:
+                Start Date:*
               </DateLabel>
               <input
                 id="start-date"
@@ -320,7 +328,7 @@ export const Signup = () => {
            
            <div className="date-container">
               <DateLabel htmlFor="end-date">
-                End Date:
+                End Date:*
               </DateLabel>
               <input
                 id="end-date"
@@ -338,15 +346,14 @@ export const Signup = () => {
                   className="inputLocation"
                   placeholder=''
                   onPlaceSelected={(place) => {
-                    console.log(place);
                     setLocation(place.formatted_address)
                   }}
             />         
               <label className="user-label" htmlFor="username">
-                Location
+                Location*
               </label>
             </div>
-            <p>{error}</p>
+            <Error>{error}</Error>
             <SignupButton type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</SignupButton> 
          </Form>
          <P>Have an account? <LinkText to='/login'>Log in</LinkText></P>
@@ -481,5 +488,11 @@ const DateLabel = styled(P)`
 const ProfileContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
+`
+
+const Error = styled.p`
+  color: red;
+  font-size: 1.4rem;
+  margin: 12px;
 `
 
