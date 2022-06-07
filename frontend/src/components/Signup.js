@@ -28,6 +28,7 @@ export const Signup = () => {
   const [allValid, setAllValid] = useState(false)
 
   const accessToken = useSelector((store) => store.user.accessToken);
+  const error = useSelector((store) => store.user.error)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -45,6 +46,7 @@ export const Signup = () => {
     setImg(base64)
   }
   const convertBase64 = (file) => {
+    alert(file.size + " KB.");
     return new Promise ((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -52,10 +54,13 @@ export const Signup = () => {
         resolve(fileReader.result)
       }
       fileReader.onerror = (error) => {
+        console.log(error)
         reject(error)
       }
     })
+
   }
+
 
   const validateEmail = (e) => {
     setEmail(e.target.value)
@@ -97,7 +102,10 @@ export const Signup = () => {
       .then((res) => res.json())
       .then((data) => {
           if (data.success) {
+              dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
+              dispatch(user.actions.setError(''))
+
           } else {      
               dispatch(user.actions.setError(data.response))
               dispatch(user.actions.setUserData(null));
@@ -112,36 +120,36 @@ export const Signup = () => {
 
     if (password === rePassword) {
       setAllValid(true)
+      dispatch(user.actions.setError(''))  
+
     } else {
       setAllValid(false);
       dispatch(user.actions.setError('password does not match'))  
     }
   };
 
-  //AIzaSyD1tl0DDxF9Y2-n49iIDyrrIPnrcxKQjGw
-
 
   //Enable the submit button if all inputs are filled
  
   useEffect(() => {
-    setDisable(false)
-
     if (
-      email !== '' && 
-      emailValid &&
-      username !== '' &&
-      password !== '' &&
-      animalType !== [] &&
-      img !== '' &&
-      location !== '' &&
-      preferableTime !== [] &&
-      startDate !== '' &&
-      endDate !== '' &&
-      password !== ''      
+      email === '' || 
+      username === '' ||
+      password === '' ||
+      animalType === [] ||
+      location === '' ||
+      preferableTime === [] ||
+      startDate === '' ||
+      endDate === '' ||
+      password === ''      
       ) {
+        setDisable(false)
+        dispatch(user.actions.setError('Please fill in all required input'))
+
+      } else {
         setDisable(true)
+
       }
-      else setDisable(false)
   }, [ email, username, password, animalType, location, preferableTime, startDate, endDate, password])
 
 
@@ -155,7 +163,6 @@ export const Signup = () => {
       else setPreferableTime([...preferableTime, time])
   }
 
-  console.log('accessToken', accessToken)
 
   return (
     <Main>
@@ -208,7 +215,7 @@ export const Signup = () => {
                 className="input"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => validateEmail(e)}
                 required
               />
               <label className="user-label" htmlFor="email">
@@ -232,7 +239,7 @@ export const Signup = () => {
               <input
                 id='rePassword'
                 className="input"
-                type="rePassword"
+                type="password"
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
                 required
@@ -250,8 +257,7 @@ export const Signup = () => {
                       type='file'
                       name="myImage"
                       onChange={(e) => upload(e)}
-              />
-             
+              />           
           </div>
 
           <div className="date-container">
@@ -325,16 +331,22 @@ export const Signup = () => {
                 required
               />
            </div> 
-          
-           <Autocomplete
-                apiKey='AIzaSyCx9GDxuqn4TaVuYIYTb4YGdRGI-YdZIiA'
-                onPlaceSelected={(place) => {
-                  console.log(place);
-                  setLocation(place.formatted_address)
-                }}
-           />
 
-          
+           <div className="input-container">
+            <Autocomplete
+                  apiKey='AIzaSyCx9GDxuqn4TaVuYIYTb4YGdRGI-YdZIiA'
+                  className="inputLocation"
+                  placeholder=''
+                  onPlaceSelected={(place) => {
+                    console.log(place);
+                    setLocation(place.formatted_address)
+                  }}
+            />         
+              <label className="user-label" htmlFor="username">
+                Location
+              </label>
+            </div>
+            <p>{error}</p>
             <SignupButton type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</SignupButton> 
          </Form>
          <P>Have an account? <LinkText to='/login'>Log in</LinkText></P>
@@ -380,7 +392,7 @@ const FormContainer = styled.div`
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 2rem;    
     width: 35rem;
-    border-box: box-sizing;
+    box-sizing: border-box;
     padding: 2rem;
     margin:2rem;
     background:rgba(255,255,255, 0.9);
@@ -470,3 +482,4 @@ const ProfileContainer = styled.div`
   display: flex;
   justify-content: space-evenly;
 `
+
