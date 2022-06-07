@@ -4,10 +4,10 @@ import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
-import stylyed from 'styled-components'
 import Autocomplete from "react-google-autocomplete";
+import styled from 'styled-components';
 
-//SIGNUP
+
 export const Signup = () => {
   const [mode, setMode] = useState("signup");
   const [profileType, setProfileType] = useState("")
@@ -154,134 +154,318 @@ export const Signup = () => {
       else setPreferableTime([...preferableTime, time])
   }
 
-
+  console.log('accessToken', accessToken)
 
   return (
-       <div>
-         <h2>Create an account </h2>
-         <p> Make pet experience better </p>
-
-         <form>
-           <label htmlFor='Pet sitter'>
-            <input 
-              id='Pet sitter'
-              type = 'radio' 
-              value = 'Pet sitter' 
-              checked = {profileType === 'Pet sitter'}
-              onChange = {(e) => setProfileType(e.target.value)}
-            />
-            Pet sitter
-           </label>
-           <label htmlFor='Pet owner'>
-            <input 
-              id='Pet owner'
-              type = 'radio' 
-              value = 'Pet owner' 
-              checked = {profileType === 'Pet owner'}
-              onChange = {(e) => setProfileType(e.target.value)}
-            />
-            Pet owner
-           </label>
-           Username
-           <input 
-             type='text'
-             value={username}
-             onChange = {(e) => setUsername(e.target.value)}
-           />
-           <label htmlFor='email'>
-             Email
-            <input 
-              id='email'
-              type='email'
-              value={email}
-              onChange = {(e) => validateEmail(e)}
-            />
-           </label>
-           <label htmlFor='password'>
-              Password
-              <input 
-                id='password'
-                type='password'
-                value={password}
-                onChange = {(e) => setPassword(e.target.value)}
+    <Main>
+       <FormContainer>
+        <ExitButton>X</ExitButton>
+         <FormTitle> Create an account </FormTitle>
+         <FormSubTitle> Make pet experience better </FormSubTitle>
+         <Form>
+             <div className="date-container">
+               <P>Choose profile type:</P>
+               <ProfileContainer>
+              <RadioLabel htmlFor='Pet sitter'>
+                <RadioInput
+                  id='Pet sitter'
+                  type = 'radio' 
+                  value = 'Pet sitter' 
+                  checked = {profileType === 'Pet sitter'}
+                  onChange = {(e) => setProfileType(e.target.value)}
+                />
+                Pet sitter
+              </RadioLabel>
+              <RadioLabel htmlFor='Pet owner'>
+              <RadioInput
+                id='Pet owner'
+                type = 'radio' 
+                value = 'Pet owner' 
+                checked = {profileType === 'Pet owner'}
+                onChange = {(e) => setProfileType(e.target.value)}
               />
-           </label>
-           <label htmlFor='rePassword'>
-              Re-enter password
-              <input 
-                id='rePassword'
-                type='password'
-                value={rePassword}
-                onChange = {(e) => setRePassword(e.target.value)}
+              Pet owner
+            </RadioLabel>
+            </ProfileContainer>
+           </div >
+          <div className="input-container">
+              <input
+                id="username"
+                className="input"
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
-            />
-           </label>
-           <label html='img'>
-             <input type='file'
-                     name="myImage"
-                     onChange={(e) => upload(e)}
-            />
-           </label>
-           <span>Pet Information</span>
-           <label htmlFor='dog'>
-             <input 
-                id='dog'
-                type='radio'
-                value='dog'
-                checked = {animalType === 'dog'}
-                onChange= {(e) => setAnimalType(e.target.value)}
-            />
-            Dog
-           </label>
-           <label htmlFor='cat'>
-             <input 
+              />
+              <label className="user-label" htmlFor="username">
+                Username
+              </label>
+            </div>
+            <div className="input-container">
+              <input
+                id="email"
+                className="input"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <label className="user-label" htmlFor="email">
+                Email
+              </label>
+            </div>
+            <div className="input-container">
+              <input
+                id="password"
+                className="input"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <label className="user-label" htmlFor="password">
+                Password
+              </label>
+            </div>
+            <div className="input-container">
+              <input
+                id='rePassword'
+                className="input"
+                type="rePassword"
+                value={rePassword}
+                onChange={(e) => setRePassword(e.target.value)}
+                required
+              />
+              <label className="user-label" htmlFor="rePassword">
+                Re-enter password
+              </label>
+            </div>
+            
+            <div className="date-container">
+              <DateLabel htmlFor='img'>
+                Profile image:
+              </DateLabel>
+              <input  className = "imageInput"
+                      type='file'
+                      name="myImage"
+                      onChange={(e) => upload(e)}
+              />
+             
+          </div>
+
+          <div className="date-container">
+          <P>Choose your pet type:</P>
+          <ProfileContainer>
+              <RadioLabel htmlFor='dog'>
+                <RadioInput
+                  id='dog'
+                  type = 'radio' 
+                  value = 'dog' 
+                  checked = {animalType === 'dog'}
+                  onChange = {(e) => setAnimalType(e.target.value)}
+                />
+                Dog
+              </RadioLabel>
+              <RadioLabel htmlFor='cat'>
+              <RadioInput
                 id='cat'
-                type='radio'
-                value='cat'
+                type = 'radio' 
+                value = 'cat' 
                 checked = {animalType === 'cat'}
-                onChange= {(e) => setAnimalType(e.target.value)}
-            />
-            Cat
-           </label>
+                onChange = {(e) => setAnimalType(e.target.value)}
+              />
+              Cat
+            </RadioLabel>
+            </ProfileContainer>
+           </div >
+           
+           
+           <div className="checkbox-container">
+             <P>Duration of pet sitting:</P>
            {preferTimeOption.map(item => {
-             return <label htmlFor={item}>
-                    <input 
+             return <RadioLabel htmlFor={item}>
+                    <RadioInput
+                      id={item}
                       type='checkbox'
                       value = {item}
                       checked = {preferableTime.includes(item)}
                       onChange = { () => onTimeCheckbox(item) }      
                     />
                     {item}
-             </label>
+             </RadioLabel>
            })}
-           <label htmlFor='start-date'>
-              Start date
-              <input 
-                type = 'date'
-                id = 'start-date'
+           </div>
+
+           <div className="date-container">
+              <DateLabel htmlFor="start-date">
+                Start Date:
+              </DateLabel>
+              <input
+                id="start-date"
+                className="input"
+                type="date"
                 value={startDate}
-                onChange = {(e) => setStartDate(e.target.value)}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
               />
-           </label>
-           <label htmlFor='end-date'>
-              End date
-              <input 
-                type = 'date'
-                id = 'end-date'
+             
+            </div>
+           
+           <div className="date-container">
+              <DateLabel htmlFor="end-date">
+                End Date:
+              </DateLabel>
+              <input
+                id="end-date"
+                className="input"
+                type="date"
                 value={endDate}
-                onChange = {(e) => setEndDate(e.target.value)}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
               />
-           </label>
+           </div> 
+          
            <Autocomplete
                 apiKey='AIzaSyCx9GDxuqn4TaVuYIYTb4YGdRGI-YdZIiA'
                 onPlaceSelected={(place) => {
                   console.log(place);
                   setLocation(place.formatted_address)
                 }}
-           />;
-           <button type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</button>
-         </form>
-       </div>
-  
+           />
+
+          
+            <SignupButton type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</SignupButton> 
+         </Form>
+         <P>Have an account? <LinkText>Log in</LinkText></P>
+       </FormContainer>
+
+    </Main>
+
   );
 }
+
+const ExitButton = styled.button`
+    border-radius: 50%;
+    border: black solid;
+    width: 3rem;
+    height: 3rem;
+    position: absolute;
+    right:0;
+    top:0;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: #F5F5F5;
+    font-weight: 600;
+    cursor:pointer;
+`
+
+const Main = styled.main`
+    width: 100%;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+`
+
+const FormContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 2rem;    
+    width: 35rem;
+    border-box: box-sizing;
+    padding: 2rem;
+    margin:2rem;
+    background:rgba(255,255,255, 0.9);
+    position:relative;
+`
+const Form = styled.form`
+    display:flex;
+    flex-direction: column;
+    
+`
+
+const FormTitle = styled.h1`
+    font-family: 'Raleway', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    letter-spacing: 0.035em;
+    text-align:center;
+`
+
+const FormSubTitle = styled.p`
+    font-family: 'Raleway', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    color: #666666;
+    margin: 0 0 2rem 0;
+    padding:0;
+`
+
+
+const SignupButton = styled.button`
+    border: none;
+    background-color: #FD9951;
+    border-radius: 1rem;
+    cursor: pointer;
+    color: #fff;
+    padding: 1.5rem;
+    margin: 24px 12px 12px 12px;
+    font-weight: 600;
+    font-size: 1.6rem;
+
+    &:disabled {
+      background-color: #fdc7a0;
+    }
+
+    &:hover {
+      background-color: #ec8941;
+    }
+`
+ 
+const P = styled.p`
+    font-family: 'Raleway', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.6rem;
+`
+
+const LinkText = styled.span`
+    font-family: 'Raleway', sans-serif;
+    font-size: 1.6rem;
+    color: #FD9951;
+    font-weight: 600;
+`
+
+
+const RadioLabel = styled.label`
+  display:flex;
+  align-items: center;
+  font-size: 14px;
+`
+
+const RadioInput = styled.input`
+  width: fit-content;
+  color:#FD9951;
+`
+
+const DateLabel = styled(P)`
+  margin: 0 0 0.2rem 0.2rem;
+`
+
+
+const ProfileContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+`

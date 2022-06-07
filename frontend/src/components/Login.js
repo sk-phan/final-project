@@ -13,6 +13,7 @@ export const Login = () => {
   const [password, setPassword] = useState("")
   const [passwordShown, setPasswordShown] = useState(false);
 
+
   const accessToken = useSelector((store) => store.user.accessToken);
 
   const dispatch = useDispatch();
@@ -42,11 +43,17 @@ export const Login = () => {
     .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-          dispatch(user.actions.setUserData(data.response));
+            console.log(data, 'data login')
+          batch(() => {
+            dispatch(user.actions.setUserData(data.response));
+            dispatch(user.actions.setAccessToken(data.response.accessToken));
+          });
         } else {
-          dispatch(user.actions.setError(data.response))
-          dispatch(user.actions.setUserData(null));
-          }
+          batch(() => {
+            dispatch(user.actions.setUserData(null));
+            dispatch(user.actions.setAccessToken(null));
+          });
+        }
       });
   };
 
@@ -90,7 +97,7 @@ export const Login = () => {
                   <img src={passwordShown ? unVisibleEye : visibleEye} />
                 </button> */}
             </div>
-            <LoginButton type='submit'>Log in</LoginButton>
+            <LoginButton disabled={username === '' || password === ''} type='submit'>Log in</LoginButton>
         </Form>
         <P>Don't have an account? <LinkText>Sign up</LinkText></P>
         </FormContainer>
@@ -177,6 +184,14 @@ const LoginButton = styled.button`
     margin: 12px;
     font-weight: 600;
     font-size: 1.6rem;
+
+    &:disabled {
+        background-color: #fdc7a0;
+      }
+  
+      &:hover {
+        background-color: #ec8941;
+      }
 `
 
 const P = styled.p`

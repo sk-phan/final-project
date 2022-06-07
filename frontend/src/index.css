@@ -28,9 +28,35 @@ html {
 .input-container {
   position: relative;
   margin: 12px;
+  
 }
 
-input {
+.radio-container{
+  position: relative;
+  margin: 12px;
+  display: flex;
+  width: 25rem;
+  justify-content: space-evenly;
+}
+
+.date-container{
+  position: relative;
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.checkbox-container{
+  position: relative;
+  margin: 12px;
+  display: flex;
+  flex-direction: column;
+  width: 25rem;
+  /* padding-left: 3rem; */
+
+}
+
+input, .imageInput {
   width: 25rem;
   border: solid 0.1rem;
   border-radius: 1rem;
@@ -57,6 +83,15 @@ input:valid,
   outline: none;
   border: 0.1rem solid #FF974B;
 }
+
+.imageInput:hover,
+.imageInput:valid,
+.imageInput:focus {
+  outline: none;
+  border: solid 0.1rem;
+}
+
+
 
 input:valid ~ label,
 .input:focus ~ label {
