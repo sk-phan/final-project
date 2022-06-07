@@ -228,7 +228,7 @@ const ReviewCommentsContainer = styled.div`
 const ReviewComment = styled.div`
     width: 28rem;
     height: 35rem;
-    background-color: #FFFFF6; s
+    background-color: #FFFFF6; 
     border-radius: 2rem;
     display:flex;
     flex-direction: column;
