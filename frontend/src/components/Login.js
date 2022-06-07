@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch, batch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import styled from 'styled-components'
 import visibleEye from "../assets/visible-eye.png";
@@ -65,7 +65,7 @@ export const Login = () => {
   return (
     <Main>
         <FormContainer>
-            <ExitButton>X</ExitButton>
+            <ExitButton onClick={() => navigate('/')}>X</ExitButton>
             <FormTitle>Welcome back!</FormTitle>
             <FormSubTitle>Make pet experience better</FormSubTitle>
         <Form onSubmit={onFormSubmit}>
@@ -99,7 +99,7 @@ export const Login = () => {
             </div>
             <LoginButton disabled={username === '' || password === ''} type='submit'>Log in</LoginButton>
         </Form>
-        <P>Don't have an account? <LinkText>Sign up</LinkText></P>
+        <P>Don't have an account? <LinkText to='/signup'>Sign up</LinkText></P>
         </FormContainer>
     </Main>
   );
@@ -201,7 +201,7 @@ const P = styled.p`
     font-size: 1.6rem;
 `
 
-const LinkText = styled.span`
+const LinkText = styled(Link)`
     font-family: 'Raleway', sans-serif;
     font-size: 1.6rem;
     color: #FD9951;

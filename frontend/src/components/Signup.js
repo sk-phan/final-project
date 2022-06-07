@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import Autocomplete from "react-google-autocomplete";
 import styled from 'styled-components';
@@ -31,6 +31,7 @@ export const Signup = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
 
   useEffect(() => {
     if (accessToken) {
@@ -159,7 +160,7 @@ export const Signup = () => {
   return (
     <Main>
        <FormContainer>
-        <ExitButton>X</ExitButton>
+        <ExitButton onClick={() => navigate('/')}>X</ExitButton>
          <FormTitle> Create an account </FormTitle>
          <FormSubTitle> Make pet experience better </FormSubTitle>
          <Form>
@@ -336,7 +337,7 @@ export const Signup = () => {
           
             <SignupButton type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</SignupButton> 
          </Form>
-         <P>Have an account? <LinkText>Log in</LinkText></P>
+         <P>Have an account? <LinkText to='/login'>Log in</LinkText></P>
        </FormContainer>
 
     </Main>
@@ -441,7 +442,7 @@ const P = styled.p`
     font-size: 1.6rem;
 `
 
-const LinkText = styled.span`
+const LinkText = styled(Link)`
     font-family: 'Raleway', sans-serif;
     font-size: 1.6rem;
     color: #FD9951;
