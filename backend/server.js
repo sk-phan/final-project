@@ -162,7 +162,7 @@ app.get("/users", async (req, res) => {
 
 //login endpoint
 app.post('/login', async (req, res) => {
-    const { username, password, img } = req.body
+    const { username, password } = req.body
   
     try {
       const user = await User.findOne({ username })
@@ -174,6 +174,7 @@ app.post('/login', async (req, res) => {
             username: user.username,
             accessToken: user.accessToken,
             img: user.img,
+            profileType: user.profileType
           },
           success: true
         })
