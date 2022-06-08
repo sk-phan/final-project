@@ -9,6 +9,8 @@ import MainPage from "./pages/MainPage";
 import { Login } from "./components/Login";
 import {NotFound} from './pages/NotFound'
 import { NavBar } from "./components/NavBar";
+import {UserDetails} from './pages/UserDetails'
+
 
 import { user } from "./reducers/user";
 
@@ -28,6 +30,7 @@ export const App = () => {
            <Route path="/login" element={<Login />} />
            <Route path="/signup" element={<Signup />} /> 
           <Route path="/userpage" element={<Userpage />} />
+          <Route path='/userdetails/:userId' element={<UserDetails />} />
           <Route path="/*" element={<NotFound />} /> 
         </Routes>
       </BrowserRouter>
