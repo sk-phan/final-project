@@ -111,11 +111,14 @@ input, .imageInput {
 }
 
 
-
 .input:valid ~ label,
 .input:focus ~ label {
   transform: translateY(-50%) scale(0.8);
   background-color:rgba(255,255,255, 0.9);
   padding: 0 0.2em;
   color: #FF974B;
+}
+
+.nav-icon {
+  fill: #000;
 }

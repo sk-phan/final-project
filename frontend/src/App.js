@@ -8,7 +8,7 @@ import { Userpage } from "./pages/Userpage";
 import MainPage from "./pages/MainPage";
 import { Login } from "./components/Login";
 import {NotFound} from './pages/NotFound'
-
+import { NavBar } from "./components/NavBar";
 
 import { user } from "./reducers/user";
 
@@ -23,7 +23,8 @@ export const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-           <Route path="/" element={<MainPage />} />
+           <Route path="/" element={<NavBar/>} /> 
+            {/* <Route path="/" element={<MainPage />} />  */}
            <Route path="/login" element={<Login />} />
            <Route path="/signup" element={<Signup />} /> 
           <Route path="/userpage" element={<Userpage />} />
