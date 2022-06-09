@@ -39,10 +39,12 @@ export const Userpage = () => {
       if(profile === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
         setUsersData(usersToShow)
+        dispatch(user.actions.setOtherUsersData(usersToShow))
       }
       else {
         const usersToShow = data.filter(user => user.profileType === 'Pet owner')
         setUsersData(usersToShow)
+        dispatch(user.actions.setOtherUsersData(usersToShow))
       }
       
       console.log(data)

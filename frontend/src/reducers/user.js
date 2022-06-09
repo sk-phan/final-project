@@ -5,7 +5,8 @@ export const user = createSlice({
   initialState: {
     accessToken:null,
     userData: null,
-    error: ''
+    error: '',
+    otherUsersData: [],
     
   },
   reducers: {
@@ -20,7 +21,10 @@ export const user = createSlice({
     },
     setDeleteAccessToken: (store, action) => {
       store.accessToken = null
-    }
+    },
+    setOtherUsersData: (store, action) => {
+      store.otherUsersData = [...action.payload]
+    },
 
    
   },
