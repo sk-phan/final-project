@@ -294,7 +294,6 @@ app.delete('/deleteReview', async (req,res) => {
    
 
 //Chatbox endpoints
-
 const ChatSchema = new mongoose.Schema({
   sender: {
     type:String,
