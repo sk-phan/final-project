@@ -38,7 +38,7 @@ export const NavBar = () => {
                     <MdSpaceDashboard className="nav-icon"/>
                     Dashboard
                 </NavEl>
-                <NavEl to='#'>
+                <NavEl to='/profile'>
                     <BsFillPersonFill className="nav-icon" />
                     Profile
                 </NavEl>
@@ -149,8 +149,6 @@ const Seach = styled.div`
         fill: #000;
         font-size: 2rem;
     }
-
-
 `
 
 const SearchBar = styled.input`
