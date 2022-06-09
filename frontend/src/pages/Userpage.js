@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { user } from "../reducers/user";
+import { NavBar } from "../components/NavBar";
 import styled from 'styled-components'
 import moment from 'moment';
 
@@ -53,6 +54,7 @@ export const Userpage = () => {
   console.log(profile,'profile')
   return (
     <BigContainer>
+        <NavBar />
         <SmallContainer>
            {usersData ? usersData.map(user => {
             return ( 
