@@ -13,12 +13,13 @@ const port = process.env.PORT || 8080
 const app = express()
 
 app.use(cors())
+
 app.use(express.json({limit: '5000000mb'}))
 
 
 const UserSchema = new mongoose.Schema({
 
-     profileType: {
+    profileType: {
         type: String,
         required: true,
       },
@@ -180,9 +181,16 @@ app.post('/login', async (req, res) => {
           response: {
             userId: user._id,
             username: user.username,
+            email: user.email,
             accessToken: user.accessToken,
             img: user.img,
-            profileType: user.profileType
+            password: user.password,
+            animalType: user.animalType,
+            profileType: user.profileType,
+            startDate: user.startDate,
+            endDate: user.endDate,
+            location: user.location,
+            preferableTime: user.preferableTime
           },
           success: true
         })
