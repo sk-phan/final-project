@@ -19,6 +19,7 @@ export const NavBar = () => {
             <Nav 
                 translate={desktopSize ? '280px' : '0'}
                 opacity = {desktopSize ? '0' : '1'}
+                zIndex = {desktopSize ? '-2' : '5'}
             >
                 <NavHead>
                     <Logo>Logo</Logo>
@@ -61,7 +62,6 @@ const Header = styled.header `
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    height: 100vh;
 `
 
 const Nav = styled.nav`
@@ -76,6 +76,7 @@ const Nav = styled.nav`
     position: absolute;
     transform: translateX(${(props) => props.translate});
     opacity: ${(props) => props.opacity};
+    z-index: ${(props) => props.zIndex};
     transition: ease-in-out 1s;
 
 

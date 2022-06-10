@@ -10,7 +10,7 @@ import { Profile } from "./pages/Profile";
 import { Login } from "./components/Login";
 import {NotFound} from './pages/NotFound'
 import { NavBar } from "./components/NavBar";
-import {UserDetails} from './pages/UserDetails'
+import {UserDetails} from './pages/UserDetails';
 
 
 import { user } from "./reducers/user";
