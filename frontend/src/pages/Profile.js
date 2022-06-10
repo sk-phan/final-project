@@ -9,16 +9,19 @@ import styled from "styled-components";
 
 
 export const Profile = () => {
+  
+    const userProfile = useSelector(state => state.user.userData)
 
-    const [username, setUsername ]= useState('');
-    const [email, setEmail ]= useState('');
-    const [password, setPassword ]= useState('');
-    const [profileType, setProfileType] = useState('');
+    const [username, setUsername ]= useState(userProfile.username);
+    const [email, setEmail ]= useState(userProfile.email);
+    const [password, setPassword ]= useState(userProfile.password);
+    const [profileType, setProfileType] = useState(userProfile.email);
     const [animalType, setAnimalType] = useState('')
     const [preferableTime, setPreferableTime] = useState([])
+    const [startDate, setStartDate] = useState(userProfile.startDate);
+    const [endDate, setEndDate] = useState(userProfile.endDate);
 
     const dispatch = useDispatch();
-    const userProfile = useSelector(state => state.user.userData)
 
     const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
@@ -54,11 +57,11 @@ export const Profile = () => {
     }
     
     return (
-        <div>
-            <div>
-                <h2>Your profile information</h2>
+        <Container>
+            <HeadingContainer>
+                <Heading>Your profile information</Heading>
                 <button><AiOutlineEdit/></button>
-            </div>
+            </HeadingContainer>
             <form onSubmit={onSubmit}>
                 <label htmlFor="username">
                     Username
@@ -87,15 +90,7 @@ export const Profile = () => {
                         onChange={(e) => setPassword(e.target.value)}                  
                     />
                 </label>
-                <label htmlFor="password">
-                    Profile type
-                    <input 
-                        id='password'
-                        type='email'
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}                  
-                    />
-                </label>
+                
                 <div>
                     <label>
                         <input 
@@ -136,7 +131,7 @@ export const Profile = () => {
                 value = 'cat' 
                 checked = {animalType === 'cat'}
                 onChange = {(e) => setAnimalType(e.target.value)}
-              />
+            />
                 Cat
             </RadioLabel>
             </ProfileContainer>
@@ -152,17 +147,60 @@ export const Profile = () => {
                             onChange = { () => onTimeCheckbox(item) }      
                             />
                             {item}
-             </RadioLabel>
-           })}
-           </div>
+                            </RadioLabel>
+                 })}
+            </div>
+            <div className="date-container">
+              <DateLabel htmlFor="start-date">
+                Start Date:*
+              </DateLabel>
+              <input
+                id="start-date"
+                className="input"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+              />
+             
+            </div>
+            <div className="date-container">
+              <DateLabel htmlFor="end-date">
+                End Date:*
+              </DateLabel>
+              <input
+                id="end-date"
+                className="input"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+              />
+             
+            </div>
 
                 
             <button type="submit">Submit</button>
             </form>
-        </div>
+        </Container>
     )
 
 }
+
+const Container = styled.div`
+  width: 600px;
+`
+
+const HeadingContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const Heading = styled.h2`
+  font-size: 2.4rem;
+
+`
 
 const P = styled.p`
     font-family: 'Raleway', sans-serif;
