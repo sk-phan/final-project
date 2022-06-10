@@ -11,8 +11,11 @@ export const UserDetails = () => {
     const navigate = useNavigate()
     const accessToken = useSelector((store) => store.user.accessToken);
     const otherUsersData = useSelector((store) => store.user.otherUsersData)
+
     
     const userToShow = otherUsersData.find(user => user._id === userId)
+
+    console.log(userToShow)
 
 
     const onBackButtonClick = () => {
@@ -41,7 +44,7 @@ export const UserDetails = () => {
                             return <span> {time}</span>})}
                         </ProfileText>
                         <ProfileText><SpanBold>Dates:</SpanBold>  {moment(userToShow.startDate).format('MMM Do YY')} - {moment(userToShow.endDate).format('MMM Do YY')}</ProfileText>
-                        <ProfileText>Optional Description will come here</ProfileText>
+                        <ProfileText><SpanBold>Description:</SpanBold> {userToShow.description}</ProfileText>
 
 
                     </TextContainer>
@@ -127,6 +130,7 @@ const SmallContainer = styled.div`
 
  const Img = styled.img`
     width:100%;
+    height:100%;
     object-fit: cover;
  `
 

@@ -21,6 +21,8 @@ export const Signup = () => {
   const [password, setPassword] = useState("")
   const [rePassword, setRePassword] = useState("")
   const [img, setImg] = useState("")
+  const [description, setDescription] = useState("")
+  const [favourites, setFavourites] = useState([])
   
   const [emailValid, setEmailValid] = useState(false)
 
@@ -95,6 +97,8 @@ export const Signup = () => {
           endDate: endDate,
           password: password,
           img: img,
+          description: description,
+          favourites: favourites,
         }),
       };
       
@@ -349,9 +353,23 @@ export const Signup = () => {
                     setLocation(place.formatted_address)
                   }}
             />         
-              <label className="user-label" htmlFor="username">
-                Location*
+              <label className="user-label" htmlFor="description">
+                Location
               </label>
+            </div>
+            <div className="date-container">
+              <DateLabel htmlFor="description">
+                Profile description:
+              </DateLabel>
+              <textarea
+                id="start-date"
+                className="textarea"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+                placeholder="Tell more about yourself/your pet..."
+              />
+             
             </div>
             <Error>{error}</Error>
             <SignupButton type='submit' disabled={!disabled} onClick={onFormSubmit}>Sign up</SignupButton> 

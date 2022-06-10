@@ -5,16 +5,18 @@ import { user } from "../reducers/user";
 import { NavBar } from "../components/NavBar";
 import styled from 'styled-components'
 import moment from 'moment';
+import { BsBookmarkFill } from 'react-icons/bs';
 
 export const Userpage = () => {
 
   const [usersData, setUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
   const profile = useSelector((store) => store.user.userData.profileType);
+  const favourites = useSelector ((store) => store.user.userData.favourites)
   const dispatch = useDispatch();
   const navigate = useNavigate();
    
-
+  //log out click
   const onClickLogout = () => {
     dispatch(user.actions.setDeleteAccessToken(null));
   };
@@ -52,11 +54,15 @@ export const Userpage = () => {
     })
   }, [])
 
-  console.log(usersData,'userdata')
-  console.log(profile,'profile')
+  const addToFavourites = () => {
+    
+  }
+
   return (
+    <>
+    <NavBar />
+    <Main>
     <BigContainer>
-        <NavBar />
         <SmallContainer>
            {usersData ? usersData.map(user => {
             return ( 
@@ -65,7 +71,7 @@ export const Userpage = () => {
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}</ProfileTitle>
+              <ProfileTitle>@{user.username} <BsBookmarkFill onClick={addToFavourites} className="userpage-nav-icon" /></ProfileTitle>
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
                 {user.preferableTime.map(time => {
@@ -82,15 +88,27 @@ export const Userpage = () => {
 
           }) : <p>LOADING</p>}
         </SmallContainer>
+       
+
     </BigContainer>
+    </Main>
+    </>
   );
 };
 
+const Main = styled.main`
+width: 100%;
+min-width: 100vw;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+`
 
 const BigContainer = styled.div`
   display:flex;
-  flex-direction: column;
-  align-items: center;
+  flex-direction: row;
  
 
  
@@ -176,6 +194,9 @@ const ProfileTitle = styled.h1`
   @media (min-width: 768px) {
     font-size: 18px;
    }
+   display:flex;
+   width: 100%;
+   justify-content: space-between;
 `
 
 const ProfileText = styled.p`

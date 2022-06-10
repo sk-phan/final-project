@@ -13,7 +13,8 @@ const port = process.env.PORT || 8080
 const app = express()
 
 app.use(cors())
-app.use(express.json({limit: '500000mb'}))
+
+app.use(express.json({limit: '5000000mb'}))
 
 
 const UserSchema = new mongoose.Schema({
@@ -69,6 +70,12 @@ const UserSchema = new mongoose.Schema({
       type: Date,
       default: () => new Date()
     },
+    description: {
+      type: String,
+    },
+    favourites: {
+      type: Array,
+    }
 })
 //QUESTION FOR 1:1 session
 //1) When the type is array and required true, it still allows to post without including them, why?
@@ -125,7 +132,7 @@ app.get("/users", async (req, res) => {
 
 //signup endpoint
  app.post('/signup', async (req, res) => {
-    const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img } = req.body
+    const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img, description, favourites } = req.body
     
   
     try {
@@ -148,7 +155,9 @@ app.get("/users", async (req, res) => {
         startDate,
         endDate,
         password: bcrypt.hashSync(password, salt),
-        img   
+        img,
+        description,
+        favourites,
       }).save()
   
       res.status(201).json({
@@ -200,10 +209,10 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image}  = req.body;
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, decription, favourites}  = req.body;
 
   try {
-    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image} );
+    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites} );
     
     if (editingUser) {
       res.status(200).json({
