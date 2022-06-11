@@ -13,6 +13,7 @@ import { NavBar } from "./components/NavBar";
 import {UserDetails} from './pages/UserDetails';
 
 
+
 import { user } from "./reducers/user";
 
 const reducer = combineReducers({

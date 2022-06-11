@@ -209,7 +209,7 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, decription, favourites}  = req.body;
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites}  = req.body;
 
   try {
     const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites} );

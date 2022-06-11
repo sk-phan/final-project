@@ -115,3 +115,13 @@ const NotfoundImg = styled.img`
         width: 35rem;
     }
 `
+
+const LikeButton = styled.button`
+
+    cursor: pointer;
+    z-index: 10;
+    &:hover{
+        fill:#e5f2eb;
+    }
+
+`

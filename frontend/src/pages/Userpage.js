@@ -6,16 +6,28 @@ import { NavBar } from "../components/NavBar";
 import styled from 'styled-components'
 import moment from 'moment';
 import { BsBookmarkFill } from 'react-icons/bs';
+import { Loader } from "../components/Loader";
+
 
 export const Userpage = () => {
 
   const [usersData, setUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
   const profile = useSelector((store) => store.user.userData.profileType);
-  const favourites = useSelector ((store) => store.user.userData.favourites)
+  // const favorites = useSelector((store) => store.user.userData.favorites)
+  const otherUsersData = useSelector((store) => store.user.otherUsersData)
+  const userData = useSelector((store) => store.user.userData)
+  const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-   
+
+  const [favorites, setFavorites] = useState([])
+  
+
+ 
+  
+ 
+
   //log out click
   const onClickLogout = () => {
     dispatch(user.actions.setDeleteAccessToken(null));
@@ -36,6 +48,7 @@ export const Userpage = () => {
           'Authorization': accessToken
       },
   }
+    setLoading(true)
     fetch('http://localhost:8080/users', options)
     .then((res) => res.json())
     .then((data) => {
@@ -49,33 +62,46 @@ export const Userpage = () => {
         setUsersData(usersToShow)
         dispatch(user.actions.setOtherUsersData(usersToShow))
       }
-      
-      console.log(data)
     })
+    .finally(() => setLoading(false))
   }, [])
 
-  const addToFavourites = () => {
-    
-  }
+  const addTofavorites = (user) => {
+
+    console.log('user', user)
+    if (favorites.includes(user)) {
+      const newFavorites = favorites.filter(item => item !== user );
+      setFavorites(newFavorites)
+      console.log(favorites)
+    } 
+
+    else {
+      setFavorites([...favorites, user])
+      console.log(favorites)
+    }
+}
 
   return (
     <>
     <NavBar />
     <Main>
+		{loading && <Loader />}
+		{!loading && 
     <BigContainer>
         <SmallContainer>
-           {usersData ? usersData.map(user => {
+           {usersData.map(user => {
             return ( 
             <UserContainer to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username} <BsBookmarkFill onClick={addToFavourites} className="userpage-nav-icon" /></ProfileTitle>
+              <ProfileTitle>@{user.username}<BsBookmarkFill onClick={ () => addTofavorites(user) } className="userpage-nav-icon" /></ProfileTitle> 
+              
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
                 {user.preferableTime.map(time => {
-                return <Tag>{time}</Tag>})}
+                return <Tag key={time}>{time}</Tag>})}
               </Tags>
               <ProfileText>{moment(user.startDate).format('MMM Do YY')} - {moment(user.endDate).format('MMM Do YY')}</ProfileText>
 
@@ -86,11 +112,11 @@ export const Userpage = () => {
           </UserContainer>
             )
 
-          }) : <p>LOADING</p>}
+          })}
         </SmallContainer>
        
 
-    </BigContainer>
+    </BigContainer>}
     </Main>
     </>
   );
@@ -109,10 +135,6 @@ position: relative;
 const BigContainer = styled.div`
   display:flex;
   flex-direction: row;
- 
-
- 
-  
 `
 
 const SmallContainer = styled.div`
@@ -132,7 +154,7 @@ const SmallContainer = styled.div`
    }
 `
 
-const UserContainer = styled(Link)`
+const UserContainer = styled.div`
    position: relative;
    display:flex;
    flex-direction: column;
@@ -247,3 +269,6 @@ const Overlay = styled.div`
   }
 
 `
+
+
+

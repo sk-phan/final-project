@@ -4,8 +4,7 @@ import { useSelector, useDispatch, batch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import styled from 'styled-components'
-import visibleEye from "../assets/visible-eye.png";
-import unVisibleEye from "../assets/unvisible-eye.png";
+
 
 
 export const Login = () => {
@@ -93,9 +92,7 @@ export const Login = () => {
                 Password
               </label>
               
-                {/* <button type="button" onClick={togglePassword}>
-                  <img src={passwordShown ? unVisibleEye : visibleEye} />
-                </button> */}
+                
             </div>
             <LoginButton disabled={username === '' || password === ''} type='submit'>Log in</LoginButton>
         </Form>

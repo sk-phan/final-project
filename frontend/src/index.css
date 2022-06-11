@@ -132,10 +132,11 @@ input, .imageInput, .textarea {
 }
 
 .userpage-nav-icon{
-  fill:#000;
   cursor: pointer;
-  z-index: 10;
+  z-index: 2;
 }
-.userpage-nav-icon:hover{
+
+.userpage-nav-icon:hover
+{
   fill:#e5f2eb;
 }
