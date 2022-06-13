@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { user } from "../reducers/user";
 
-import { NavBar } from "../components/NavBar";
+import { NavBar } from "../components/NavBar"
 import { AiOutlineEdit } from 'react-icons/ai';
 
 import styled from "styled-components"
