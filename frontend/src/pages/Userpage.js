@@ -21,7 +21,8 @@ export const Userpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [favorites, setFavorites] = useState([])
+  const [favorites, setFavorites] = useState(userData.favorites)
+
   
 
 
@@ -67,6 +68,7 @@ export const Userpage = () => {
     if (favorites.includes(user)) {
       const newFavorites = favorites.filter(item => item !== user );
       setFavorites(newFavorites)
+      
     } 
 
     else {
@@ -83,7 +85,7 @@ useEffect(() => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ 
-                userId: userData._id,
+                userId: userData.userId,
                 favorites: favorites,
               }),
   }
