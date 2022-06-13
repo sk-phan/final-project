@@ -21,7 +21,7 @@ export const Userpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [favourites, setFavourites] = useState([])
+  const [favorites, setFavorites] = useState([])
   
 
 
@@ -64,16 +64,16 @@ export const Userpage = () => {
   }, [])
 
   const addTofavorites = (user) => {
-    if (favourites.includes(user)) {
-      const newFavorites = favourites.filter(item => item !== user );
-      setFavourites(newFavorites)
+    if (favorites.includes(user)) {
+      const newFavorites = favorites.filter(item => item !== user );
+      setFavorites(newFavorites)
     } 
 
     else {
-      setFavourites([...favourites, user])
+      setFavorites([...favorites, user])
     }
   }
-  console.log(favourites,'fav76')
+  console.log(favorites,'fav76')
 
 
 useEffect(() => {
@@ -83,7 +83,8 @@ useEffect(() => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ 
-                favourites: favourites,
+                userId: userData._id,
+                favorites: favorites,
               }),
   }
   fetch ('http://localhost:8080/edituser', options)
@@ -91,7 +92,7 @@ useEffect(() => {
     .then ((data) => console.log(data, 'fetch'))
     .catch(error => console.log(error))
 
-}, [favourites])
+}, [favorites])
 
 console.log('userid', userData._id);
   return (
@@ -109,7 +110,7 @@ console.log('userid', userData._id);
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}{favourites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
+              <ProfileTitle>@{user.username}{favorites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
