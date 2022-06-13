@@ -60,9 +60,9 @@ export const Profile = () => {
       .catch(error => console.log(error))
     }
 
-    useEffect(() => {
-      dispatch(user.actions.setUserData({...updatedData}))
-    }, [updatedData] )
+    // useEffect(() => {
+    //   dispatch(user.actions.setUserData({...updatedData}))
+    // }, [updatedData] )
 
     const onTimeCheckbox = (time) => {
         if (preferableTime.includes(time)) {

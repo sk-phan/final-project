@@ -15,14 +15,13 @@ export const Userpage = () => {
   const [usersData, setUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
   const profile = useSelector((store) => store.user.userData.profileType);
-  // const favorites = useSelector((store) => store.user.userData.favorites)
   const otherUsersData = useSelector((store) => store.user.otherUsersData)
   const userData = useSelector((store) => store.user.userData)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [favorites, setFavorites] = useState([])
+  const [favourites, setFavourites] = useState([])
   
 
 
@@ -65,27 +64,17 @@ export const Userpage = () => {
   }, [])
 
   const addTofavorites = (user) => {
-    if (favorites.includes(user)) {
-      const newFavorites = favorites.filter(item => item !== user );
-      setFavorites(newFavorites)
-<<<<<<< HEAD
-      
-=======
->>>>>>> likeIconStyling
+    if (favourites.includes(user)) {
+      const newFavorites = favourites.filter(item => item !== user );
+      setFavourites(newFavorites)
     } 
 
     else {
-      setFavorites([...favorites, user])
+      setFavourites([...favourites, user])
     }
-<<<<<<< HEAD
   }
-  console.log(favorites,'fav')
-=======
+  console.log(favourites,'fav76')
 
-    
-    
-}
->>>>>>> likeIconStyling
 
 useEffect(() => {
   const options = {
@@ -94,16 +83,15 @@ useEffect(() => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ 
-                userId: userData._id,  
-                favorites: favorites,
+                favourites: favourites,
               }),
   }
   fetch ('http://localhost:8080/edituser', options)
     .then ((res) => res.json())
-    .then ((data) => console.log(data))
+    .then ((data) => console.log(data, 'fetch'))
     .catch(error => console.log(error))
 
-}, [favorites])
+}, [favourites])
 
 console.log('userid', userData._id);
   return (
@@ -121,7 +109,7 @@ console.log('userid', userData._id);
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}{favorites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
+              <ProfileTitle>@{user.username}{favourites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
@@ -179,7 +167,7 @@ const SmallContainer = styled.div`
    }
 `
 
-const UserContainer = styled(Link)`
+const UserContainer = styled.div`
    position: relative;
    display:flex;
    flex-direction: column;

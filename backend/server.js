@@ -192,12 +192,7 @@ app.post('/login', async (req, res) => {
             location: user.location,
             preferableTime: user.preferableTime,
             description: user.description,
-<<<<<<< HEAD
-            favourites: user.favourites,
-
-=======
             favorites: user.favorites,
->>>>>>> likeIconStyling
           },
           success: true
         })
@@ -216,20 +211,11 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-<<<<<<< HEAD
-  const { userId, username, email, preferableTime, animalType, location, duration, startDate, endDate, password, image, description, favourites}  = req.body;
-
-  try {
-    const editingUser = await User.findOneAndUpdate(userId, { username, email, preferableTime ,animalType, location, duration, startDate, endDate, password, image, description, favourites} );
-
-
-=======
   const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites}  = req.body;
 
   try {
-    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites} );
+    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites} );
     
->>>>>>> likeIconStyling
     if (editingUser) {
       res.status(200).json({
         response: editingUser,
