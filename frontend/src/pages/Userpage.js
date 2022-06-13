@@ -7,6 +7,7 @@ import styled from 'styled-components'
 import moment from 'moment';
 import { BsBookmarkFill } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
+import {BsBookmark} from 'react-icons/bs';
 
 
 export const Userpage = () => {
@@ -24,9 +25,6 @@ export const Userpage = () => {
   const [favorites, setFavorites] = useState([])
   
 
- 
-  
- 
 
   //log out click
   const onClickLogout = () => {
@@ -67,20 +65,47 @@ export const Userpage = () => {
   }, [])
 
   const addTofavorites = (user) => {
-
-    console.log('user', user)
     if (favorites.includes(user)) {
       const newFavorites = favorites.filter(item => item !== user );
       setFavorites(newFavorites)
+<<<<<<< HEAD
       
+=======
+>>>>>>> likeIconStyling
     } 
 
     else {
       setFavorites([...favorites, user])
     }
+<<<<<<< HEAD
   }
   console.log(favorites,'fav')
+=======
 
+    
+    
+}
+>>>>>>> likeIconStyling
+
+useEffect(() => {
+  const options = {
+    method: "PATCH",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ 
+                userId: userData._id,  
+                favorites: favorites,
+              }),
+  }
+  fetch ('http://localhost:8080/edituser', options)
+    .then ((res) => res.json())
+    .then ((data) => console.log(data))
+    .catch(error => console.log(error))
+
+}, [favorites])
+
+console.log('userid', userData._id);
   return (
     <>
      <NavBar /> 
@@ -96,7 +121,7 @@ export const Userpage = () => {
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}<BsBookmarkFill onClick={ () => addTofavorites(user) } className="userpage-nav-icon" /></ProfileTitle> 
+              <ProfileTitle>@{user.username}{favorites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
