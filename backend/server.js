@@ -73,7 +73,7 @@ const UserSchema = new mongoose.Schema({
     description: {
       type: String,
     },
-    favourites: {
+    favorites: {
       type: Array,
     }
 })
@@ -132,7 +132,7 @@ app.get("/users", async (req, res) => {
 
 //signup endpoint
  app.post('/signup', async (req, res) => {
-    const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img, description, favourites } = req.body
+    const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img, description, favorites } = req.body
     
   
     try {
@@ -157,7 +157,7 @@ app.get("/users", async (req, res) => {
         password: bcrypt.hashSync(password, salt),
         img,
         description,
-        favourites,
+        favorites,
       }).save()
   
       res.status(201).json({
@@ -190,7 +190,9 @@ app.post('/login', async (req, res) => {
             startDate: user.startDate,
             endDate: user.endDate,
             location: user.location,
-            preferableTime: user.preferableTime
+            preferableTime: user.preferableTime,
+            description: user.description,
+            favorites: user.favorites,
           },
           success: true
         })
@@ -209,10 +211,10 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites}  = req.body;
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites}  = req.body;
 
   try {
-    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites} );
+    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites} );
     
     if (editingUser) {
       res.status(200).json({
