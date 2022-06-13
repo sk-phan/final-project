@@ -133,7 +133,7 @@ input, .imageInput, .textarea {
 
 .userpage-nav-icon{
   cursor: pointer;
-  z-index: 2;
+  
 }
 
 .userpage-nav-icon:hover

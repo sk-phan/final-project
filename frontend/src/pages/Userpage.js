@@ -72,18 +72,18 @@ export const Userpage = () => {
     if (favorites.includes(user)) {
       const newFavorites = favorites.filter(item => item !== user );
       setFavorites(newFavorites)
-      console.log(favorites)
+      
     } 
 
     else {
       setFavorites([...favorites, user])
-      console.log(favorites)
     }
-}
+  }
+  console.log(favorites,'fav')
 
   return (
     <>
-    <NavBar />
+     <NavBar /> 
     <Main>
 		{loading && <Loader />}
 		{!loading && 
@@ -154,7 +154,7 @@ const SmallContainer = styled.div`
    }
 `
 
-const UserContainer = styled.div`
+const UserContainer = styled(Link)`
    position: relative;
    display:flex;
    flex-direction: column;
@@ -168,7 +168,7 @@ const UserContainer = styled.div`
 
    @media (min-width: 768px) {
     width: 200px;
-    height 270px;
+    height: 270px;
    }
  
    @media (min-width: 1025px) {

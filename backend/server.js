@@ -190,7 +190,10 @@ app.post('/login', async (req, res) => {
             startDate: user.startDate,
             endDate: user.endDate,
             location: user.location,
-            preferableTime: user.preferableTime
+            preferableTime: user.preferableTime,
+            description: user.description,
+            favourites: user.favourites,
+
           },
           success: true
         })
@@ -209,11 +212,12 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites}  = req.body;
+  const { userId, username, email, preferableTime, animalType, location, duration, startDate, endDate, password, image, description, favourites}  = req.body;
 
   try {
-    const editingUser = await User.findOneAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favourites} );
-    
+    const editingUser = await User.findOneAndUpdate(userId, { username, email, preferableTime ,animalType, location, duration, startDate, endDate, password, image, description, favourites} );
+
+
     if (editingUser) {
       res.status(200).json({
         response: editingUser,

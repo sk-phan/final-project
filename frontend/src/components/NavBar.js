@@ -8,6 +8,7 @@ import { BsBookmarkFill } from 'react-icons/bs';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { BiSearch } from 'react-icons/bi'
 
+
 export const NavBar = () => {
     const [searchInput, setSearchInput] = useState('');
     const [desktopSize, setDesktopSize] = useState(false)
