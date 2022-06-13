@@ -5,7 +5,7 @@ import { user } from "../reducers/user";
 import { NavBar } from "../components/NavBar";
 import { AiOutlineEdit } from 'react-icons/ai';
 
-import styled from "styled-components";
+import styled from "styled-components"
 
 
 export const Profile = () => {
