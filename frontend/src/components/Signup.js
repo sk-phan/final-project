@@ -178,14 +178,14 @@ export const Signup = () => {
 
   return (
     <Main>
-       <FormContainer>
+      <FormContainer>
         <ExitButton onClick={() => navigate('/')}>X</ExitButton>
-         <FormTitle> Create an account </FormTitle>
-         <FormSubTitle> Make pet experience better </FormSubTitle>
-         <Form>
-             <div className="date-container">
-               <P>Choose profile type:</P>
-               <ProfileContainer>
+        <FormTitle> Create an account </FormTitle>
+        <FormSubTitle> Make pet experience better </FormSubTitle>
+        <Form>
+            <div className="date-container">
+              <P>Choose profile type:</P>
+              <ProfileContainer>
               <RadioLabel htmlFor='Pet sitter'>
                 <RadioInput
                   id='Pet sitter'
@@ -207,7 +207,7 @@ export const Signup = () => {
               Pet owner
             </RadioLabel>
             </ProfileContainer>
-           </div >
+          </div >
           <div className="input-container">
               <input
                 id="username"

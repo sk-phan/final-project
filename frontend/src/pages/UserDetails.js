@@ -15,22 +15,12 @@ export const UserDetails = () => {
     
     const userToShow = otherUsersData.find(user => user._id === userId)
 
-    console.log(userToShow)
-
-
-    const onBackButtonClick = () => {
-        navigate(-1)
-    }
-
-
 
     return(
         <Main>
-            <BackButton onClick={onBackButtonClick}>Back</BackButton>
-            <BigContainer>
-            
-                <SmallContainer>
-                   
+            <BackButton onClick={() => navigate(-1)}>Back</BackButton>
+            <BigContainer>  
+                <SmallContainer>      
                     <ImageContainer>
                         <Img src={userToShow.img}/>
                     </ImageContainer>
@@ -85,15 +75,13 @@ const BackButton = styled.button`
     justify-content: center;
     align-items: center;
     position: relative;
+    background-color: #F6F4F4;
  `
  const BigContainer = styled.div`
   display:flex;
   flex-direction: column;
   align-items: center;
- 
-
- 
-  
+  justify-content: center;
 `
 
 const SmallContainer = styled.div`
@@ -139,16 +127,17 @@ const SmallContainer = styled.div`
    flex-direction: column;
    gap: 10px;
    width: 200px;
+   height: 300px;
+   box-sizing: border-box;
+   background-color: #fff;
+   padding: 2rem;
+   border-radius: 10px;
+
    @media (min-width: 768px) {
     align-self: flex-start;
     gap: 15px;
     width:400px
-   }
-   
-
-   
-
- 
+   } 
  `
 
  const ProfileTitle = styled.h1`
@@ -159,7 +148,7 @@ const SmallContainer = styled.div`
   color: #000;
   @media (min-width: 768px) {
     font-size: 18px;
-   }
+}
 `
 
 const ProfileText = styled.p`
@@ -167,6 +156,7 @@ const ProfileText = styled.p`
   font-weight: 500;
   font-size: 10px;
   margin:0;
+
   @media (min-width: 768px) {
     font-size: 14px;
    }
