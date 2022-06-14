@@ -69,6 +69,12 @@ input, .imageInput, .textarea {
   cursor: pointer;
 }
 
+.password-input{
+  position: relative;
+}
+
+
+
 .textarea{
   height: 10rem;
 }
@@ -80,6 +86,27 @@ input, .imageInput, .textarea {
   pointer-events: none;
   transform: translateY(1rem);
   transition: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.show-button{
+    position: absolute;
+    right:20px;
+    top: 10px;
+    border: solid 1px #FD9951;
+    background-color: #FD9951;
+    border-radius: 1rem;
+    cursor: pointer;
+    color: #fff;
+    padding: 0.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.show-button:hover{
+  color:#FD9951;
+  border: solid 1px #FD9951;
+  background-color: #fff;
+
 }
 
 
