@@ -1,173 +1,277 @@
-import React from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
-import QuotationStart from '../assets/quotation_start.svg';
-import QuotationEnd from '../assets/quotation_end.svg'
 import heroCat from '../asset/catHero.png'
+import balls from '../assets/decoration_balls.svg'
 import { useNavigate } from "react-router-dom";
+import { Footer } from "../components/Footer";
+
 
 const MainPage = () => {
 
     const navigate = useNavigate();
+    const [accordion1, setAccordion1] = useState(false)
+    const [accordion2, setAccordion2] = useState(false)
+    const [accordion3, setAccordion3] = useState(false)
+    const [accordion4, setAccordion4] = useState(false)
 
-    
-    return (
+    const onAccordionClick1 = () => {
+        if(accordion1) {
+            setAccordion1(false)
+        } else {
+            setAccordion1(true)
+        }
+    }
+
+    const onAccordionClick2 = () => {
+        if(accordion2) {
+            setAccordion2(false)
+        } else {
+            setAccordion2(true)
+        }
+    }
+
+    const onAccordionClick3 = () => {
+        if(accordion3) {
+            setAccordion3(false)
+        } else {
+            setAccordion3(true)
+        }
+    }
+
+    const onAccordionClick4 = () => {
+        if(accordion4) {
+            setAccordion4(false)
+        } else {
+            setAccordion4(true)
+        }
+    }
+
+    return(
         <Main>
-            <HeroSection>
-                <HeroContainer>
-                        <HeroText>
-                            <Logo>Logo</Logo>
-                            <Heading>Happy Pet, Happy Life</Heading>
-                            <Subheading>Lorem ipsum dolor sit amet, 
-                                consectetur adipiscing elit, sed do 
-                                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                            </Subheading> 
-                            <BtnContainer>
-                                <LoginBtn onClick={() => navigate('/login')}>Log in</LoginBtn>
-                                <SignupBtn onClick={() => navigate('/signup')}>Sign up</SignupBtn>
-                            </BtnContainer>
-                        </HeroText>
-                        <HeroImgContainer>
-                            <SecondHeroImg src={heroCat}  alt='cat is sleeping in human arm'/>
-                            <HeroImg src='https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2487&q=80' alt="happy dog's hoding human hand" />
-                        </HeroImgContainer>
-                    </HeroContainer>
-                </HeroSection>
-                <ReviewSection>
-                        <ReviewContainer>
-                            <ReviewHeader>
-                                <ReviewTitle>What our users say?</ReviewTitle>
-                                <ReviewText>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                    sed do eiusmod tempor incididunt ut labore et dolore magna </ReviewText>
-                            </ReviewHeader>
+            <BigContainer>
+                <SmallContainer>
+                    <Heading>Happy Pet, Happy Life</Heading>
+                    <Subheading>
+                        Connecting pet owners and pet sitters, so there's no lonely days. 
+                        Signed up and start making life happier. 
 
-                            <ReviewCommentsContainer>
-                                <ReviewComment>
-                                <ProfileImage src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" />
-                                        <Name>Lovisa</Name>
-                                        <Profile>Pet owner</Profile>
-                                        <Comment><img src={QuotationStart} /> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                            <img src={QuotationEnd} /></Comment>
-                                </ReviewComment>
-                                <ReviewComment>
-                                <ProfileImage src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" />
-                                        <Name>Lovisa</Name>
-                                        <Profile>Pet owner</Profile>
-                                        <Comment><img src={QuotationStart} /> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                            <img src={QuotationEnd} /></Comment>
-                                </ReviewComment>
-                                <ReviewComment>
-                                        <ProfileImage src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80" />
-                                        <Name>Lovisa</Name>
-                                        <Profile>Pet owner</Profile>
-                                        <Comment><img src={QuotationStart} /> Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                            <img src={QuotationEnd} /></Comment>
-                                </ReviewComment>                
-                            </ReviewCommentsContainer>
-                        </ReviewContainer>
-                </ReviewSection> 
-
-</Main>
-
-      
+                    </Subheading> 
+                    <BtnContainer>
+                        <LoginBtn onClick={() => navigate('/login')}>Log in</LoginBtn>
+                        <SignupBtn onClick={() => navigate('/signup')}>Sign up</SignupBtn>
+                    </BtnContainer>
+                    <HeroImg src='https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2487&q=80' alt="happy dog's hoding human hand" />
+                    <SecondHeroImg src={heroCat}  alt='cat is sleeping in human arm'/>
+                    <BallsImg src={balls}  />
+                </SmallContainer>
+            </BigContainer>
+            <BigContainer2>
+                <WalkingImg src="https://images.unsplash.com/photo-1582457380669-c833e7c77e01?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" />
+                <SmallContainer2>
+                    <FAQHeading>Frequently Asked Questions</FAQHeading>
+                    <div class="accordionContainer">
+                        <button onClick={onAccordionClick1} className={accordion1 ? "accordionButtonOpen" :"accordionButtonClosed"} >Question one?</button>
+                        {accordion1 ? 
+                        <div className="panel">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna 
+                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div> : <></>}
+                        <button onClick={onAccordionClick2} className={accordion2 ? "accordionButtonOpen" :"accordionButtonClosed"}>Question two?</button>
+                        {accordion2 ? 
+                        <div className="panel">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna 
+                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div> : <></>}
+                        <button onClick={onAccordionClick3} className={accordion3 ? "accordionButtonOpen" :"accordionButtonClosed"}>Question three?</button>
+                        {accordion3 ? 
+                        <div className="panel">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                            sed do eiusmod tempor incididunt ut labore et dolore magna 
+                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                        </div> : <></>}
+                    </div>
+                </SmallContainer2>
+                
+            </BigContainer2>
+            <Footer />
+        </Main>
     )
 }
 
 export default MainPage
- 
+
 const Main = styled.main`
     width: 100%;
     min-width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    box-sizing: border-box;
+
 `
-const Container = styled.div`
-    width: 1050px;
-    margin: 0 auto;
+
+const BigContainer = styled.div`
     display: flex;
-    height: 100vh;
-    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
-    @media (max-width: 375px) {
-        width: 300px;
+
+    @media (min-width: 768px) {
+        background: #FFFFF6;
+
+        &::after {
+                    content:'';
+                    position: absolute;
+                    width: 30vw;
+                    height: 100vh;
+                    background-color: #FD9951;
+                    right: 0;
+        }
     }
 `
 
-const HeroContainer = styled(Container)`
-    gap: 20rem;
+const SmallContainer = styled.div`
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 350px;
+    gap: 20px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 2rem;    
+    box-sizing: border-box;
+    padding: 4rem;
+    background:rgba(255,255,255, 0.9);
+    position: relative;
 
-     &::after {
-        content:'';
-        position: absolute;
-        width: 50rem;
-        height: 100vh;
-        background-color: #FD9951;
-        right: -20px;
+  @media (min-width: 768px) {
+   width: 700px;
+   height: 80vh;
+   background: transparent;
+   box-shadow: none;
+   align-items: flex-start;
+   justify-content: flex-start;
+   gap: 30px;
+  }
 
-        @media (max-width: 375px) {
-            display: none;
-         }   
-    } 
+  @media (min-width: 1025px) {
+    width: 1000px;
+    gap: 20px;
+   }
 `
 
-const HeroSection = styled.section`
-    background: #FFFFF6;
+const BigContainer2 = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex:1;
+    width: 100%;
+    min-height:100%;
+    height: auto;
+    min-height: 100vh;
+    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
 
 
-    @media (max-width: 375px) {
-       width: 100%;
+    @media (min-width: 768px) {
+        background: #4C956C;
+
     }
 `
 
-const HeroText = styled.div`
-   margin: 6rem 0;
-   width: 30%;
 
-   @media (max-width: 500px) {
-       display: flex;
-       flex-direction: column;
-       text-align: center;
-    }
+const SmallContainer2 = styled.div`
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    height: 100%;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 2rem;    
+    box-sizing: border-box;
+    padding: 4rem;
+    background: #4C956C;
+    position: relative;
+    opacity: 0.9;
+
+  @media (min-width: 768px) {
+   width: 50vw;
+   height: auto;
+   background: transparent;
+   box-shadow: none;
+   align-items: flex-start;
+   justify-content: flex-start;
+   gap: 30px;
+  }
+
+  @media (min-width: 1025px) {
+    gap: 20px;
+   }
 `
 
-const Logo = styled.p`
-    font-size: 2rem;
-
-    @media (max-width: 500px) {
-        text-align: center;
-        width: 500px;
-    }
-`
 
 const Heading = styled.h1`
     font-size: 6.4rem;
     font-family: 'Playfair Display', serif;
     width: 12ch;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     letter-spacing: 1px;
     line-height: 1.2;
+    text-align:center;
 
-    @media (max-width: 500px) {
-        text-align: center;
-        width: 15ch;
+    @media (min-width: 768px) {
+        text-align:start;
+       }
 
-    }
+    
 
-   
+    
 `
 const Subheading = styled.p`
     font-family: 'Raleway', sans-serif;
     font-size: 1.8rem;
-    width: 48ch;
-    margin-bottom: 7rem;
+    width: 38ch;
     letter-spacing: 1px;
     line-height: 1.2;
     color: #555;
+    text-align:center;
+
+    @media (min-width: 768px) {
+        text-align:start;
+       }
 
 `
+
 const BtnContainer = styled.div`
     display: flex;
-    gap: 3.1rem;
+    flex-direction: column;
+    gap: 2rem;
+
+    @media (min-width: 768px) {
+        flex-direction: row;
+       }
 `
 
 const Btn = styled.button`
@@ -201,117 +305,78 @@ const SignupBtn = styled(Btn)`
     }
 `
 
+const HeroImg = styled.img`
+    display:none;
 
-// Review sections style components:
-const ReviewSection = styled.section`
-    background: #4C956C;
-    height: 75vh;
-`
-const ReviewContainer = styled(Container)`
-    flex-direction: column;
-`
-
-const ReviewHeader = styled.div`
-    width: 100%;
-    height: 20vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    height: 20vh;
-
-    
-`
-
-const ReviewTitle = styled.h2`
-    font-size: 3.6rem;
-    color: #FEFEE3;
-    text-align: center;
+    @media (min-width: 768px) {
+        display:block;
+        width: 45%;
+        height: 80vh;
+        border-radius: 18px;
+        box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
+        z-index: 2;
+        object-fit: cover;
+        position: absolute;
+        right:0;
+        top:0
+       }
 
 `
 
-const ReviewCommentsContainer = styled.div`
-    display: flex;
-    justify-content: space-between;
-    height: 55vh;
-    align-items: center;
-`
-
-const ReviewComment = styled.div`
-    width: 28rem;
-    height: 35rem;
-    background-color: #FFFFF6; 
-    border-radius: 2rem;
-    display:flex;
-    flex-direction: column;
-    justify-content:center;
-    align-items: center;
-    box-sizing: border-box;
-    padding: 1.5rem;
-`
-
-const ReviewText = styled.p`
-    font-family: 'Raleway', sans-serif;
-    font-size: 1.8rem;
-    color: #FEFEE3;
-    width: 50ch;
-    text-align: center;
-`
-
-const ProfileImage = styled.img`
-    width:12rem;
-    height:12rem;
-    object-fit:cover;
-    overflow:hidden;
-    border-radius: 50%;
-`
-
-const Name = styled.p`
-    font-size: 1.8rem;
-    font-family: 'Raleway', sans-serif;
-    font-weight: 700;
-    margin:0.5rem;
-`
-const Profile = styled.p`
-    font-weight: 400;
-    font-size: 1.4rem;
-    font-family: 'Raleway', sans-serif;
-    color: 666666;
-    margin:0;
-`
-const Comment = styled.p`
-    font-family: 'Raleway', sans-serif;
-    font-style: italic;
-    font-weight: 400;
-    font-size: 1.4rem;
-    width:30ch;
-    text-align: center;
-    
-`
-
-const HeroImgContainer = styled.div`
-   position: relative;
-   z-index: 2;
-   padding: 6rem;
-
-   @media (max-width: 375px) {
-        display: none;
-    }
-`
 
 const SecondHeroImg = styled.img`
-    position: absolute;
-    width: 250px;
-    bottom: 40px;
-    left: -20px;
-    z-index: 10;
+    display:none;   
+    @media (min-width: 768px) {
+        display:block;
+        position: absolute;
+        width: 25%;
+        bottom: -20px;
+        right: 30%;
+        z-index: 10;
+    }
 
 `
 
-const HeroImg = styled.img`
-    width: 100%;
-    height: auto;
-    border-radius: 18px;
-    box-shadow: rgba(149, 157, 165, 0.3) 0px 8px 24px;
+const BallsImg = styled.img`
+    display:none;   
+    @media (min-width: 768px) {
+        display:block;
+        position: absolute;
+        width: 5%;
+        bottom: 0;
+        left:-20px;
+        z-index: 10;
+    }
 
 `
+
+const FAQHeading = styled.h1`
+    font-family: 'Raleway', sans-serif;
+    color: #FEFEE3;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    line-height: 28px;
+    text-align: center;
+    letter-spacing: 0.035em;
+    width: 17ch;
+    @media (min-width: 768px){
+        width: 100%;
+    }
+ 
+`
+
+const WalkingImg = styled.img`
+    display:none;
+     @media (min-width: 768px){
+        display:block;
+        width:50vw;
+        height:100vh;
+        object-fit:cover;
+
+    }
+
+   
+`
+
+    

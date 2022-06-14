@@ -11,6 +11,7 @@ export const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [passwordShown, setPasswordShown] = useState(false);
+  const [showPassword, setShowPassword] = useState(false)
 
 
   const accessToken = useSelector((store) => store.user.accessToken);
@@ -56,9 +57,15 @@ export const Login = () => {
       });
   };
 
-  const togglePassword = () => {
-    setPasswordShown(!passwordShown);
-  };
+  const onClickShowPassword = () => {
+    if(showPassword){
+      setShowPassword(false)
+    } else {
+      setShowPassword(true)
+    }
+  }
+
+
 
 
   return (
@@ -83,11 +90,12 @@ export const Login = () => {
             <div className="input-container">
               <input
                 className="input"
-                type={!passwordShown ? "password" : "text"}
+                type={!showPassword ? "password" : "text"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button type="button" onClick={onClickShowPassword} className="show-button">{!showPassword ? <span>Show</span> : <span>Unshow</span>}</button>
               <label className="user-label" htmlFor="username">
                 Password
               </label>

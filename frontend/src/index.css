@@ -1,5 +1,6 @@
 body {
   margin: 0;
+  box-sizing: border-box;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
@@ -16,7 +17,13 @@ html {
   font-size: 62.5%;
 }
 
-@media (max-width: 500px) {
+@media (min-width:786px) and (max-width:1024px) {
+  html {
+    font-size: 50%;
+  }
+}
+
+@media (max-width: 785px) {
   html {
     font-size: 40%;
   }
@@ -167,4 +174,70 @@ input, .imageInput, .textarea {
 .userpage-nav-icon:hover
 {
   transform: translateY(-25%);
+}
+
+
+/*accordion styles*/
+.accordionContainer{
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+}
+
+@media (min-width: 768px){
+  .accordionContainer{
+    width: 100%;
+  }
+}
+
+.accordionButtonClosed, .accordionButtonOpen{
+  width:100%;
+  background-color: #69A985;;
+  color:#FEFEE3;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  position: relative;
+  padding: 2rem;
+  margin:1rem 0;
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 21px;
+  letter-spacing: 0.035em;
+}
+
+.accordionButtonClosed:after {
+  content: '\002B';
+  color:#FEFEE3;
+  font-weight: bold;
+  position: absolute;
+  right: 1rem;
+}
+.accordionButtonOpen:after {
+  content: "\2212";
+  color:#FEFEE3;
+  font-weight: bold;
+  position: absolute;
+  right: 1rem;
+}
+
+.panel{
+    height: 100%;
+    background-color:white;
+    overflow: hidden;
+    z-index: 1000;transition: max-height 0.5s ease-out;
+    background-color:transparent;
+    color: white;
+    font-family: 'Raleway', sans-serif;
+    font-size: 13px;
+    width: 100%;
+    letter-spacing: 1px;
+    line-height: 1.4;
+    color:#FEFEE3;
+    text-align:justify;
 }
