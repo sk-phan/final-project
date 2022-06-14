@@ -213,6 +213,7 @@ app.patch("/edituser", async (req,res) => {
  
   const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites}  = req.body;
 
+  console.log(userId)
   try {
     const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites} );
     
