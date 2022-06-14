@@ -21,7 +21,8 @@ export const Userpage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [favorites, setFavorites] = useState([])
+  const [favorites, setFavorites] = useState(userData.favorites)
+
   
 
 
@@ -68,6 +69,7 @@ export const Userpage = () => {
     if (favorites.includes(user)) {
       const newFavorites = favorites.filter(item => item.userId !== userId );
       setFavorites(newFavorites)
+      
     } 
 
     else {

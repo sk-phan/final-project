@@ -23,6 +23,7 @@ export const Signup = () => {
   const [img, setImg] = useState("")
   const [description, setDescription] = useState("")
   const [favourites, setFavourites] = useState([])
+  const [showPassword, setShowPassword] = useState(false)
   
   const [emailValid, setEmailValid] = useState(false)
 
@@ -175,6 +176,14 @@ export const Signup = () => {
       else setPreferableTime([...preferableTime, time])
   }
 
+  const onClickShowPassword = () => {
+    if(showPassword){
+      setShowPassword(false)
+    } else {
+      setShowPassword(true)
+    }
+  }
+
 
   return (
     <Main>
@@ -239,11 +248,12 @@ export const Signup = () => {
               <input
                 id="password"
                 className="input"
-                type="password"
+                type={!showPassword ? "password" : "text"}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button type="button" onClick={onClickShowPassword} className="show-button">{!showPassword ? <span>Show</span> : <span>Unshow</span>}</button>
               <label className="user-label" htmlFor="password">
                 Password*
               </label>
@@ -251,7 +261,7 @@ export const Signup = () => {
             <div className="input-container">
               <input
                 id='rePassword'
-                className="input"
+                className="input password-input"
                 type="password"
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
