@@ -24,6 +24,7 @@ export const Signup = () => {
   const [description, setDescription] = useState("")
   const [favourites, setFavourites] = useState([])
   const [showPassword, setShowPassword] = useState(false)
+  const [showRePassword, setShowRePassword] = useState(false)
   
   const [emailValid, setEmailValid] = useState(false)
 
@@ -183,6 +184,13 @@ export const Signup = () => {
       setShowPassword(true)
     }
   }
+  const onClickShowRePassword = () => {
+    if(showRePassword){
+      setShowRePassword(false)
+    } else {
+      setShowRePassword(true)
+    }
+  }
 
 
   return (
@@ -261,11 +269,12 @@ export const Signup = () => {
             <div className="input-container">
               <input
                 id='rePassword'
-                className="input password-input"
-                type="password"
+                className="input password-input "
+                type={!showRePassword ? "password" : "text"}
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
               />
+              <button type="button" onClick={onClickShowRePassword} className="show-button">{!showRePassword ? <span>Show</span> : <span>Unshow</span>}</button>
               <label className="user-label" htmlFor="rePassword">
                 Re-enter password*
               </label>
