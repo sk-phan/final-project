@@ -1,20 +1,64 @@
 import React, {useState, useEffect} from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from 'styled-components'
 import moment from 'moment'
 
+import { user } from '../reducers/user';
 
 
 export const UserDetails = () => {
+    const existingReviews = useSelector(store => store.user.reviews);
+
+    const [review, setReview] = useState('');
+    const [reviewList, setReviewList] = useState(existingReviews);
 	const { userId } = useParams()
+    const dispatch = useDispatch();
     const navigate = useNavigate()
     const accessToken = useSelector((store) => store.user.accessToken);
     const otherUsersData = useSelector((store) => store.user.otherUsersData)
-
+    const mainUserId = useSelector((store) => store.user.userData)
     
     const userToShow = otherUsersData.find(user => user._id === userId)
+    const reviewToShow = reviewList.find(review => review.revieweeId ===userId)
 
+    console.log(reviewToShow)
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+        
+        const options = {
+            method: "POST",
+            headers: {
+                        "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                    reviewerId: mainUserId.userId, 
+                    revieweeId: userId, 
+                    username: mainUserId.username,
+                    img: mainUserId.img,
+                    reviewText: review
+                    }),
+          }
+
+        fetch('http://localhost:8080/reviews', options) 
+        .then(res => res.json())
+        .then(data => setReviewList((prev) => [...prev, data.response]))
+
+    }
+    
+    
+    useEffect(() => {
+        fetch(`http://localhost:8080/reviews/${userId}`) 
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                dispatch(user.actions.setReviews(data.response))
+            }
+        })
+    }, [])
+    
+    
+    console.log(review)
 
     return(
         <Main>
@@ -26,19 +70,51 @@ export const UserDetails = () => {
                     </ImageContainer>
                     <TextContainer>
                         <ProfileTitle>@{userToShow.username}</ProfileTitle>
-                        <ProfileText><SpanBold>Profile type:</SpanBold> {userToShow.profileType}</ProfileText>
-                        <ProfileText><SpanBold>Animal type:</SpanBold>  {userToShow.animalType}</ProfileText>
-                        <ProfileText><SpanBold>Location:</SpanBold>  {userToShow.location}</ProfileText>
-                        <ProfileText><SpanBold>Services:</SpanBold> 
-                            {userToShow.preferableTime.map(time => {
-                            return <span> {time}</span>})}
-                        </ProfileText>
-                        <ProfileText><SpanBold>Dates:</SpanBold>  {moment(userToShow.startDate).format('MMM Do YY')} - {moment(userToShow.endDate).format('MMM Do YY')}</ProfileText>
-                        <ProfileText><SpanBold>Description:</SpanBold> {userToShow.description}</ProfileText>
-
-
+                        <ProfileText>
+                            <ProfileTag>
+                                <SpanBold>Profile type:</SpanBold> 
+                                <SpanBold>Animal type:</SpanBold>  
+                                <SpanBold>Location:</SpanBold>  
+                                <SpanBold>Services:</SpanBold> 
+                                <SpanBold>Dates:</SpanBold>  
+                                <SpanBold>Description:</SpanBold> 
+                            </ProfileTag>
+                            <ProfileDetail>
+                                <span>{userToShow.profileType}</span>
+                                <span>{userToShow.animalType}</span>
+                                <span>{userToShow.location}</span>
+                                <span>{userToShow.preferableTime.map(time => {
+                                return <span> {time}</span>})}
+                                </span>
+                                <span>{moment(userToShow.startDate).format('MMM Do YY')} - {moment(userToShow.endDate).format('MMM Do YY')}</span>
+                                <span>{userToShow.description}</span>
+                            </ProfileDetail>
+                        </ProfileText>                         
+                        <div>
+                            <ReviewContainer>
+                                    {reviewList.length > 0 && reviewToShow && reviewList.map(item => (
+                                        <Reviews>
+                                            <img src={item.img} alt="reviewer image" />
+                                            <div>
+                                                <Name>@{item.username}</Name>
+                                                <ReviewText>
+                                                "{item.reviewText}" 
+                                                </ReviewText>
+                                            </div>
+                                        </Reviews>
+                                    ))}
+                            </ReviewContainer>
+                        <Form onSubmit={onFormSubmit}>
+                            <ReviewInput
+                                value={review}
+                                onChange={(e) => setReview(e.target.value)}
+                                placeholder='write review here 🐶' 
+                                width = {review}
+                            ></ReviewInput>
+                            <SubmitBtn type='submit' display = {review}>Add</SubmitBtn>
+                        </Form>
+                        </div>
                     </TextContainer>
-
                 </SmallContainer>
             </BigContainer>
         </Main>
@@ -75,7 +151,6 @@ const BackButton = styled.button`
     justify-content: center;
     align-items: center;
     position: relative;
-    background-color: #F6F4F4;
  `
  const BigContainer = styled.div`
   display:flex;
@@ -88,12 +163,11 @@ const SmallContainer = styled.div`
   display:flex;
   flex-direction: column;
   align-items:center;
-  width: 320px;
   gap: 20px;
   padding:10px;
   
   @media (min-width: 768px) {
-   width: 700px;
+ 
    flex-direction: row;
    justify-content:center;
    
@@ -104,15 +178,11 @@ const SmallContainer = styled.div`
    }
 `
  const ImageContainer = styled.div`
-   width:200px;
-   height: 200px;
-   border-radius: 20px;
-   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
-   overflow:hidden;
+      overflow:hidden;
 
    @media (min-width: 768px) {
-    width:300px;
-    height: 300px;
+    width: 600px;
+
    }
  `
 
@@ -125,30 +195,27 @@ const SmallContainer = styled.div`
  const TextContainer = styled.div`
    display:flex;
    flex-direction: column;
-   gap: 10px;
    width: 200px;
-   height: 300px;
    box-sizing: border-box;
-   background-color: #fff;
    padding: 2rem;
-   border-radius: 10px;
 
    @media (min-width: 768px) {
     align-self: flex-start;
-    gap: 15px;
-    width:400px
+    gap: 2rem;
+    width:400px;
    } 
  `
 
  const ProfileTitle = styled.h1`
-  font-family: 'Raleway', sans-serif;
+  font-family: 'Playfair Display', serif;
   font-weight: 700;
-  font-size: 12px;
   margin:0;
   color: #000;
+
+
   @media (min-width: 768px) {
-    font-size: 18px;
-}
+    font-size: 3.2rem;
+  }
 `
 
 const ProfileText = styled.p`
@@ -156,12 +223,104 @@ const ProfileText = styled.p`
   font-weight: 500;
   font-size: 10px;
   margin:0;
+  letter-spacing: 0.5px;
 
   @media (min-width: 768px) {
-    font-size: 14px;
+    font-size: 1.6rem;
+    display: flex;
+    flex-direction: row;
+    gap: 4rem;
+   }
+`
+
+const ProfileTag = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1.6rem;
+`
+
+const ProfileDetail = styled(ProfileTag)`
+   span {
+       color: #333;
    }
 `
 
 const SpanBold = styled.span`
    font-weight: 700;
+`
+
+const ReviewContainer = styled.div`
+    margin-top: 10rem;
+    height: 300px;
+    border-top: solid 0.5px #000;
+    overflow: scroll;
+
+`
+
+const Reviews = styled.div`
+  width: 34rem;
+  height: 14rem;
+  padding: 4rem 2rem;
+  box-sizing: border-box;
+  border-bottom: solid 0.5px #D1D0D0;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+
+  img {
+    width: 6rem;
+    height: 6rem;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  p {
+    margin: 0 0 1rem 0;
+    font-size: 1.6rem;
+  }
+`
+
+const ReviewHeading = styled.h2 `
+  font-size: 2.4rem;
+  align-self: flex-start;
+  margin: 0 0 4rem 4rem;
+`
+
+const ReviewText = styled.p`
+    color: #333;
+`
+
+const Name = styled.p`
+  font-size: 2.4rem;
+  font-weight: 700;
+  margin: 2rem 0 1rem 0;
+`
+
+const Form = styled.form`
+    display: flex;
+    margin-top: 4rem;
+`
+
+const SubmitBtn = styled.button`
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    display: ${props => props.display === '' ? 'none' : 'inline'};
+    width: 12rem;
+    height: 4rem;
+    transition: all 1s ease;
+
+`
+
+const ReviewInput = styled.textarea`
+    border: transparent;
+    border-bottom: solid 0.5px #000;
+    outline: none;
+    width: ${props => props.width === '' ? '100%' : '70%'};
+    font-size: 1.4rem;
+    transition: all 1s ease;
+
+    &:hover {
+    }
 `

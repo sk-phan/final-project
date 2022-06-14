@@ -7,6 +7,7 @@ export const user = createSlice({
     userData: null,
     error: '',
     otherUsersData: [],
+    reviews: []
     
   },
   reducers: {
@@ -26,6 +27,9 @@ export const user = createSlice({
       store.otherUsersData = [...action.payload]
     },
 
+    setReviews: (store, action) => {
+      store.reviews = [...action.payload]
+    }
    
   },
 });

@@ -64,9 +64,10 @@ export const Userpage = () => {
     .finally(() => setLoading(false))
   }, [])
 
-  const addTofavorites = (user) => {
+  const addTofavorites = (userId) => {
+    console.log(user,'user')
     if (favorites.includes(user)) {
-      const newFavorites = favorites.filter(item => item !== user );
+      const newFavorites = favorites.filter(item => item.userId !== userId );
       setFavorites(newFavorites)
       
     } 
@@ -75,7 +76,7 @@ export const Userpage = () => {
       setFavorites([...favorites, user])
     }
   }
-  console.log(favorites,'fav76')
+  console.log(favorites,'fav76', 'hdjjd')
 
 
 useEffect(() => {
@@ -96,7 +97,6 @@ useEffect(() => {
 
 }, [favorites])
 
-console.log('userid', userData._id);
   return (
     <>
      <NavBar /> 
@@ -112,7 +112,7 @@ console.log('userid', userData._id);
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}{favorites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
+              <ProfileTitle>@{user.username}{favorites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user._id) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
@@ -170,7 +170,7 @@ const SmallContainer = styled.div`
    }
 `
 
-const UserContainer = styled.div`
+const UserContainer = styled(Link)`
    position: relative;
    display:flex;
    flex-direction: column;

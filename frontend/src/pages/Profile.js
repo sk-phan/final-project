@@ -87,9 +87,7 @@ export const Profile = () => {
                 </ReviewText>
               </div>
             </Reviews>
-            <div>
-
-            </div>
+  
           </Side>
           <FormContainer>
             <HeadingContainer>
