@@ -1,21 +1,64 @@
 import React, {useState, useEffect} from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from 'styled-components'
 import moment from 'moment'
 
+import { user } from '../reducers/user';
 
 
 export const UserDetails = () => {
-    const [review, setReview] = useState('')
+    const existingReviews = useSelector(store => store.user.reviews);
+
+    const [review, setReview] = useState('');
+    const [reviewList, setReviewList] = useState(existingReviews);
 	const { userId } = useParams()
+    const dispatch = useDispatch();
     const navigate = useNavigate()
     const accessToken = useSelector((store) => store.user.accessToken);
     const otherUsersData = useSelector((store) => store.user.otherUsersData)
-
+    const mainUserId = useSelector((store) => store.user.userData)
     
     const userToShow = otherUsersData.find(user => user._id === userId)
+    const reviewToShow = reviewList.find(review => review.revieweeId ===userId)
 
+    console.log(reviewToShow)
+    const onFormSubmit = (e) => {
+        e.preventDefault();
+        
+        const options = {
+            method: "POST",
+            headers: {
+                        "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                    reviewerId: mainUserId.userId, 
+                    revieweeId: userId, 
+                    username: mainUserId.username,
+                    img: mainUserId.img,
+                    reviewText: review
+                    }),
+          }
+
+        fetch('http://localhost:8080/reviews', options) 
+        .then(res => res.json())
+        .then(data => setReviewList((prev) => [...prev, data.response]))
+
+    }
+    
+    
+    useEffect(() => {
+        fetch(`http://localhost:8080/reviews/${userId}`) 
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                dispatch(user.actions.setReviews(data.response))
+            }
+        })
+    }, [])
+    
+    
+    console.log(review)
 
     return(
         <Main>
@@ -49,36 +92,27 @@ export const UserDetails = () => {
                         </ProfileText>                         
                         <div>
                             <ReviewContainer>
-                                <Reviews>
-                                    <img src="https://images.unsplash.com/photo-1479936343636-73cdc5aae0c3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" alt="reviewer image" />
-                                    <div>
-                                        <Name>@Alice</Name>
-                                        <ReviewText>
-                                        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel sint commodi repudiandae consequuntura" 
-                                        </ReviewText>
-                                    </div>
-                                </Reviews>
-                                <Reviews>
-                                    <img src="https://images.unsplash.com/photo-1479936343636-73cdc5aae0c3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1480&q=80" alt="reviewer image" />
-                                    <div>
-                                        <Name>@Alice</Name>
-                                        <ReviewText>
-                                        "Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                        molestiae quas vel sint commodi repudiandae consequuntura" 
-                                        </ReviewText>
-                                    </div>
-                                </Reviews>
+                                    {reviewList.length > 0 && reviewToShow && reviewList.map(item => (
+                                        <Reviews>
+                                            <img src={item.img} alt="reviewer image" />
+                                            <div>
+                                                <Name>@{item.username}</Name>
+                                                <ReviewText>
+                                                "{item.reviewText}" 
+                                                </ReviewText>
+                                            </div>
+                                        </Reviews>
+                                    ))}
                             </ReviewContainer>
-                        <form>
-                            <ReviewInput 
+                        <Form onSubmit={onFormSubmit}>
+                            <ReviewInput
                                 value={review}
                                 onChange={(e) => setReview(e.target.value)}
-                                placeholder='write review here'     
-                                rows='6'
-                                cols='40'
-                            />
-                        </form>
+                                placeholder='write review here 🐶' 
+                                width = {review}
+                            ></ReviewInput>
+                            <SubmitBtn type='submit' display = {review}>Add</SubmitBtn>
+                        </Form>
                         </div>
                     </TextContainer>
                 </SmallContainer>
@@ -217,24 +251,26 @@ const SpanBold = styled.span`
 
 const ReviewContainer = styled.div`
     margin-top: 10rem;
+    height: 300px;
     border-top: solid 0.5px #000;
+    overflow: scroll;
 
 `
 
 const Reviews = styled.div`
   width: 34rem;
-  height: 18rem;
-  padding: 2rem;
+  height: 14rem;
+  padding: 4rem 2rem;
   box-sizing: border-box;
-  border-radius: 10px;
+  border-bottom: solid 0.5px #D1D0D0;
   display: flex;
   flex-direction: row;
   gap: 2rem;
-  overflow: scroll;
 
   img {
     width: 6rem;
     height: 6rem;
+    object-fit: cover;
     border-radius: 50%;
   }
 
@@ -259,6 +295,32 @@ const Name = styled.p`
   font-weight: 700;
   margin: 2rem 0 1rem 0;
 `
-const ReviewInput = styled.textarea`
 
+const Form = styled.form`
+    display: flex;
+    margin-top: 4rem;
+`
+
+const SubmitBtn = styled.button`
+    background-color: #000;
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    display: ${props => props.display === '' ? 'none' : 'inline'};
+    width: 12rem;
+    height: 4rem;
+    transition: all 1s ease;
+
+`
+
+const ReviewInput = styled.textarea`
+    border: transparent;
+    border-bottom: solid 0.5px #000;
+    outline: none;
+    width: ${props => props.width === '' ? '100%' : '70%'};
+    font-size: 1.4rem;
+    transition: all 1s ease;
+
+    &:hover {
+    }
 `

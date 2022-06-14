@@ -94,6 +94,12 @@ const ReviewSchema = new mongoose.Schema({
   revieweeId: {
     type:String,
   },
+  username: {
+     type: String
+   },
+  img: {
+     type: String
+   },
   createdAt: {
     type: Date,
     default: () => new Date()
@@ -253,17 +259,22 @@ app.delete("/deleteuser", async (req, res) => {
 //endpoint of reviews
 app.get("/reviews", authenticateUser);
 
+//endpoint 
 app.get("/reviews/:id", async (req, res) => {
-  const reviews = await Review.find(req.params.id)
+  const reviews = await Review.find({})
   .sort({createdAt: 'desc'})
-  res.status(201).json(reviews)
+  res.status(201).json({
+    response: reviews,
+    success: true
+  })
 });
 
 //endpoint to post review
 app.post("/reviews", async (req, res) =>{
   
-  const {reviewerId, revieweeId, reviewText} = req.body
-  const newReview = await new Review({reviewerId, revieweeId, reviewText}).save()
+  const {reviewerId, revieweeId, username, img, reviewText} = req.body
+  
+  const newReview = await new Review({reviewerId, revieweeId, img, username ,reviewText,}).save()
   res.status(201).json({
     response: newReview,
     success:true
