@@ -12,6 +12,7 @@ export const UserDetails = () => {
 
     const [review, setReview] = useState('');
     const [reviewList, setReviewList] = useState(existingReviews);
+    const [matchReview, setMatchReview] = useState([]);
 	const { userId } = useParams()
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -20,9 +21,9 @@ export const UserDetails = () => {
     const mainUserId = useSelector((store) => store.user.userData)
     
     const userToShow = otherUsersData.find(user => user._id === userId)
-    const reviewToShow = reviewList.find(review => review.revieweeId ===userId)
 
-    console.log(reviewToShow)
+
+    console.log(userId,'id')
     const onFormSubmit = (e) => {
         e.preventDefault();
         
@@ -43,6 +44,9 @@ export const UserDetails = () => {
         fetch('http://localhost:8080/reviews', options) 
         .then(res => res.json())
         .then(data => setReviewList((prev) => [...prev, data.response]))
+        .catch(error => console.log(error))
+        .finally(() => setReview(''))
+    
 
     }
     
@@ -52,13 +56,12 @@ export const UserDetails = () => {
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                dispatch(user.actions.setReviews(data.response))
+                setReviewList(data.response)
             }
         })
     }, [])
     
     
-    console.log(review)
 
     return(
         <Main>
@@ -92,7 +95,7 @@ export const UserDetails = () => {
                         </ProfileText>                         
                         <div>
                             <ReviewContainer>
-                                    {reviewList.length > 0 && reviewToShow && reviewList.map(item => (
+                                    {reviewList.length > 0 && reviewList.map(item => (
                                         <Reviews>
                                             <img src={item.img} alt="reviewer image" />
                                             <div>
@@ -258,7 +261,7 @@ const ReviewContainer = styled.div`
 `
 
 const Reviews = styled.div`
-  width: 34rem;
+  width: 100%;
   height: 14rem;
   padding: 4rem 2rem;
   box-sizing: border-box;
@@ -267,9 +270,13 @@ const Reviews = styled.div`
   flex-direction: row;
   gap: 2rem;
 
+  div {
+      width: 20rem;
+  }
+
   img {
-    width: 6rem;
-    height: 6rem;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
     border-radius: 50%;
   }
@@ -309,6 +316,7 @@ const SubmitBtn = styled.button`
     display: ${props => props.display === '' ? 'none' : 'inline'};
     width: 12rem;
     height: 4rem;
+    cursor: pointer;
     transition: all 1s ease;
 
 `
