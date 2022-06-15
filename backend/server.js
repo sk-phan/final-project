@@ -261,7 +261,7 @@ app.get("/reviews", authenticateUser);
 
 //endpoint 
 app.get("/reviews/:id", async (req, res) => {
-  const reviews = await Review.find({})
+  const reviews = await Review.find({revieweeId: req.params.id})
   .sort({createdAt: 'desc'})
   res.status(201).json({
     response: reviews,

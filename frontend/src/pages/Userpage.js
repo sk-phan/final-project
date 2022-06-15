@@ -46,7 +46,7 @@ export const Userpage = () => {
           'Authorization': accessToken
       },
   }
-    setLoading(true)
+    setLoading(true) 
     fetch('http://localhost:8080/users', options)
     .then((res) => res.json())
     .then((data) => {
@@ -64,19 +64,16 @@ export const Userpage = () => {
     .finally(() => setLoading(false))
   }, [])
 
-  const addTofavorites = (userId) => {
-    console.log(user,'user')
+  const addTofavorites = (userId, e) => {
+    e.preventDefault();
     if (favorites.includes(user)) {
       const newFavorites = favorites.filter(item => item.userId !== userId );
-      setFavorites(newFavorites)
-      
+      setFavorites(newFavorites)  
     } 
-
     else {
       setFavorites([...favorites, user])
     }
   }
-  console.log(favorites,'fav76', 'hdjjd')
 
 
 useEffect(() => {
@@ -107,12 +104,15 @@ useEffect(() => {
         <SmallContainer>
            {usersData.map(user => {
             return ( 
-            <UserContainer to={`/userdetails/${user._id}`} key={user._id}>
+            <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}{favorites.includes(user) ? <BsBookmarkFill className="userpage-nav-icon" onClick={ () => addTofavorites(user._id) } /> : <BsBookmark className="userpage-nav-icon" onClick={ () => addTofavorites(user) } />}</ProfileTitle> 
+              <ProfileTitle>@{user.username}{favorites.includes(user) 
+              ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (event) => addTofavorites(user._id, event) } /> 
+              : <BsBookmark className="userpage-nav-icon" onClick={ (event) => addTofavorites(user, event) } />}
+              </ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
