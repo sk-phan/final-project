@@ -25,11 +25,10 @@ export const Userpage = () => {
 
   
 
-
   //log out click
-  const onClickLogout = () => {
-    dispatch(user.actions.setDeleteAccessToken(null));
-  };
+  // const onClickLogout = () => {
+  //   dispatch(user.actions.setDeleteAccessToken(null));
+  // };
 
   useEffect(() => {
     if (!accessToken) {
@@ -64,16 +63,19 @@ export const Userpage = () => {
     .finally(() => setLoading(false))
   }, [])
 
-  const addTofavorites = (userId, e) => {
-    e.preventDefault();
+  const addTofavorites = (user, e) => {
+    e.preventDefault()
+
     if (favorites.includes(user)) {
-      const newFavorites = favorites.filter(item => item.userId !== userId );
-      setFavorites(newFavorites)  
+      const newFavorites = favorites.filter(item => item._id !== user._id );
+      setFavorites(newFavorites)
+      
     } 
     else {
       setFavorites([...favorites, user])
     }
   }
+
 
 
 useEffect(() => {
@@ -110,9 +112,8 @@ useEffect(() => {
             </ProfileImageContainer>
             <ProfileTextContainer>
               <ProfileTitle>@{user.username}{favorites.includes(user) 
-              ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (event) => addTofavorites(user._id, event) } /> 
-              : <BsBookmark className="userpage-nav-icon" onClick={ (event) => addTofavorites(user, event) } />}
-              </ProfileTitle> 
+              ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } /> 
+              : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />}</ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
