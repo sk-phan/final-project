@@ -20,8 +20,12 @@ export const Userpage = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  const Ross = otherUsersData.find(user => user.userId === '62a9f2c35906eb94d0d00273')
 
   const [favorites, setFavorites] = useState(userData.favorites)
+
+  
 
   
 
@@ -34,6 +38,7 @@ export const Userpage = () => {
     if (!accessToken) {
       navigate("/");
     }
+    
   }, [accessToken, navigate]);
 
   
@@ -66,19 +71,24 @@ export const Userpage = () => {
   const addTofavorites = (user, e) => {
     e.preventDefault()
 
-    if (favorites.includes(user)) {
+    if (favorites.some(item => item._id === user._id) ) {
       const newFavorites = favorites.filter(item => item._id !== user._id );
       setFavorites(newFavorites)
       
     } 
     else {
       setFavorites([...favorites, user])
+     
     }
+
+
+   
+   
   }
 
 
-
 useEffect(() => {
+  console.log('activates');
   const options = {
     method: "PATCH",
               headers: {
@@ -91,10 +101,15 @@ useEffect(() => {
   }
   fetch ('http://localhost:8080/edituser', options)
     .then ((res) => res.json())
-    .then ((data) => console.log(data, 'fetch'))
+    .then ((data) => console.log('results', data))
     .catch(error => console.log(error))
 
 }, [favorites])
+
+
+console.log('favorites',favorites)
+
+
 
   return (
     <>
@@ -111,9 +126,12 @@ useEffect(() => {
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}{favorites.includes(user) 
+            
+              <ProfileTitle>@{user.username}
+              {favorites.some(item => item._id === user._id) 
               ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } /> 
-              : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />}</ProfileTitle> 
+              : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />} 
+              </ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>

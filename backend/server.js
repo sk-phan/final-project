@@ -202,6 +202,8 @@ app.post('/login', async (req, res) => {
           },
           success: true
         })
+        
+        
       } else {
         res.status(404).json({
           response: "Username or password doesn't match",
@@ -219,7 +221,7 @@ app.patch("/edituser", async (req,res) => {
  
   const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites}  = req.body;
 
-  console.log(userId)
+  
   try {
     const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites} );
     
