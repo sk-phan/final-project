@@ -258,12 +258,11 @@ app.delete("/deleteuser", async (req, res) => {
   }
 })
 
-//endpoint of reviews
-app.get("/reviews", authenticateUser);
 
-//endpoint 
-app.get("/reviews/:id", async (req, res) => {
-  const reviews = await Review.find({revieweeId: req.params.id})
+//endpoint to get all reviews
+app.get("/reviews", async (req, res) => {
+
+  const reviews = await Review.find({})
   .sort({createdAt: 'desc'})
   res.status(201).json({
     response: reviews,

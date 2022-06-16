@@ -13,20 +13,19 @@ import {BsBookmark} from 'react-icons/bs';
 export const Userpage = () => {
 
   const [usersData, setUsersData] = useState([])
+  const [patchData, setPatchData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
   const profile = useSelector((store) => store.user.userData.profileType);
   const otherUsersData = useSelector((store) => store.user.otherUsersData)
+
   const userData = useSelector((store) => store.user.userData)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const Ross = otherUsersData.find(user => user.userId === '62a9f2c35906eb94d0d00273')
+
 
   const [favorites, setFavorites] = useState(userData.favorites)
-
   
-
   
 
   //log out click
@@ -38,7 +37,6 @@ export const Userpage = () => {
     if (!accessToken) {
       navigate("/");
     }
-    
   }, [accessToken, navigate]);
 
   
@@ -54,6 +52,7 @@ export const Userpage = () => {
     fetch('http://localhost:8080/users', options)
     .then((res) => res.json())
     .then((data) => {
+
       if(profile === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
         setUsersData(usersToShow)
@@ -66,51 +65,40 @@ export const Userpage = () => {
       }
     })
     .finally(() => setLoading(false))
+
   }, [])
 
-  const addTofavorites = (user, e) => {
+  const addTofavorites = async (user, e) => {
     e.preventDefault()
 
-    if (favorites.some(item => item._id === user._id) ) {
-      const newFavorites = favorites.filter(item => item._id !== user._id );
+    if (favorites.some(item => item._id === user._id)) {
+      const newFavorites = await favorites.filter(item => item.username !== user.username );
       setFavorites(newFavorites)
-      
     } 
     else {
       setFavorites([...favorites, user])
-     
+    } 
+  }
+  
+  useEffect(() => {
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        userId: userData.userId,
+        favorites: favorites,
+      }),
     }
-
-
-   
-   
-  }
-
-
-useEffect(() => {
-  console.log('activates');
-  const options = {
-    method: "PATCH",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ 
-                userId: userData.userId,
-                favorites: favorites,
-              }),
-  }
-  fetch ('http://localhost:8080/edituser', options)
+     fetch ('http://localhost:8080/edituser', options)
     .then ((res) => res.json())
-    .then ((data) => console.log('results', data))
+    .then ((data) => console.log(data))
     .catch(error => console.log(error))
+    .finally(() => console.log(userData,'USERDATA'))
+  }, [favorites])  
 
-}, [favorites])
-
-
-console.log('favorites',favorites)
-
-
-
+ 
   return (
     <>
      <NavBar /> 
@@ -126,12 +114,9 @@ console.log('favorites',favorites)
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-            
-              <ProfileTitle>@{user.username}
-              {favorites.some(item => item._id === user._id) 
+              <ProfileTitle>@{user.username}{favorites.some(item => item._id === user._id) 
               ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } /> 
-              : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />} 
-              </ProfileTitle> 
+              : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />}</ProfileTitle> 
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
