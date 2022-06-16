@@ -5,14 +5,18 @@ import { user } from "../reducers/user";
 import { NavBar } from "../components/NavBar";
 import styled from 'styled-components'
 import moment from 'moment';
-import { BsBookmarkFill } from 'react-icons/bs';
+import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
-import {BsBookmark} from 'react-icons/bs';
+import Autocomplete from "react-google-autocomplete";
+
+import { IoIosOptions } from 'react-icons/io';
+
 
 
 export const Userpage = () => {
 
   const [usersData, setUsersData] = useState([])
+  const [filteredUsersData, setFilteredUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
   const profile = useSelector((store) => store.user.userData.profileType);
   const otherUsersData = useSelector((store) => store.user.otherUsersData)
@@ -20,10 +24,18 @@ export const Userpage = () => {
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showFilt, setShowFilt] = useState(false)
+  const [location, setLocation] = useState()
+
+  const [animalFilter, setAnimalFilter] = useState('all')
+  const [serviceFilter, setServiceFilter] = useState([])
+  const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
+  // const [startDateFilter, setStartDateFilter] = useState()
+  // const [endDateFilter, setEndDateFilter] = useState()
   
-  const Ross = otherUsersData.find(user => user.userId === '62a9f2c35906eb94d0d00273')
 
   const [favorites, setFavorites] = useState(userData.favorites)
+
 
   
 
@@ -57,11 +69,13 @@ export const Userpage = () => {
       if(profile === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
         setUsersData(usersToShow)
+        setFilteredUsersData(usersToShow)
         dispatch(user.actions.setOtherUsersData(usersToShow))
       }
       else {
         const usersToShow = data.filter(user => user.profileType === 'Pet owner')
         setUsersData(usersToShow)
+        setFilteredUsersData(usersToShow)
         dispatch(user.actions.setOtherUsersData(usersToShow))
       }
     })
@@ -80,11 +94,8 @@ export const Userpage = () => {
       setFavorites([...favorites, user])
      
     }
-
-
-   
-   
   }
+
 
 
 useEffect(() => {
@@ -106,20 +117,115 @@ useEffect(() => {
 
 }, [favorites])
 
+const onFilterSubmit = (e) => {
+  e.preventDefault()
+  
+  if (animalFilter !== 'all') {
+    const usersToShow = [...usersData]
+    if (serviceFilter.length > 0){
+        setFilteredUsersData(usersToShow.filter(user => user.preferableTime.some(element => serviceFilter.includes(element)) && user.animalType === animalFilter))
+    } 
+    else {
+        setFilteredUsersData(usersToShow.filter(user => user.animalType === animalFilter))
+    } 
+  }
+  else {
+    const usersToShow = [...usersData]
+    if (serviceFilter.length > 0){
+        setFilteredUsersData(usersToShow.filter(user => user.preferableTime.some(element => serviceFilter.includes(element))))
+      }
+    else {
+        setFilteredUsersData(usersToShow)
+      
+    }
+    
+  }
+  setShowFilt(!showFilt)
+}
 
-console.log('favorites',favorites)
+const onServiceCheckbox = (time) => {
+  if (serviceFilter.includes(time)) {
+    const timeArray = serviceFilter.filter(item => item !== time );
+    setServiceFilter(timeArray)
+  } 
 
+  else setServiceFilter([...serviceFilter, time])
+}
 
+const onFilterClick = () => {
+  setShowFilt(true)
+}
 
+const onResetFilters = () => {
+  setAnimalFilter('all')
+  setServiceFilter([])
+  setLocation()
+  const usersToShow = [...usersData]
+  setFilteredUsersData(usersToShow)
+  setShowFilt(false)
+}
+
+const onExitClick = () => {
+  setShowFilt(false)
+}
+
+console.log(showFilt)
   return (
     <>
      <NavBar /> 
     <Main>
 		{loading && <Loader />}
 		{!loading && 
-    <BigContainer>
+     <div>
+    {showFilt &&
+        <FilterContainer display={showFilt ? 'flex' : 'none'}>
+        <FilterTitleContainer>
+          <ProfileTitle>FILTERS</ProfileTitle>
+          <ExitButton onClick={onExitClick}>x</ExitButton>
+        </FilterTitleContainer>
+        <FilterForm>
+        <div className="checkbox-container">
+        <ProfileTitle>Type of animal</ProfileTitle>
+          <select 
+            id='animalFilter'
+						value={animalFilter}
+						onChange={(e) => setAnimalFilter(e.target.value)}>
+            <option selected={true} disabled='disabled'>
+							CHOOSE ANIMAL TYPE:
+						</option>
+						<option value='all'>All</option>
+						<option value='dog'>Dogs</option>
+            <option value='cat'>Cats</option>
+          </select>
+          </div>
+          <div className="checkbox-container">
+          <ProfileTitle>Duration of pet sitting</ProfileTitle>
+          {serviceOptions.map(item => {
+             return <RadioLabel htmlFor={item}>
+                  
+                    <RadioInput
+                      id={item}
+                      type='checkbox'
+                      value = {item}
+                      checked = {serviceFilter.includes(item)}
+                      onChange = { () => onServiceCheckbox(item) }      
+                    />
+                
+                    {item}
+             </RadioLabel>})}
+             </div>
+             <FilterTitleContainer>
+              <FilterButton type='submit' onClick={onFilterSubmit}>Filter</FilterButton>
+              <FilterButton type="button" onClick={onResetFilters}>Reset All</FilterButton>
+            </FilterTitleContainer>
+        </FilterForm>
+        </FilterContainer>
+        }
+   {!showFilt && <BigContainer>
+        <FilterButton onClick={onFilterClick}><FilterText>FILTER </FilterText> <IoIosOptions /></FilterButton>
+        
         <SmallContainer>
-           {usersData.map(user => {
+           {filteredUsersData.length > 0 && filteredUsersData.map(user => {
             return ( 
             <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
@@ -132,6 +238,7 @@ console.log('favorites',favorites)
               ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } /> 
               : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />} 
               </ProfileTitle> 
+              <ProfileText><span>📍</span>{user.location}</ProfileText>
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
@@ -148,10 +255,16 @@ console.log('favorites',favorites)
             )
 
           })}
+          
+         { filteredUsersData.length === 0 && <ProfileTitle>Sorry, no matching users...</ProfileTitle> }
+        
+
         </SmallContainer>
        
 
     </BigContainer>}
+     </div>
+    }
     </Main>
     </>
   );
@@ -169,7 +282,7 @@ position: relative;
 
 const BigContainer = styled.div`
   display:flex;
-  flex-direction: row;
+  flex-direction: column;
 `
 
 const SmallContainer = styled.div`
@@ -195,7 +308,7 @@ const UserContainer = styled(Link)`
    flex-direction: column;
    overflow:hidden;
    width: 150px;
-   height: 200px;
+   height: 220px;
    background-color: #fff;
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
    border-radius:10px;
@@ -303,6 +416,85 @@ const Overlay = styled.div`
     opacity: 0.1;
   }
 
+`
+
+const FilterContainer = styled.div`
+    background: red;
+    display: ${props => props.display}
+    flex-wrap: wrap;
+    width: 320px;
+    gap: 20px;
+    padding:10px;
+    background-color: #fff;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
+    border-radius:10px;
+
+`
+
+const FilterButton = styled.button`
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  gap: 1rem;
+  background-color: transparent;
+  border: solid 1.5px #000;
+  color: #000;
+  border-radius: 10px;
+  padding:7px;
+  margin: 10px;
+
+  &:hover{
+    background-color: #4C956C;
+    cursor: pointer;
+  }
+  
+`
+const FilterForm = styled.form`
+`
+
+const FilterText = styled.p`
+font-family: 'Raleway', sans-serif;
+padding:0;
+margin:0;
+font-weight: 700;
+font-size: 12px;
+
+`
+
+const FilterTitleContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content:space between;
+`
+
+const ExitButton = styled.button`
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    border-radius: 50%;
+    border: black solid;
+    width: 3rem;
+    height: 3rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    background-color: #F5F5F5;
+    font-weight: 600;
+    cursor:pointer;
+      background-color: #F5F5F5;
+    &:hover{
+      background-color: #FD9951;
+      cursor: pointer;
+    }
+`
+
+const RadioLabel = styled.label`
+  display:flex;
+  align-items: center;
+  font-size: 14px;
+`
+
+const RadioInput = styled.input`
+  width: fit-content;
+  color:#FD9951;
 `
 
 

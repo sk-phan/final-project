@@ -59,11 +59,11 @@ html {
   display: flex;
   flex-direction: column;
   width: 25rem;
-  /* padding-left: 3rem; */
+  gap:5px;
 
 }
 
-input, .imageInput, .textarea {
+input, .imageInput, .textarea, select {
   width: 25rem;
   border: solid 0.1rem ;
   border-radius: 1rem;
@@ -127,6 +127,12 @@ input, .imageInput, .textarea {
   outline: none;
   border: 0.1rem solid #FF974B;
 } 
+
+select:hover,
+select:valid,
+select:focus {
+  outline: none;
+}
 
 .inputLocation {
   background-color: none;
@@ -240,4 +246,8 @@ input, .imageInput, .textarea {
     line-height: 1.4;
     color:#FEFEE3;
     text-align:justify;
+}
+
+.filter {
+  background: red;
 }
