@@ -34,7 +34,7 @@ const UserSchema = new mongoose.Schema({
       //unique: true,
     },
     animalType: {
-      type: Array,
+      type: String,
       required: true,
     },
     location: {
