@@ -238,7 +238,7 @@ console.log(showFilt)
               ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } /> 
               : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />} 
               </ProfileTitle> 
-              <ProfileText><span>📍</span>{user.location}</ProfileText>
+              <LocationText><span>📍</span>{user.location}</LocationText>
               
               {user.profileType === 'Pet sitter' ? <ProfileText>{user.profileType} for {user.animalType}s </ProfileText> : <ProfileText>Looking for a {user.animalType} pet sitter</ProfileText>}
               <Tags>
@@ -308,7 +308,7 @@ const UserContainer = styled(Link)`
    flex-direction: column;
    overflow:hidden;
    width: 150px;
-   height: 220px;
+   height: 250px;
    background-color: #fff;
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
    border-radius:10px;
@@ -316,12 +316,12 @@ const UserContainer = styled(Link)`
 
    @media (min-width: 768px) {
     width: 200px;
-    height: 270px;
+    height: 300px;
    }
  
    @media (min-width: 1025px) {
      width: 220px;
-     height: 300px;
+     height: 350px;
     }
 `
 
@@ -378,6 +378,18 @@ const ProfileText = styled.p`
   @media (min-width: 768px) {
     font-size: 14px;
    }
+`
+
+const LocationText = styled.p`
+font-family: 'Raleway', sans-serif;
+  color: #000;
+  font-weight: 900;
+  font-size: 9px;
+  margin:0;
+  @media (min-width: 768px) {
+    font-size: 11px;
+   }
+
 `
 const Tags = styled.div`
     display: flex;
@@ -445,7 +457,9 @@ const FilterButton = styled.button`
 
   &:hover{
     background-color: #4C956C;
+    border: solid 1.5px #4C956C;
     cursor: pointer;
+    color: #fff;
   }
   
 `
