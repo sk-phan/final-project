@@ -3,7 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
 import styled from 'styled-components'
 import moment from 'moment'
-
+import { AiOutlineEdit } from 'react-icons/ai'
+import { MdOutlineFileDownloadDone } from 'react-icons/md'
+import { RiDeleteBin2Line } from 'react-icons/ri'
 import { user } from '../reducers/user';
 
 
@@ -20,10 +22,14 @@ export const UserDetails = () => {
     const otherUsersData = useSelector((store) => store.user.otherUsersData)
     const mainUserId = useSelector((store) => store.user.userData)
     
+    const [edit, setEdit] = useState(false)
+    const [editText, setEditText] = useState('')
+    const [editId, setEditId] = useState('')
+    const [deleteId, setDeleteId] = useState('')
+
     const userToShow = otherUsersData.find(user => user._id === userId)
 
 
-    console.log(userId,'id')
     const onFormSubmit = (e) => {
         e.preventDefault();
         
@@ -39,29 +45,76 @@ export const UserDetails = () => {
                     img: mainUserId.img,
                     reviewText: review
                     }),
-          }
+        }
 
         fetch('http://localhost:8080/reviews', options) 
         .then(res => res.json())
         .then(data => setReviewList((prev) => [...prev, data.response]))
         .catch(error => console.log(error))
         .finally(() => setReview(''))
-    
-
-    }
-    
-    
+    }    
     useEffect(() => {
-        fetch(`http://localhost:8080/reviews/${userId}`) 
+        fetch('http://localhost:8080/reviews') 
         .then(res => res.json())
         .then(data => {
             if (data.success) {
-                setReviewList(data.response)
+                const filterReviews = data.response.filter(item => item.revieweeId === userId)
+                setReviewList(filterReviews)        
             }
         })
     }, [])
+
+    const onEditClick = async (message, userId, reviewId) => {
+        
+        setEditId(reviewId)
+        const findId = await reviewList.map(item => {
+            if (item._id === reviewId && item.reviewerId === mainUserId.userId) {
+                setEdit(!edit)
+                return {...item, reviewText: editText}
+            } else {
+                return item
+            }
+        })        
+        const options = {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ 
+                reviewId: reviewId, 
+                reviewText: editText
+            }),
+          };
+
+        fetch('http://localhost:8080/editReview', options)
+        .then((res) => res.json())
+        .then((data) => console.log(data))
+        .finally(() => setEditText(''))
+
+        return setReviewList(findId)
+        }     
     
-    
+    const onDeleteReview = async (id, username) => {
+
+        if (username === mainUserId.username) {
+            
+                    const updateReviews = await reviewList.filter(item => item._id !== id);
+            
+                    const options = {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ 
+                            reviewId: id, 
+                        }),
+                    }
+            
+                    await fetch('http://localhost:8080/deleteReview', options)
+            
+                    return setReviewList(updateReviews)
+        }
+    }
 
     return(
         <Main>
@@ -99,8 +152,23 @@ export const UserDetails = () => {
                                         <Reviews>
                                             <img src={item.img} alt="reviewer image" />
                                             <div>
-                                                <Name>@{item.username}</Name>
-                                                <ReviewText>
+                                                <ReviewHead>
+                                                    <Name>@{item.username}</Name>
+                                                    <Buttons>
+                                                        <EditBtn 
+                                                            display={item.reviewerId === mainUserId.userId ? 'inline-block' : 'none'} 
+                                                            type='button' onClick={() => onEditClick(item.reviewText, item.reviewerId, item._id)}>
+                                                                {!edit ? <AiOutlineEdit /> : <MdOutlineFileDownloadDone />}
+                                                        </EditBtn>
+                                                        <EditBtn display={item.reviewerId === mainUserId.userId ? 'inline-block' : 'none'}  onClick={() => onDeleteReview(item._id, item.username)}><RiDeleteBin2Line/></EditBtn>
+                                                    </Buttons>
+                                                </ReviewHead>
+                                                {item._id === editId && edit && <ReviewInput 
+                                                                type='text'
+                                                                onChange={(e) => setEditText(e.target.value)}
+                                                                value={editText}
+                                                            />}
+                                                <ReviewText display={item._id === editId && edit ? 'none' : 'block'}>
                                                 "{item.reviewText}" 
                                                 </ReviewText>
                                             </div>
@@ -295,6 +363,7 @@ const ReviewHeading = styled.h2 `
 
 const ReviewText = styled.p`
     color: #333;
+    display: ${props => props.display};
 `
 
 const Name = styled.p`
@@ -331,4 +400,29 @@ const ReviewInput = styled.textarea`
 
     &:hover {
     }
+`
+const ReviewHead = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8rem;
+    
+    `
+
+const Buttons = styled.div`
+    display: inline;
+    `
+
+const EditBtn = styled.button`
+    display: ${props => props.display};
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+
+    &:hover {
+        font-size: 2.2rem;
+        color: #ec8941;
+    }
+
 `
