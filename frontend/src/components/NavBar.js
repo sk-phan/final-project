@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
+import { useDispatch } from "react-redux";
+import { user } from "../reducers/user";
 
 import { MdSpaceDashboard } from 'react-icons/md';
 import { BsFillPersonFill } from 'react-icons/bs';
@@ -12,6 +14,11 @@ import { BiSearch } from 'react-icons/bi'
 export const NavBar = () => {
     const [searchInput, setSearchInput] = useState('');
     const [desktopSize, setDesktopSize] = useState(false)
+    const dispatch = useDispatch();
+
+    const onClickLogout = () => {
+        dispatch(user.actions.setDeleteAccessToken(null));
+    };
 
     
     return (
@@ -36,7 +43,7 @@ export const NavBar = () => {
                     <button><BiSearch/></button>
 
                 </Seach>
-                <NavEl to='#'>
+                <NavEl to='/userpage'>
                     <MdSpaceDashboard className="nav-icon"/>
                     Dashboard
                 </NavEl>
@@ -44,11 +51,11 @@ export const NavBar = () => {
                     <BsFillPersonFill className="nav-icon" />
                     Profile
                 </NavEl>
-                <NavEl to='#'>
+                <NavEl to='/favorites'>
                     <BsBookmarkFill className="nav-icon" />
-                    Favourite
+                    Favourites
                 </NavEl>
-                <NavEl to='#'>
+                <NavEl to='/' onClick={onClickLogout}>
                     <HiOutlineLogout className="nav-icon" />
                     Log out
                 </NavEl>

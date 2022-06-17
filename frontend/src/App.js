@@ -11,7 +11,7 @@ import { Login } from "./components/Login";
 import {NotFound} from './pages/NotFound'
 import { NavBar } from "./components/NavBar";
 import {UserDetails} from './pages/UserDetails';
-
+import {Favorites} from './pages/Favorites'
 
 
 import { user } from "./reducers/user";
@@ -29,11 +29,13 @@ export const App = () => {
         <Routes>
            {/* <Route path="/" element={<NavBar/>} />  */}
             <Route path="/" element={<MainPage />} /> 
-           <Route path="/login" element={<Login />} />
-           <Route path="/signup" element={<Signup />} /> 
-          <Route path="/userpage" element={<Userpage />} />
-          <Route path='/userdetails/:userId' element={<UserDetails />} />
-          <Route path='/profile' element={<Profile />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} /> 
+            <Route path="/userpage" element={<Userpage />} />
+            <Route path='/userdetails/:userId' element={<UserDetails />} />
+            <Route path='/profile' element={<Profile />} />
+            <Route path='/favorites' element={<Favorites />} />
+          
           <Route path="/*" element={<NotFound />} /> 
         </Routes>
       </BrowserRouter>

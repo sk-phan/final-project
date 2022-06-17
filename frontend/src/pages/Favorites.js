@@ -7,37 +7,18 @@ import styled from 'styled-components'
 import moment from 'moment';
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
-import Autocomplete from "react-google-autocomplete";
-
-import { IoIosOptions } from 'react-icons/io';
 
 
-
-export const Userpage = () => {
+export const Favorites = () => {
 
   const [usersData, setUsersData] = useState([])
   const [filteredUsersData, setFilteredUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
   const profile = useSelector((store) => store.user.userData.profileType);
-  const otherUsersData = useSelector((store) => store.user.otherUsersData)
-
-  const userData = useSelector((store) => store.user.userData)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [showFilt, setShowFilt] = useState(false)
-  const [location, setLocation] = useState()
-
-  const [updateData, setUpdateData] = useState(null)
-
-  const [animalFilter, setAnimalFilter] = useState('all')
-  const [serviceFilter, setServiceFilter] = useState([])
-  const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
-  // const [startDateFilter, setStartDateFilter] = useState()
-  // const [endDateFilter, setEndDateFilter] = useState()
-  
-
-
+  const userData = useSelector((store) => store.user.userData)
   const [favorites, setFavorites] = useState(userData.favorites)
   
 
@@ -48,36 +29,27 @@ export const Userpage = () => {
     }
   }, [accessToken, navigate]);
 
-  
 
+  
   useEffect(() => {
     const options = {
-      method: 'GET',
+      method: "PATCH",
       headers: {
-          'Authorization': accessToken
+        "Content-Type": "application/json",
       },
-  }
-    setLoading(true) 
-    fetch('http://localhost:8080/users', options)
-    .then((res) => res.json())
-    .then((data) => {
+      body: JSON.stringify({ 
+        userId: userData.userId,
+        favorites: favorites,
+      }),
+    }
+    console.log(favorites,'fav')
+     fetch ('http://localhost:8080/edituser', options)
+    .then ((res) => res.json())
+    .then ((data) => console.log(data))
+    .catch(error => console.log(error))
+    .finally(() => console.log(userData,'USERDATA'))
+  }, [favorites])  
 
-      if(profile === 'Pet owner'){
-        const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
-        setUsersData(usersToShow)
-        setFilteredUsersData(usersToShow)
-        dispatch(user.actions.setOtherUsersData(usersToShow))
-      }
-      else {
-        const usersToShow = data.filter(user => user.profileType === 'Pet owner')
-        setUsersData(usersToShow)
-        setFilteredUsersData(usersToShow)
-        dispatch(user.actions.setOtherUsersData(usersToShow))
-      }
-    })
-    .finally(() => setLoading(false))
-
-  }, [])
 
   const addTofavorites = async (user, e) => {
     e.preventDefault()
@@ -91,138 +63,21 @@ export const Userpage = () => {
     } 
   }
   
-  useEffect(() => {
-    console.log(favorites,'fav')
-    const options = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ 
-        userId: userData.userId,
-        favorites: favorites,
-      }),
-    }
-     fetch ('http://localhost:8080/edituser', options)
-    .then ((res) => res.json())
-    .then ((data) => console.log(data,'heredata'))
-    .catch(error => console.log(error))
-    
 
-  }, [favorites])  
+  console.log('favorites', favorites)
 
 
 
-
-const onFilterSubmit = (e) => {
-  e.preventDefault()
-  
-  if (animalFilter !== 'all') {
-    const usersToShow = [...usersData]
-    if (serviceFilter.length > 0){
-        setFilteredUsersData(usersToShow.filter(user => user.preferableTime.some(element => serviceFilter.includes(element)) && user.animalType === animalFilter))
-    } 
-    else {
-        setFilteredUsersData(usersToShow.filter(user => user.animalType === animalFilter))
-    } 
-  }
-  else {
-    const usersToShow = [...usersData]
-    if (serviceFilter.length > 0){
-        setFilteredUsersData(usersToShow.filter(user => user.preferableTime.some(element => serviceFilter.includes(element))))
-      }
-    else {
-        setFilteredUsersData(usersToShow)
-      
-    }
-    
-  }
-  setShowFilt(!showFilt)
-}
-
-const onServiceCheckbox = (time) => {
-  if (serviceFilter.includes(time)) {
-    const timeArray = serviceFilter.filter(item => item !== time );
-    setServiceFilter(timeArray)
-  } 
-
-  else setServiceFilter([...serviceFilter, time])
-}
-
-const onFilterClick = () => {
-  setShowFilt(true)
-}
-
-const onResetFilters = () => {
-  setAnimalFilter('all')
-  setServiceFilter([])
-  setLocation()
-  const usersToShow = [...usersData]
-  setFilteredUsersData(usersToShow)
-  setShowFilt(false)
-}
-
-const onExitClick = () => {
-  setShowFilt(false)
-}
-
-console.log(showFilt)
   return (
     <>
      <NavBar /> 
     <Main>
 		{loading && <Loader />}
 		{!loading && 
-     <div>
-    {showFilt &&
-        <FilterContainer display={showFilt ? 'flex' : 'none'}>
-        <FilterTitleContainer>
-          <ProfileTitle>FILTERS</ProfileTitle>
-          <ExitButton onClick={onExitClick}>x</ExitButton>
-        </FilterTitleContainer>
-        <FilterForm>
-        <div className="checkbox-container">
-        <ProfileTitle>Type of animal</ProfileTitle>
-          <select 
-            id='animalFilter'
-						value={animalFilter}
-						onChange={(e) => setAnimalFilter(e.target.value)}>
-            <option selected={true} disabled='disabled'>
-							CHOOSE ANIMAL TYPE:
-						</option>
-						<option value='all'>All</option>
-						<option value='dog'>Dogs</option>
-            <option value='cat'>Cats</option>
-          </select>
-          </div>
-          <div className="checkbox-container">
-          <ProfileTitle>Duration of pet sitting</ProfileTitle>
-          {serviceOptions.map(item => {
-             return <RadioLabel htmlFor={item}>
-                  
-                    <RadioInput
-                      id={item}
-                      type='checkbox'
-                      value = {item}
-                      checked = {serviceFilter.includes(item)}
-                      onChange = { () => onServiceCheckbox(item) }      
-                    />
-                
-                    {item}
-             </RadioLabel>})}
-             </div>
-             <FilterTitleContainer>
-              <FilterButton type='submit' onClick={onFilterSubmit}>Filter</FilterButton>
-              <FilterButton type="button" onClick={onResetFilters}>Reset All</FilterButton>
-            </FilterTitleContainer>
-        </FilterForm>
-        </FilterContainer>
-        }
-   {!showFilt && <BigContainer>
-        <FilterButton onClick={onFilterClick}><FilterText>FILTER </FilterText> <IoIosOptions /></FilterButton>
+     <BigContainer>
         
         <SmallContainer>
-           {filteredUsersData.length > 0 && filteredUsersData.map(user => {
+           {favorites.map(user => {
             return ( 
             <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
@@ -250,16 +105,13 @@ console.log(showFilt)
             )
 
           })}
-          
-         { filteredUsersData.length === 0 && <ProfileTitle>Sorry, no matching users...</ProfileTitle> }
         
 
         </SmallContainer>
        
 
     </BigContainer>}
-     </div>
-    }
+    
     </Main>
     </>
   );
