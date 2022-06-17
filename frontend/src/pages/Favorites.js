@@ -11,6 +11,7 @@ import { Loader } from "../components/Loader";
 
 export const Favorites = () => {
 
+  
   const [usersData, setUsersData] = useState([])
   const [filteredUsersData, setFilteredUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
@@ -38,7 +39,7 @@ export const Favorites = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ 
-        userId: userData.userId,
+        userId: userData._id,
         favorites: favorites,
       }),
     }
@@ -64,7 +65,6 @@ export const Favorites = () => {
   }
   
 
-  console.log('favorites', favorites)
 
 
 

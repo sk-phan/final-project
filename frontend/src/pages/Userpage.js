@@ -10,7 +10,7 @@ import { Loader } from "../components/Loader";
 import Autocomplete from "react-google-autocomplete";
 
 import { IoIosOptions } from 'react-icons/io';
-
+import { batch } from "react-redux";
 
 
 export const Userpage = () => {
@@ -89,27 +89,34 @@ export const Userpage = () => {
     else {
       setFavorites([...favorites, user])
     } 
+  
+
   }
   
   useEffect(() => {
-    console.log(favorites,'fav')
+    console.log(favorites,'userdata')
+
     const options = {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ 
-        userId: userData.userId,
+        userId: userData._id,
         favorites: favorites,
       }),
     }
      fetch ('http://localhost:8080/edituser', options)
-    .then ((res) => res.json())
-    .then ((data) => console.log(data,'heredata'))
-    .catch(error => console.log(error))
-    
-
+     .then(res => res.json())
+     .then ((data) => {
+       if (data.success) {
+         setUpdateData(data.response)
+        // dispatch(user.actions.setUserData(data.response))
+       }
+    })
+    .catch(error => console.log(error))    
   }, [favorites])  
+
 
 
 
@@ -166,7 +173,6 @@ const onExitClick = () => {
   setShowFilt(false)
 }
 
-console.log(showFilt)
   return (
     <>
      <NavBar /> 

@@ -12,6 +12,9 @@ export const Profile = () => {
   
     const userProfile = useSelector(state => state.user.userData)
 
+    const accessToken = useSelector((store) => store.user.accessToken);
+
+    const [user, setUser] = useState(null)
     const [updatedData, setUpdatedData] = useState(null);
     const [username, setUsername ]= useState(userProfile.username);
     const [email, setEmail ]= useState(userProfile.email);
@@ -28,7 +31,9 @@ export const Profile = () => {
 
     const dispatch = useDispatch();
 
+
     const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
+
 
     
 
@@ -41,7 +46,7 @@ export const Profile = () => {
                   "Content-Type": "application/json",
                 },
                 body: JSON.stringify({ 
-                  userId: userProfile.userId,  
+                  userId: userProfile._id,  
                   preferableTime: preferableTime,   
                   endDate: startDate,
                   startDate: startDate,
@@ -56,7 +61,11 @@ export const Profile = () => {
       .then ((res) => res.json())
       .then ((data) => {
         if (data.success) {
+          console.log(data,'resonse')
+          
+          
           setUpdatedData(data.response)
+          dispatch(user.actions.setUserData(data.response))
           dispatch(user.actions.setError(''))
         } else {
           dispatch(user.actions.setError('Update failed'))
@@ -70,9 +79,9 @@ export const Profile = () => {
       .then(res => res.json())
       .then(data => {
         if(data.success) {     
-          const filterReviews = data.response.filter(item => item.revieweeId === userProfile.userId)
+          const filterReviews = data.response.filter(item => item.revieweeId === userProfile._id)
           setReviews(filterReviews)
-          dispatch(user.actions.setError(''))
+          //dispatch(user.actions.setError(''))
         } else {
           dispatch(user.actions.setError('Fail to load reviews'))
         }
@@ -80,6 +89,41 @@ export const Profile = () => {
       .catch(error => console.log(error))
     }, [])
 
+
+
+
+    useEffect(() => {
+      const options = {
+        method: 'GET',
+        headers: {
+            'Authorization': accessToken
+        },
+    }
+      fetch('http://localhost:8080/users', options)
+      .then((res) => res.json())
+      .then((data) => {
+  
+        const user = data.find(item => item._id === userProfile._id)
+        
+        setUser(user)
+        console.log('user', user)
+
+
+        // if(profile === 'Pet owner'){
+        //   const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
+        //   setUsersData(usersToShow)
+        //   setFilteredUsersData(usersToShow)
+        //   dispatch(user.actions.setOtherUsersData(usersToShow))
+        // }
+        // else {
+        //   const usersToShow = data.filter(user => user.profileType === 'Pet owner')
+        //   setUsersData(usersToShow)
+        //   setFilteredUsersData(usersToShow)
+        //   dispatch(user.actions.setOtherUsersData(usersToShow))
+        // }
+      })
+  
+    }, [])
 
     //Upload image
     const upload = async (e) => {
@@ -117,6 +161,7 @@ export const Profile = () => {
             <Side>
               <ReviewHeading>Your reviews</ReviewHeading>
               <ReviewList>
+                <p>{user && user.username}</p>
                 {reviews.length > 0 && reviews.map(item => {
                   return <Reviews>
                   <img src={item.img} alt={item.username + 'image'} />
