@@ -22,6 +22,7 @@ export const Profile = () => {
     const [startDate, setStartDate] = useState(userProfile.startDate);
     const [endDate, setEndDate] = useState(userProfile.endDate);
     const [img, setImg] = useState(userProfile.img)
+    const [editImg, setEditImg] = useState(false)
 
     const [reviews, setReviews] = useState([]);
 
@@ -48,6 +49,7 @@ export const Profile = () => {
                   profileType: profileType,
                   username: username, 
                   password: password,
+                  img: img
                 }),
               };
       fetch ('http://localhost:8080/edituser', options)
@@ -78,8 +80,29 @@ export const Profile = () => {
       .catch(error => console.log(error))
     }, [])
 
-    
 
+    //Upload image
+    const upload = async (e) => {
+      const file = e.target.files[0];
+      const base64  = await convertBase64(file)
+      setImg(base64)
+    }
+    const convertBase64 = (file) => {
+      alert(file.size + " KB.");
+      return new Promise ((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+          resolve(fileReader.result)
+        }
+        fileReader.onerror = (error) => {
+          console.log(error)
+          reject(error)
+        }
+      })
+    }
+  
+    //Time checkbox
     const onTimeCheckbox = (time) => {
         if (preferableTime.includes(time)) {
           const timeArray = preferableTime.filter(item => item !== time );
@@ -113,10 +136,12 @@ export const Profile = () => {
               <Form onSubmit={onSubmit}>
                 <Header>
                   <ProfileImg src={img}/>
-                  <div>
-                    <Name>@{username}</Name>
-                    <UserType>{profileType}</UserType>
-                  </div>
+                  {!editImg && <EditBtn onClick={() => setEditImg(!editImg)}>Upload new picture</EditBtn> }
+                  {editImg && <input  className = "imageInput"
+                      type='file'
+                      name="myImage"
+                      onChange={(e) => upload(e)}
+                  />  }
                 </Header>
                   <Label htmlFor="username">
                       Username
@@ -173,7 +198,7 @@ export const Profile = () => {
                     </RadioLabel>
                   </InputContainer>
               </ProfileContainer>
-              <div>
+              <Checkbox>
                   <P>Duration of pet sitting:*</P>
                   {preferTimeOption.map(item => {
                       return <RadioLabel htmlFor={item}>
@@ -187,7 +212,7 @@ export const Profile = () => {
                               {item}
                               </RadioLabel>
                   })}
-              </div>
+              </Checkbox>
               <Label htmlFor='start-date'>
                   Start Date:*
                 <input
@@ -210,7 +235,7 @@ export const Profile = () => {
                   required
                 />           
               </Label>         
-              <SubmitBtn type="submit">Update</SubmitBtn>
+              <SubmitBtn type="submit">Save profile</SubmitBtn>
               </Form>
               </FormWrapper>
             </FormContainer>
@@ -223,8 +248,7 @@ export const Profile = () => {
 const Container = styled.div`
   height: 100vh;
   box-sizing: border-box;
-  background-color: #fafafa;
-
+  background-color: #fff;
   `
 
 const SmallContainer = styled.div`
@@ -236,16 +260,19 @@ const SmallContainer = styled.div`
 
 const FormContainer = styled.div`
   width: 100%;
+  height: 100vh;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
+  background-color: #fafafa;
+  overflow-y: scroll;
+
 `
 
 const FormWrapper = styled.div`
   width: 700px;
   padding: 6rem 4rem 4rem 4rem;
   box-sizing: border-box;
-  overflow: scroll;
 `
 
 
@@ -263,9 +290,7 @@ const Heading = styled.h2`
 `
 const Form = styled.form`
   display: flex;
-  flex-direction: column;
-  height: 100%;
- 
+  flex-direction: column; 
 `
 
 const ProfileImg = styled.img`
@@ -277,22 +302,27 @@ const ProfileImg = styled.img`
 
 const InputContainer = styled.div`
   display: flex;
-  align-self: flex-start;
   width: 100%;
   gap: 5rem;
 `
 
 const Label = styled(Form)`
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
   margin-bottom: 3.2rem;
-  gap: 5rem;
+  gap: 1.2rem;
   font-size: 1.6rem;
+  width: 30rem;
 
   input {
-    align-self: flex-end;
+    align-self: flex-start;
+    width: 50rem;
   }
   
+`
+
+const Checkbox = styled.div`
+  margin-bottom: 3.2rem;
+
 `
 
 const P = styled.p`
@@ -304,7 +334,8 @@ const P = styled.p`
 const RadioLabel = styled.label`
   display:flex;
   align-items: center;
-  font-size: 14px;
+  gap: 1rem;
+  font-size: 1.6rem; 
 `
 
 const RadioInput = styled.input`
@@ -324,13 +355,15 @@ const ProfileContainer = styled.div`
 const SubmitBtn = styled.button`
     border: none;
     width: 15rem;
+    height: 5rem;
     background-color: #FD9951;
     border-radius: 1rem;
     cursor: pointer;
     color: #fff;
-    padding: 1.5rem;
+    padding: 1.2rem;
     font-weight: 600;
     font-size: 1.6rem;
+    margin-bottom: 4rem;
 
     &:disabled {
       background-color: #fdc7a0;
@@ -342,9 +375,15 @@ const SubmitBtn = styled.button`
 
 `
 
+const EditBtn = styled(SubmitBtn)`
+   width: 18rem;
+   margin-bottom: 0;
+`
+
 const Side = styled.div`
   width: 60rem;
   min-width: 20rem;
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
