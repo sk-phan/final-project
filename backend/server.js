@@ -184,22 +184,7 @@ app.post('/login', async (req, res) => {
   
       if (user && bcrypt.compareSync(password, user.password)) {
         res.status(200).json({
-          response: {
-            userId: user._id,
-            username: user.username,
-            email: user.email,
-            accessToken: user.accessToken,
-            img: user.img,
-            password: user.password,
-            animalType: user.animalType,
-            profileType: user.profileType,
-            startDate: user.startDate,
-            endDate: user.endDate,
-            location: user.location,
-            preferableTime: user.preferableTime,
-            description: user.description,
-            favorites: user.favorites,
-          },
+          response: user,
           success: true
         })
         
@@ -226,6 +211,7 @@ app.patch("/edituser", async (req,res) => {
     const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites} );
     
     if (editingUser) {
+      console.log(editingUser)
       res.status(200).json({
         response: editingUser,
         success: true

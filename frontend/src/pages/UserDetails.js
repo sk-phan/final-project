@@ -39,7 +39,7 @@ export const UserDetails = () => {
                         "Content-Type": "application/json",
             },
             body: JSON.stringify({ 
-                    reviewerId: mainUserId.userId, 
+                    reviewerId: mainUserId._id, 
                     revieweeId: userId, 
                     username: mainUserId.username,
                     img: mainUserId.img,
@@ -64,11 +64,11 @@ export const UserDetails = () => {
         })
     }, [])
 
-    const onEditClick = async (message, userId, reviewId) => {
+    const onEditClick = async (message, _id, reviewId) => {
         
         setEditId(reviewId)
         const findId = await reviewList.map(item => {
-            if (item._id === reviewId && item.reviewerId === mainUserId.userId) {
+            if (item._id === reviewId && item.reviewerId === mainUserId._id) {
                 setEdit(!edit)
                 return {...item, reviewText: editText}
             } else {
@@ -156,11 +156,11 @@ export const UserDetails = () => {
                                                     <Name>@{item.username}</Name>
                                                     <Buttons>
                                                         <EditBtn 
-                                                            display={item.reviewerId === mainUserId.userId ? 'inline-block' : 'none'} 
+                                                            display={item.reviewerId === mainUserId._id ? 'inline-block' : 'none'} 
                                                             type='button' onClick={() => onEditClick(item.reviewText, item.reviewerId, item._id)}>
                                                                 {!edit ? <AiOutlineEdit /> : <MdOutlineFileDownloadDone />}
                                                         </EditBtn>
-                                                        <EditBtn display={item.reviewerId === mainUserId.userId ? 'inline-block' : 'none'}  onClick={() => onDeleteReview(item._id, item.username)}><RiDeleteBin2Line/></EditBtn>
+                                                        <EditBtn display={item.reviewerId === mainUserId._id ? 'inline-block' : 'none'}  onClick={() => onDeleteReview(item._id, item.username)}><RiDeleteBin2Line/></EditBtn>
                                                     </Buttons>
                                                 </ReviewHead>
                                                 {item._id === editId && edit && <ReviewInput 
