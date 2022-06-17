@@ -102,7 +102,7 @@ export const Signup = () => {
           description: description,
           favourites: favourites,
         }),
-      };
+      }
       
       fetch("http://localhost:8080/signup", options)
       .then((res) => res.json())

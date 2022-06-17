@@ -219,11 +219,11 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites}  = req.body;
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites}  = req.body;
 
   
   try {
-    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, image, description, favorites} );
+    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites} );
     
     if (editingUser) {
       res.status(200).json({
