@@ -12,16 +12,16 @@ import { Loader } from "../components/Loader";
 export const Favorites = () => {
 
   
-  const [usersData, setUsersData] = useState([])
-  const [filteredUsersData, setFilteredUsersData] = useState([])
+  
   const accessToken = useSelector((store) => store.user.accessToken);
-  const profile = useSelector((store) => store.user.userData.profileType);
+  const userProfile = useSelector(state => state.user.userData)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userData = useSelector((store) => store.user.userData)
-  const [favorites, setFavorites] = useState(userData.favorites)
-  
+  const [userData, setUserData] = useState([])
+  const [favorites, setFavorites] = useState([])
+
+
 
 
   useEffect(() => {
@@ -29,6 +29,28 @@ export const Favorites = () => {
       navigate("/");
     }
   }, [accessToken, navigate]);
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+          'Authorization': accessToken
+      },
+  }
+    setLoading(true) 
+    fetch('http://localhost:8080/users', options)
+    .then((res) => res.json())
+    .then((data) => {
+
+      const user = data.find(item => item._id === userProfile._id)
+      
+      setUserData(user)
+      setFavorites(user.favorites)
+
+    })
+    .finally(() => setLoading(false))
+
+  }, [])
 
 
   
@@ -43,7 +65,6 @@ export const Favorites = () => {
         favorites: favorites,
       }),
     }
-    console.log(favorites,'fav')
      fetch ('http://localhost:8080/edituser', options)
     .then ((res) => res.json())
     .then ((data) => console.log(data))
@@ -77,7 +98,7 @@ export const Favorites = () => {
      <BigContainer>
         
         <SmallContainer>
-           {favorites.map(user => {
+           {favorites.length > 0 && favorites.map(user => {
             return ( 
             <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
@@ -99,14 +120,12 @@ export const Favorites = () => {
 
             </ProfileTextContainer>
             <Overlay></Overlay>
-
-
           </UserContainer>
             )
 
           })}
         
-
+        { favorites.length === 0 && <ProfileTitle>You have no favorites users yet...</ProfileTitle> }
         </SmallContainer>
        
 
