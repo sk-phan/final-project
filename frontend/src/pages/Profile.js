@@ -14,7 +14,6 @@ export const Profile = () => {
 
     const accessToken = useSelector((store) => store.user.accessToken);
 
-    const [user, setUser] = useState(null)
     const [updatedData, setUpdatedData] = useState(null);
     const [username, setUsername ]= useState(userProfile.username);
     const [email, setEmail ]= useState(userProfile.email);
@@ -31,6 +30,7 @@ export const Profile = () => {
 
     const dispatch = useDispatch();
 
+    const [edit, setEdit] = useState(false)
 
     const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
@@ -39,7 +39,7 @@ export const Profile = () => {
 
     const onSubmit =  (e) => {
         e.preventDefault();
-
+        setEdit(false)
         const options = {
                 method: "PATCH",
                 headers: {
@@ -61,12 +61,8 @@ export const Profile = () => {
       .then ((res) => res.json())
       .then ((data) => {
         if (data.success) {
-          console.log(data,'resonse')
-          
-          
-          setUpdatedData(data.response)
-          dispatch(user.actions.setUserData(data.response))
           dispatch(user.actions.setError(''))
+          setEdit(true)
         } else {
           dispatch(user.actions.setError('Update failed'))
         }
@@ -88,8 +84,7 @@ export const Profile = () => {
       })
       .catch(error => console.log(error))
     }, [])
-
-
+    
 
 
     useEffect(() => {
@@ -102,28 +97,17 @@ export const Profile = () => {
       fetch('http://localhost:8080/users', options)
       .then((res) => res.json())
       .then((data) => {
-  
-        const user = data.find(item => item._id === userProfile._id)
-        
-        setUser(user)
-        console.log('user', user)
-
-
-        // if(profile === 'Pet owner'){
-        //   const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
-        //   setUsersData(usersToShow)
-        //   setFilteredUsersData(usersToShow)
-        //   dispatch(user.actions.setOtherUsersData(usersToShow))
-        // }
-        // else {
-        //   const usersToShow = data.filter(user => user.profileType === 'Pet owner')
-        //   setUsersData(usersToShow)
-        //   setFilteredUsersData(usersToShow)
-        //   dispatch(user.actions.setOtherUsersData(usersToShow))
-        // }
+        const userNew = data.find(item => item._id === userProfile._id)  
+        setUpdatedData(userNew)
+        if (user) {
+          dispatch(user.actions.setUserData(userNew))
+        }
       })
+      //.finally(() => dispatch(user.actions.setUserData(updatedData)))
   
     }, [])
+
+  
 
     //Upload image
     const upload = async (e) => {
@@ -145,6 +129,7 @@ export const Profile = () => {
         }
       })
     }
+
   
     //Time checkbox
     const onTimeCheckbox = (time) => {
@@ -161,7 +146,6 @@ export const Profile = () => {
             <Side>
               <ReviewHeading>Your reviews</ReviewHeading>
               <ReviewList>
-                <p>{user && user.username}</p>
                 {reviews.length > 0 && reviews.map(item => {
                   return <Reviews>
                   <img src={item.img} alt={item.username + 'image'} />
@@ -180,6 +164,7 @@ export const Profile = () => {
               <FormWrapper>
               <Form onSubmit={onSubmit}>
                 <Header>
+                  <p>{user && user.username}</p>
                   <ProfileImg src={img}/>
                   {!editImg && <EditBtn onClick={() => setEditImg(!editImg)}>Upload new picture</EditBtn> }
                   {editImg && <input  className = "imageInput"

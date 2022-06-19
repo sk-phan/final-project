@@ -27,14 +27,25 @@ export const Userpage = () => {
   const navigate = useNavigate();
   const [showFilt, setShowFilt] = useState(false)
 
+  const [location, setLocation] = useState()
+  
+  const [updateData, setUpdateData] = useState(null)
+
+
   const [animalFilter, setAnimalFilter] = useState('all')
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
-  const [favorites, setFavorites] = useState([])
+  // const [startDateFilter, setStartDateFilter] = useState()
+  // const [endDateFilter, setEndDateFilter] = useState()
   
 
+  const [favorites, setFavorites] = useState(userData.favorites)
 
+
+  const [favorites, setFavorites] = useState([])
+
+  
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
@@ -89,8 +100,6 @@ export const Userpage = () => {
     else {
       setFavorites([...favorites, user])
     } 
-  
-
   }
   
   useEffect(() => {
@@ -113,8 +122,23 @@ export const Userpage = () => {
     .finally(() => console.log(userData,'USERDATA'))  
   }, [favorites])  
 
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+          'Authorization': accessToken
+      },
+  }
+    fetch('http://localhost:8080/users', options)
+    .then((res) => res.json())
+    .then((data) => {
+      const useri = data.find(item => item._id === userData._id) 
+      dispatch(user.actions.setUserData(useri)) 
+      console.log(useri,'rie')
+  
+    })
 
-
+  }, [favorites])
 
 
 const onFilterSubmit = (e) => {
@@ -136,7 +160,6 @@ const onFilterSubmit = (e) => {
       }
     else {
         setFilteredUsersData(usersToShow)
-      
     }
     
   }
@@ -170,11 +193,11 @@ const onExitClick = () => {
 
   return (
     <>
-     <NavBar /> 
+    <NavBar /> 
     <Main>
 		{loading && <Loader />}
 		{!loading && 
-     <div>
+    <div>
     {showFilt &&
         <FilterContainer display={showFilt ? 'flex' : 'none'}>
         <FilterTitleContainer>
@@ -199,7 +222,7 @@ const onExitClick = () => {
           <div className="checkbox-container">
           <ProfileTitle>Duration of pet sitting</ProfileTitle>
           {serviceOptions.map(item => {
-             return <RadioLabel htmlFor={item}>
+            return <RadioLabel htmlFor={item}>
                   
                     <RadioInput
                       id={item}
@@ -210,9 +233,9 @@ const onExitClick = () => {
                     />
                 
                     {item}
-             </RadioLabel>})}
-             </div>
-             <FilterTitleContainer>
+            </RadioLabel>})}
+            </div>
+            <FilterTitleContainer>
               <FilterButton type='submit' onClick={onFilterSubmit}>Filter</FilterButton>
               <FilterButton type="button" onClick={onResetFilters}>Reset All</FilterButton>
             </FilterTitleContainer>
@@ -223,7 +246,7 @@ const onExitClick = () => {
         <FilterButton onClick={onFilterClick}><FilterText>FILTER </FilterText> <IoIosOptions /></FilterButton>
         
         <SmallContainer>
-           {filteredUsersData.length > 0 && filteredUsersData.map(user => {
+          {filteredUsersData.length > 0 && filteredUsersData.map(user => {
             return ( 
             <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>

@@ -12,8 +12,7 @@ export const user = createSlice({
   },
   reducers: {
     setUserData: (store, action) => {
-      const newData  = {...action.payload}
-      store.userData = newData ;
+      store.userData  = action.payload
     },
     setError: (store, action) => {
       store.error = action.payload;

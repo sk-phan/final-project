@@ -11,8 +11,12 @@ import { Loader } from "../components/Loader";
 
 export const Favorites = () => {
 
-  
-  
+
+  const [user,setUser] = useState(null)
+  const [usersData, setUsersData] = useState([])
+  const [filteredUsersData, setFilteredUsersData] = useState([])
+  const userProfile = useSelector(store => store.user.userData)
+
   const accessToken = useSelector((store) => store.user.accessToken);
   const userProfile = useSelector(state => state.user.userData)
   const [loading, setLoading] = useState(false)
@@ -54,6 +58,7 @@ export const Favorites = () => {
 
 
   
+
   useEffect(() => {
     const options = {
       method: "PATCH",
@@ -73,6 +78,7 @@ export const Favorites = () => {
   }, [favorites])  
 
 
+
   const addTofavorites = async (user, e) => {
     e.preventDefault()
 
@@ -84,6 +90,25 @@ export const Favorites = () => {
       setFavorites([...favorites, user])
     } 
   }
+
+  console.log(favorites)
+
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+          'Authorization': accessToken
+      },
+  }
+    fetch('http://localhost:8080/users', options)
+    .then((res) => res.json())
+    .then((data) => {
+      const useri = data.find(item => item._id === userProfile._id)  
+      console.log(useri)
+      setUser(useri)
+    })
+
+  }, [])
   
 
 
