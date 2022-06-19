@@ -27,7 +27,7 @@ export const Userpage = () => {
   const navigate = useNavigate();
   const [showFilt, setShowFilt] = useState(false)
   const [location, setLocation] = useState()
-
+  
   const [updateData, setUpdateData] = useState(null)
 
   const [animalFilter, setAnimalFilter] = useState('all')
@@ -37,11 +37,8 @@ export const Userpage = () => {
   // const [endDateFilter, setEndDateFilter] = useState()
   
 
-
   const [favorites, setFavorites] = useState(userData.favorites)
   
-
-
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
@@ -89,12 +86,9 @@ export const Userpage = () => {
     else {
       setFavorites([...favorites, user])
     } 
-  
-
   }
   
   useEffect(() => {
-    console.log(favorites,'userdata')
 
     const options = {
       method: "PATCH",
@@ -117,8 +111,23 @@ export const Userpage = () => {
     .catch(error => console.log(error))    
   }, [favorites])  
 
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+          'Authorization': accessToken
+      },
+  }
+    fetch('http://localhost:8080/users', options)
+    .then((res) => res.json())
+    .then((data) => {
+      const useri = data.find(item => item._id === userData._id) 
+      dispatch(user.actions.setUserData(useri)) 
+      console.log(useri,'rie')
+  
+    })
 
-
+  }, [favorites])
 
 
 const onFilterSubmit = (e) => {
@@ -140,7 +149,6 @@ const onFilterSubmit = (e) => {
       }
     else {
         setFilteredUsersData(usersToShow)
-      
     }
     
   }
@@ -175,11 +183,11 @@ const onExitClick = () => {
 
   return (
     <>
-     <NavBar /> 
+    <NavBar /> 
     <Main>
 		{loading && <Loader />}
 		{!loading && 
-     <div>
+    <div>
     {showFilt &&
         <FilterContainer display={showFilt ? 'flex' : 'none'}>
         <FilterTitleContainer>
@@ -204,7 +212,7 @@ const onExitClick = () => {
           <div className="checkbox-container">
           <ProfileTitle>Duration of pet sitting</ProfileTitle>
           {serviceOptions.map(item => {
-             return <RadioLabel htmlFor={item}>
+            return <RadioLabel htmlFor={item}>
                   
                     <RadioInput
                       id={item}
@@ -215,9 +223,9 @@ const onExitClick = () => {
                     />
                 
                     {item}
-             </RadioLabel>})}
-             </div>
-             <FilterTitleContainer>
+            </RadioLabel>})}
+            </div>
+            <FilterTitleContainer>
               <FilterButton type='submit' onClick={onFilterSubmit}>Filter</FilterButton>
               <FilterButton type="button" onClick={onResetFilters}>Reset All</FilterButton>
             </FilterTitleContainer>
@@ -228,7 +236,7 @@ const onExitClick = () => {
         <FilterButton onClick={onFilterClick}><FilterText>FILTER </FilterText> <IoIosOptions /></FilterButton>
         
         <SmallContainer>
-           {filteredUsersData.length > 0 && filteredUsersData.map(user => {
+          {filteredUsersData.length > 0 && filteredUsersData.map(user => {
             return ( 
             <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
