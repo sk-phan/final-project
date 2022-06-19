@@ -11,18 +11,21 @@ import { Loader } from "../components/Loader";
 
 export const Favorites = () => {
 
+
   const [user,setUser] = useState(null)
   const [usersData, setUsersData] = useState([])
   const [filteredUsersData, setFilteredUsersData] = useState([])
   const userProfile = useSelector(store => store.user.userData)
+
   const accessToken = useSelector((store) => store.user.accessToken);
-  const profile = useSelector((store) => store.user.userData.profileType);
+  const userProfile = useSelector(state => state.user.userData)
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const userData = useSelector((store) => store.user.userData)
-  const [favorites, setFavorites] = useState(userData.favorites)
-  
+  const [userData, setUserData] = useState([])
+  const [favorites, setFavorites] = useState([])
+
+
 
 
   useEffect(() => {
@@ -31,26 +34,49 @@ export const Favorites = () => {
     }
   }, [accessToken, navigate]);
 
+  useEffect(() => {
+    const options = {
+      method: 'GET',
+      headers: {
+          'Authorization': accessToken
+      },
+  }
+    setLoading(true) 
+    fetch('http://localhost:8080/users', options)
+    .then((res) => res.json())
+    .then((data) => {
+
+      const user = data.find(item => item._id === userProfile._id)
+      
+      setUserData(user)
+      setFavorites(user.favorites)
+
+    })
+    .finally(() => setLoading(false))
+
+  }, [])
+
 
   
-  // useEffect(() => {
-  //   const options = {
-  //     method: "PATCH",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ 
-  //       userId: userData._id,
-  //       favorites: favorites,
-  //     }),
-  //   }
-  //   console.log(favorites,'fav')
-  //    fetch ('http://localhost:8080/edituser', options)
-  //   .then ((res) => res.json())
-  //   .then ((data) => console.log(data))
-  //   .catch(error => console.log(error))
-  //   .finally(() => console.log(userData,'USERDATA'))
-  // }, [favorites])  
+
+  useEffect(() => {
+    const options = {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ 
+        userId: userData._id,
+        favorites: favorites,
+      }),
+    }
+     fetch ('http://localhost:8080/edituser', options)
+    .then ((res) => res.json())
+    .then ((data) => console.log(data))
+    .catch(error => console.log(error))
+    .finally(() => console.log(userData,'USERDATA'))
+  }, [favorites])  
+
 
 
   const addTofavorites = async (user, e) => {
@@ -97,7 +123,7 @@ export const Favorites = () => {
      <BigContainer>
         
         <SmallContainer>
-           {favorites.map(user => {
+           {favorites.length > 0 && favorites.map(user => {
             return ( 
             <UserContainer  to={`/userdetails/${user._id}`} key={user._id}>
             <ProfileImageContainer>
@@ -119,14 +145,12 @@ export const Favorites = () => {
 
             </ProfileTextContainer>
             <Overlay></Overlay>
-
-
           </UserContainer>
             )
 
           })}
         
-
+        { favorites.length === 0 && <ProfileTitle>You have no favorites users yet...</ProfileTitle> }
         </SmallContainer>
        
 

@@ -18,26 +18,33 @@ export const Userpage = () => {
   const [usersData, setUsersData] = useState([])
   const [filteredUsersData, setFilteredUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
-  const profile = useSelector((store) => store.user.userData.profileType);
-  const otherUsersData = useSelector((store) => store.user.otherUsersData)
+  const [profile, setProfile] = useState()
+  const userProfile = useSelector(state => state.user.userData)
 
-  const userData = useSelector((store) => store.user.userData)
+  const [userData, setUserData] = useState([])
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showFilt, setShowFilt] = useState(false)
+
   const [location, setLocation] = useState()
   
   const [updateData, setUpdateData] = useState(null)
 
+
   const [animalFilter, setAnimalFilter] = useState('all')
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
+
   // const [startDateFilter, setStartDateFilter] = useState()
   // const [endDateFilter, setEndDateFilter] = useState()
   
 
   const [favorites, setFavorites] = useState(userData.favorites)
+
+
+  const [favorites, setFavorites] = useState([])
+
   
   useEffect(() => {
     if (!accessToken) {
@@ -58,19 +65,26 @@ export const Userpage = () => {
     fetch('http://localhost:8080/users', options)
     .then((res) => res.json())
     .then((data) => {
+      const user = data.find(item => item._id === userProfile._id)
+      console.log('user', user)
+      setUserData(user)
+      setFavorites(user.favorites)
+      setProfile(user.profileType)
+      
 
-      if(profile === 'Pet owner'){
+      if(user.profileType === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
         setUsersData(usersToShow)
         setFilteredUsersData(usersToShow)
-        dispatch(user.actions.setOtherUsersData(usersToShow))
       }
       else {
         const usersToShow = data.filter(user => user.profileType === 'Pet owner')
         setUsersData(usersToShow)
         setFilteredUsersData(usersToShow)
-        dispatch(user.actions.setOtherUsersData(usersToShow))
+  
       }
+      
+
     })
     .finally(() => setLoading(false))
 
@@ -90,6 +104,7 @@ export const Userpage = () => {
   
   useEffect(() => {
 
+
     const options = {
       method: "PATCH",
       headers: {
@@ -101,14 +116,10 @@ export const Userpage = () => {
       }),
     }
      fetch ('http://localhost:8080/edituser', options)
-     .then(res => res.json())
-     .then ((data) => {
-       if (data.success) {
-         setUpdateData(data.response)
-        // dispatch(user.actions.setUserData(data.response))
-       }
-    })
-    .catch(error => console.log(error))    
+     .then ((res) => res.json())
+    .then ((data) => console.log(data))
+    .catch(error => console.log(error))
+    .finally(() => console.log(userData,'USERDATA'))  
   }, [favorites])  
 
   useEffect(() => {
@@ -171,7 +182,6 @@ const onFilterClick = () => {
 const onResetFilters = () => {
   setAnimalFilter('all')
   setServiceFilter([])
-  setLocation()
   const usersToShow = [...usersData]
   setFilteredUsersData(usersToShow)
   setShowFilt(false)
