@@ -105,12 +105,16 @@ export const Signup = () => {
         }),
       }
       
+<<<<<<< HEAD
       fetch(API_URL('signup'), options)
+=======
+
+      fetch('https://pet-app-sk.herokuapp.com/signup', options)
+>>>>>>> b2b9a6165ed92c8dc71ea1e1e207efcf88e96e76
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
           if (data.success) {
-            console.log('data', data)
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
               dispatch(user.actions.setError(''))

@@ -1,0 +1,1 @@
+const BASE_URL = 'https://final-project-sk-pet-app.herokuapp.com/'
