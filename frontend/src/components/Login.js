@@ -4,7 +4,7 @@ import { useSelector, useDispatch, batch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import styled from 'styled-components'
-
+import { API_URL } from '../utils/url';
 
 
 export const Login = () => {
@@ -39,7 +39,7 @@ export const Login = () => {
       }),
     };
 
-    fetch("http://localhost:8080/login", options)
+    fetch(API_URL('login'), options)
     .then((res) => res.json())
       .then((data) => {
         if (data.success) {

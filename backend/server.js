@@ -127,6 +127,9 @@ const Review = mongoose.model("Review", ReviewSchema)
     }
   }
 
+app.get("/", (req, res ) => {
+  res.status(200).json('hello')
+})
 //user endpoint
 app.get("/users", authenticateUser);
 app.get("/users", async (req, res) => {
@@ -177,7 +180,7 @@ app.get("/users", async (req, res) => {
 
 //login endpoint
 app.post('/login', async (req, res) => {
-    const { username, password } = req.body
+    const { username, password } = req.body;
   
     try {
       const user = await User.findOne({ username })

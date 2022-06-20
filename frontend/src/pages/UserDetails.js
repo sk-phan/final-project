@@ -8,7 +8,7 @@ import { MdOutlineFileDownloadDone } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { user } from '../reducers/user';
 import { Loader } from "../components/Loader";
-
+import { API_URL } from '../utils/url';
 
 export const UserDetails = () => {
     const existingReviews = useSelector(store => store.user.reviews);
@@ -51,14 +51,14 @@ export const UserDetails = () => {
                     }),
         }
 
-        fetch('http://localhost:8080/reviews', options) 
+        fetch(API_URL('reviews'), options) 
         .then(res => res.json())
         .then(data => setReviewList((prev) => [...prev, data.response]))
         .catch(error => console.log(error))
         .finally(() => setReview(''))
     }    
     useEffect(() => {
-        fetch('http://localhost:8080/reviews') 
+        fetch(API_URL('reviews')) 
         .then(res => res.json())
         .then(data => {
             if (data.success) {
@@ -90,7 +90,7 @@ export const UserDetails = () => {
             }),
           };
 
-        fetch('http://localhost:8080/editReview', options)
+        fetch(API_URL('editReview'), options)
         .then((res) => res.json())
         .then((data) => console.log(data))
         .finally(() => setEditText(''))
@@ -114,7 +114,7 @@ export const UserDetails = () => {
                         }),
                     }
             
-                    await fetch('http://localhost:8080/deleteReview', options)
+                    await fetch(API_URL('deleteReview'), options)
             
                     return setReviewList(updateReviews)
         }
@@ -128,7 +128,7 @@ export const UserDetails = () => {
           },
       }
         setLoading(true) 
-        fetch('http://localhost:8080/users', options)
+        fetch(API_URL('users'), options)
         .then((res) => res.json())
         .then((data) => {
           const userNew = data.find(item => item._id === userProfile._id)  

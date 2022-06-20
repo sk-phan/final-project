@@ -8,7 +8,7 @@ import moment from 'moment';
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
 
-
+import { API_URL } from "../utils/url";
 export const Favorites = () => {
 
 
@@ -42,7 +42,7 @@ export const Favorites = () => {
       },
   }
     setLoading(true) 
-    fetch('http://localhost:8080/users', options)
+    fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
 
@@ -70,7 +70,7 @@ export const Favorites = () => {
         favorites: favorites,
       }),
     }
-     fetch ('http://localhost:8080/edituser', options)
+     fetch (API_URL('edituser'), options)
     .then ((res) => res.json())
     .then ((data) => console.log(data))
     .catch(error => console.log(error))
@@ -91,7 +91,6 @@ export const Favorites = () => {
     } 
   }
 
-  console.log(favorites)
 
   useEffect(() => {
     const options = {
@@ -100,11 +99,10 @@ export const Favorites = () => {
           'Authorization': accessToken
       },
   }
-    fetch('http://localhost:8080/users', options)
+    fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
       const useri = data.find(item => item._id === userProfile._id)  
-      console.log(useri)
       setUser(useri)
     })
 
@@ -323,7 +321,7 @@ const Overlay = styled.div`
 
 const FilterContainer = styled.div`
     background: red;
-    display: ${props => props.display}
+    display: ${props => props.display};
     flex-wrap: wrap;
     width: 320px;
     gap: 20px;

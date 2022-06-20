@@ -11,7 +11,7 @@ import Autocomplete from "react-google-autocomplete";
 
 import { IoIosOptions } from 'react-icons/io';
 import { batch } from "react-redux";
-
+import { API_URL } from "../utils/url";
 
 export const Userpage = () => {
 
@@ -36,16 +36,8 @@ export const Userpage = () => {
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
-  // const [startDateFilter, setStartDateFilter] = useState()
-  // const [endDateFilter, setEndDateFilter] = useState()
-  
-
-  // const [favorites, setFavorites] = useState(userData.favorites)
-
-
   const [favorites, setFavorites] = useState([])
 
-  
   useEffect(() => {
     if (!accessToken) {
       navigate("/");
@@ -62,7 +54,7 @@ export const Userpage = () => {
       },
   }
     setLoading(true) 
-    fetch('http://localhost:8080/users', options)
+    fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
       const user = data.find(item => item._id === userProfile._id)
@@ -115,7 +107,7 @@ export const Userpage = () => {
         favorites: favorites,
       }),
     }
-     fetch ('http://localhost:8080/edituser', options)
+     fetch (API_URL('edituser'), options)
      .then ((res) => res.json())
     .then ((data) => console.log(data))
     .catch(error => console.log(error))
@@ -129,7 +121,7 @@ export const Userpage = () => {
           'Authorization': accessToken
       },
   }
-    fetch('http://localhost:8080/users', options)
+    fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
       const useri = data.find(item => item._id === userData._id) 
@@ -452,7 +444,7 @@ const Overlay = styled.div`
 
 const FilterContainer = styled.div`
     background: red;
-    display: ${props => props.display}
+    display: ${props => props.display};
     flex-wrap: wrap;
     width: 320px;
     gap: 20px;
