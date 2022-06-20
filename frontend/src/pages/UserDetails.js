@@ -167,7 +167,7 @@ export const UserDetails = () => {
                                 <span>{userToShow.animalType}</span>
                                 <span>{userToShow.location}</span>
                                 <span>{userToShow.preferableTime.map(time => {
-                                return <span> {time}</span>})}
+                                return <span key={time}> {time}</span>})}
                                 </span>
                                 <span>{moment(userToShow.startDate).format('MMM Do YY')} - {moment(userToShow.endDate).format('MMM Do YY')}</span>
                                 <span>{userToShow.description}</span>
@@ -317,7 +317,7 @@ const SmallContainer = styled.div`
   }
 `
 
-const ProfileText = styled.p`
+const ProfileText = styled.div`
   font-family: 'Raleway', sans-serif;
   font-weight: 500;
   font-size: 10px;

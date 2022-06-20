@@ -105,15 +105,9 @@ export const Signup = () => {
         }),
       }
       
-<<<<<<< HEAD
       fetch(API_URL('signup'), options)
-=======
-
-      fetch('https://pet-app-sk.herokuapp.com/signup', options)
->>>>>>> b2b9a6165ed92c8dc71ea1e1e207efcf88e96e76
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
           if (data.success) {
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
@@ -328,7 +322,7 @@ export const Signup = () => {
            <div className="checkbox-container">
              <P>Duration of pet sitting:*</P>
            {preferTimeOption.map(item => {
-             return <RadioLabel htmlFor={item}>
+             return <RadioLabel key={item} htmlFor={item}>
                     <RadioInput
                       id={item}
                       type='checkbox'

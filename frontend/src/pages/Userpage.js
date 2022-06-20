@@ -27,11 +27,6 @@ export const Userpage = () => {
   const navigate = useNavigate();
   const [showFilt, setShowFilt] = useState(false)
 
-  const [location, setLocation] = useState()
-  
-  const [updateData, setUpdateData] = useState(null)
-
-
   const [animalFilter, setAnimalFilter] = useState('all')
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
