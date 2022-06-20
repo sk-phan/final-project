@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { user } from "../reducers/user";
 
 import { NavBar } from "../components/NavBar"
-import { AiOutlineEdit } from 'react-icons/ai';
+import { Loader } from "../components/Loader";
 
 import styled from "styled-components"
 import { API_URL } from "../utils/url";
@@ -29,7 +29,7 @@ export const Profile = () => {
 
     const dispatch = useDispatch();
 
-    const [edit, setEdit] = useState(false)
+   const [loader, setLoader] = useState(false)
 
     const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
@@ -38,7 +38,6 @@ export const Profile = () => {
 
     const onSubmit =  (e) => {
         e.preventDefault();
-        setEdit(false)
         const options = {
                 method: "PATCH",
                 headers: {
@@ -76,7 +75,7 @@ export const Profile = () => {
         if(data.success) {     
           const filterReviews = data.response.filter(item => item.revieweeId === userProfile._id)
           setReviews(filterReviews)
-          //dispatch(user.actions.setError(''))
+          dispatch(user.actions.setError(''))
         } else {
           dispatch(user.actions.setError('Fail to load reviews'))
         }
@@ -87,6 +86,8 @@ export const Profile = () => {
 
 
     useEffect(() => {
+
+      setLoader(true)
       const options = {
         method: 'GET',
         headers: {
@@ -111,6 +112,8 @@ export const Profile = () => {
           dispatch(user.actions.setUserData(userNew))
         }
       })
+      .catch(error => console.log(error))
+      .finally(() => setLoader(false))
   
     }, [])
 
@@ -148,138 +151,153 @@ export const Profile = () => {
       }
 
     return (
-        <Container>
-          <SmallContainer>
-            <Side>
-              <ReviewHeading>Your reviews</ReviewHeading>
-              <ReviewList>
-                {reviews.length > 0 && reviews.map(item => {
-                  return <Reviews>
-                  <img src={item.img} alt={item.username + 'image'} />
-                  <div>
-                    <Name>@{item.username}</Name>
-                    <ReviewText>
-                      {item.reviewText}
-                    </ReviewText>
-                  </div>
-                </Reviews>
-                })}
-                {reviews.length === 0 && <EmptyReview>You have no review</EmptyReview>}
-              </ReviewList>
-            </Side>
-            {updatedData && <FormContainer>
-              <FormWrapper>
-              <Form onSubmit={onSubmit}>
-                <Header>
-                  <ProfileImg src={img}/>
-                  {!editImg && <EditBtn onClick={() => setEditImg(!editImg)}>Upload new picture</EditBtn> }
-                  {editImg && <input  className = "imageInput"
-                      type='file'
-                      name="myImage"
-                      onChange={(e) => upload(e)}
-                  />  }
-                </Header>
-                  <Label htmlFor="username">
-                      Username
-                      <input 
-                          id='username'
-                          type='text'
-                          value={username}
-                          onChange={(e) => setUsername(e.target.value)}                  
-                      />
-                  </Label>
-                  <Label htmlFor="email">
-                      Email
-                      <input 
-                          id='email'
-                          type='email'
-                          value={email}
-                          onChange={(e) => setEmail(e.target.value)}                  
-                      />
-                  </Label>
-                  <Label htmlFor="password">
-                      Password
-                      <input 
-                          id='password'
-                          type='password'
-                          value={password}
-                          onChange={(e) => setPassword(e.target.value)}                  
-                      />
-                  </Label>
-            
-                  <Heading>Pet information</Heading>
-                  <ProfileContainer>
-                
-                  <InputContainer>
-                    <P>Animal type:</P>
-                    <RadioLabel htmlFor='dog'>
-                        <RadioInput
-                          id='dog'
-                          type = 'radio' 
-                          value = 'dog' 
-                          checked = {animalType === 'dog'}
-                          onChange = {(e) => setAnimalType(e.target.value)}
-                        />
-                        Dog
-                    </RadioLabel>
-                    <RadioLabel htmlFor='cat'>
-                    <RadioInput
-                        id='cat'
-                        type = 'radio' 
-                        value = 'cat' 
-                        checked = {animalType === 'cat'}
-                        onChange = {(e) => setAnimalType(e.target.value)}
+    <Main>
+      {loader && <Loader />}
+      {!loader && <Container>
+        <SmallContainer>
+          <Side>
+            <ReviewHeading>Your reviews</ReviewHeading>
+            <ReviewList>
+              {reviews.length > 0 && reviews.map(item => {
+                return <Reviews key={item._id}>
+                <img src={item.img} alt={item.username + 'image'} />
+                <div>
+                  <Name>@{item.username}</Name>
+                  <ReviewText>
+                    {item.reviewText}
+                  </ReviewText>
+                </div>
+              </Reviews>
+              })}
+              {reviews.length === 0 && <EmptyReview>You have no review</EmptyReview>}
+            </ReviewList>
+          </Side>
+          {updatedData && <FormContainer>
+            <FormWrapper>
+            <Form onSubmit={onSubmit}>
+              <Header>
+                <ProfileImg src={img}/>
+                {!editImg && <EditBtn onClick={() => setEditImg(!editImg)}>Upload new picture</EditBtn> }
+                {editImg && <input  className = "imageInput"
+                    type='file'
+                    name="myImage"
+                    onChange={(e) => upload(e)}
+                />  }
+              </Header>
+                <Label htmlFor="username">
+                    Username
+                    <input 
+                        id='username'
+                        type='text'
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}                  
                     />
-                        Cat
-                    </RadioLabel>
-                  </InputContainer>
-              </ProfileContainer>
-              <Checkbox>
-                  <P>Duration of pet sitting:*</P>
-                  {preferTimeOption.map(item => {
-                      return <RadioLabel htmlFor={item}>
-                              <RadioInput
-                              id={item}
-                              type='checkbox'
-                              value = {item}
-                              checked = {preferableTime.includes(item)}
-                              onChange = { () => onTimeCheckbox(item) }      
-                              />
-                              {item}
-                              </RadioLabel>
-                  })}
-              </Checkbox>
-              <Label htmlFor='start-date'>
-                  Start Date:*
-                <input
-                  id="start-date"
-                  className="input"
-                  type="date"
-                  value={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  required
-                />            
-              </Label>
-              <Label htmlFor="end-date">
-                  End Date:*
-                <input
-                  id="end-date"
-                  className="input"
-                  type="date"
-                  value={endDate}
-                  onChange={(e) => setEndDate(e.target.value)}
-                  required
-                />           
-              </Label>         
-              <SubmitBtn type="submit">Save profile</SubmitBtn>
-              </Form>
-              </FormWrapper>
-            </FormContainer>}
-          </SmallContainer>
-        </Container>
+                </Label>
+                <Label htmlFor="email">
+                    Email
+                    <input 
+                        id='email'
+                        type='email'
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}                  
+                    />
+                </Label>
+                <Label htmlFor="password">
+                    Password
+                    <input 
+                        id='password'
+                        type='password'
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}                  
+                    />
+                </Label>
+          
+                <Heading>Pet information</Heading>
+                <ProfileContainer>
+              
+                <InputContainer>
+                  <P>Animal type:</P>
+                  <RadioLabel htmlFor='dog'>
+                      <RadioInput
+                        id='dog'
+                        type = 'radio' 
+                        value = 'dog' 
+                        checked = {animalType === 'dog'}
+                        onChange = {(e) => setAnimalType(e.target.value)}
+                      />
+                      Dog
+                  </RadioLabel>
+                  <RadioLabel htmlFor='cat'>
+                  <RadioInput
+                      id='cat'
+                      type = 'radio' 
+                      value = 'cat' 
+                      checked = {animalType === 'cat'}
+                      onChange = {(e) => setAnimalType(e.target.value)}
+                  />
+                      Cat
+                  </RadioLabel>
+                </InputContainer>
+            </ProfileContainer>
+            <Checkbox>
+                <P>Duration of pet sitting:*</P>
+                {preferTimeOption.map(item => {
+                    return <RadioLabel key={item} htmlFor={item}>
+                            <RadioInput
+                            id={item}
+                            type='checkbox'
+                            value = {item}
+                            checked = {preferableTime.includes(item)}
+                            onChange = { () => onTimeCheckbox(item) }      
+                            />
+                            {item}
+                            </RadioLabel>
+                })}
+            </Checkbox>
+            <Label htmlFor='start-date'>
+                Start Date:*
+              <input
+                id="start-date"
+                className="input"
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                required
+              />            
+            </Label>
+            <Label htmlFor="end-date">
+                End Date:*
+              <input
+                id="end-date"
+                className="input"
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                required
+              />           
+            </Label>         
+            <SubmitBtn type="submit">Save profile</SubmitBtn>
+            </Form>
+            </FormWrapper>
+          </FormContainer>}
+        </SmallContainer>
+      </Container>}
+    </Main>
+
     )
 
 }
+
+const Main = styled.main`
+width: 100%;
+min-width: 100vw;
+min-height: 100vh;
+display: flex;
+justify-content: center;
+align-items: center;
+position: relative;
+`
+
 
 const Container = styled.div`
   height: 100vh;
@@ -342,7 +360,8 @@ const InputContainer = styled.div`
   gap: 5rem;
 `
 
-const Label = styled(Form)`
+const Label = styled.label`
+  display: flex;
   flex-direction: column;
   margin-bottom: 3.2rem;
   gap: 1.2rem;
