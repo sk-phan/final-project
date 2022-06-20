@@ -126,7 +126,6 @@ export const Userpage = () => {
     .then((data) => {
       const useri = data.find(item => item._id === userData._id) 
       dispatch(user.actions.setUserData(useri)) 
-      console.log(useri,'rie')
   
     })
 
@@ -182,6 +181,7 @@ const onResetFilters = () => {
 const onExitClick = () => {
   setShowFilt(false)
 }
+
 
   return (
     <>

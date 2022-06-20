@@ -18,7 +18,6 @@ export const Profile = () => {
     const [username, setUsername ]= useState('');
     const [email, setEmail ]= useState('');
     const [password, setPassword ]= useState('');
-    const [profileType, setProfileType] = useState('');
     const [animalType, setAnimalType] = useState('')
     const [preferableTime, setPreferableTime] = useState([])
     const [startDate, setStartDate] = useState('');
@@ -52,7 +51,6 @@ export const Profile = () => {
                   startDate: startDate,
                   animalType: animalType,
                   email: email,
-                  profileType: profileType,
                   username: username, 
                   password: password,
                   img: img

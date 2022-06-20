@@ -105,11 +105,7 @@ export const Signup = () => {
         }),
       }
       
-<<<<<<< HEAD
-      fetch('https://pet-app-sk.herokuapp.com/signup', options)
-=======
-      fetch("https://final-project-sk-pet-app.herokuapp.com/signup", options)
->>>>>>> 000cf7b16e1edbd68956e444d0b3043dc828f951
+      fetch(API_URL('signup'), options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data)
@@ -388,7 +384,6 @@ export const Signup = () => {
                 Profile description:
               </DateLabel>
               <textarea
-                id="start-date"
                 className="textarea"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
