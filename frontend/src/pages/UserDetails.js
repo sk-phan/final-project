@@ -131,7 +131,7 @@ export const UserDetails = () => {
         fetch(API_URL('users'), options)
         .then((res) => res.json())
         .then((data) => {
-          const userNew = data.find(item => item._id === userProfile._id)  
+          const userNew = data.find(item => item._id === userId)  
           setUserToShow(userNew)
         })
         .finally(() => setLoading(false))
