@@ -15,15 +15,15 @@ export const Profile = () => {
     const accessToken = useSelector((store) => store.user.accessToken);
 
     const [updatedData, setUpdatedData] = useState(null);
-    const [username, setUsername ]= useState(userProfile.username);
-    const [email, setEmail ]= useState(userProfile.email);
-    const [password, setPassword ]= useState(userProfile.password);
-    const [profileType, setProfileType] = useState(userProfile.profileType);
+    const [username, setUsername ]= useState('');
+    const [email, setEmail ]= useState('');
+    const [password, setPassword ]= useState('');
+    const [profileType, setProfileType] = useState('');
     const [animalType, setAnimalType] = useState('')
     const [preferableTime, setPreferableTime] = useState([])
-    const [startDate, setStartDate] = useState(userProfile.startDate);
-    const [endDate, setEndDate] = useState(userProfile.endDate);
-    const [img, setImg] = useState(userProfile.img)
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [img, setImg] = useState('')
     const [editImg, setEditImg] = useState(false)
 
     const [reviews, setReviews] = useState([]);
@@ -35,7 +35,7 @@ export const Profile = () => {
     const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
 
-    
+  
 
     const onSubmit =  (e) => {
         e.preventDefault();
@@ -48,8 +48,9 @@ export const Profile = () => {
                 body: JSON.stringify({ 
                   userId: userProfile._id,  
                   preferableTime: preferableTime,   
-                  endDate: startDate,
+                  endDate: endDate,
                   startDate: startDate,
+                  animalType: animalType,
                   email: email,
                   profileType: profileType,
                   username: username, 
@@ -62,7 +63,6 @@ export const Profile = () => {
       .then ((data) => {
         if (data.success) {
           dispatch(user.actions.setError(''))
-          setEdit(true)
         } else {
           dispatch(user.actions.setError('Update failed'))
         }
@@ -70,6 +70,7 @@ export const Profile = () => {
       .catch(error => console.log(error))
     }
 
+    
     useEffect(() => {
       fetch('http://localhost:8080/reviews')
       .then(res => res.json())
@@ -99,11 +100,19 @@ export const Profile = () => {
       .then((data) => {
         const userNew = data.find(item => item._id === userProfile._id)  
         setUpdatedData(userNew)
+        setUsername(userNew.username)
+        setImg(userNew.img)
+        setEmail(userNew.email)
+        setPassword(userNew.password)
+        setStartDate(userNew.startDate)
+        setEndDate(userNew.endDate)
+        setAnimalType(userNew.animalType)
+        setPreferableTime(userNew.preferableTime)   
+
         if (user) {
           dispatch(user.actions.setUserData(userNew))
         }
       })
-      //.finally(() => dispatch(user.actions.setUserData(updatedData)))
   
     }, [])
 
@@ -160,11 +169,10 @@ export const Profile = () => {
                 {reviews.length === 0 && <EmptyReview>You have no review</EmptyReview>}
               </ReviewList>
             </Side>
-            <FormContainer>
+            {updatedData && <FormContainer>
               <FormWrapper>
               <Form onSubmit={onSubmit}>
                 <Header>
-                  <p>{user && user.username}</p>
                   <ProfileImg src={img}/>
                   {!editImg && <EditBtn onClick={() => setEditImg(!editImg)}>Upload new picture</EditBtn> }
                   {editImg && <input  className = "imageInput"
@@ -268,7 +276,7 @@ export const Profile = () => {
               <SubmitBtn type="submit">Save profile</SubmitBtn>
               </Form>
               </FormWrapper>
-            </FormContainer>
+            </FormContainer>}
           </SmallContainer>
         </Container>
     )
