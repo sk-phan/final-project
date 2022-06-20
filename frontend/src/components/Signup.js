@@ -104,11 +104,10 @@ export const Signup = () => {
         }),
       }
       
-      fetch("https://final-project-sk-pet-app.herokuapp.com/signup", options)
+      fetch("http://localhost:8080/signup", options)
       .then((res) => res.json())
       .then((data) => {
           if (data.success) {
-            console.log('data', data)
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
               dispatch(user.actions.setError(''))
