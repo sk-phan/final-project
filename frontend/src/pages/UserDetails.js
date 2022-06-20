@@ -7,6 +7,7 @@ import { AiOutlineEdit } from 'react-icons/ai'
 import { MdOutlineFileDownloadDone } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
 import { user } from '../reducers/user';
+import { Loader } from "../components/Loader";
 
 
 export const UserDetails = () => {
@@ -26,8 +27,11 @@ export const UserDetails = () => {
     const [editText, setEditText] = useState('')
     const [editId, setEditId] = useState('')
     const [deleteId, setDeleteId] = useState('')
+    const [loading, setLoading] = useState(false)
 
-    const userToShow = otherUsersData.find(user => user._id === userId)
+    // const userToShow = otherUsersData.find(user => user._id === userId)
+    const [userToShow, setUserToShow] = useState([])
+    const userProfile = useSelector(state => state.user.userData)
 
 
     const onFormSubmit = (e) => {
@@ -116,9 +120,32 @@ export const UserDetails = () => {
         }
     }
 
+    useEffect(() => {
+        const options = {
+          method: 'GET',
+          headers: {
+              'Authorization': accessToken
+          },
+      }
+        setLoading(true) 
+        fetch('http://localhost:8080/users', options)
+        .then((res) => res.json())
+        .then((data) => {
+          const userNew = data.find(item => item._id === userProfile._id)  
+          setUserToShow(userNew)
+        })
+        .finally(() => setLoading(false))
+    
+      }, [])
+
+
     return(
         <Main>
+            {loading && <Loader />}
+            {!loading && 
+            <>
             <BackButton onClick={() => navigate(-1)}>Back</BackButton>
+            {userToShow.length !== 0 && 
             <BigContainer>  
                 <SmallContainer>      
                     <ImageContainer>
@@ -187,7 +214,8 @@ export const UserDetails = () => {
                         </div>
                     </TextContainer>
                 </SmallContainer>
-            </BigContainer>
+            </BigContainer>}
+            </>}
         </Main>
     )
 
