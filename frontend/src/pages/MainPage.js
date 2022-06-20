@@ -69,7 +69,7 @@ const MainPage = () => {
                 <WalkingImg src="https://images.unsplash.com/photo-1582457380669-c833e7c77e01?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80" />
                 <SmallContainer2>
                     <FAQHeading>Frequently Asked Questions</FAQHeading>
-                    <div class="accordionContainer">
+                    <div className="accordionContainer">
                         <button onClick={onAccordionClick1} className={accordion1 ? "accordionButtonOpen" :"accordionButtonClosed"} >Question one?</button>
                         {accordion1 ? 
                         <div className="panel">
@@ -121,7 +121,7 @@ const BigContainer = styled.div`
     width: 100%;
     height: 100%;
     min-height: 100vh;
-    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center fixed; 
+    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center; 
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -184,17 +184,7 @@ const BigContainer2 = styled.div`
     min-height:100%;
     height: auto;
     min-height: 100vh;
-    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-
-
-    @media (min-width: 768px) {
-        background: #4C956C;
-
-    }
+    background: #4C956C;
 `
 
 
