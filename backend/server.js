@@ -208,10 +208,20 @@ app.patch("/edituser", async (req,res) => {
 
   
   try {
-    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites} );
+
+    let editingUser;
+
+    const existingUser = await User.findOne({userId})
+    if (bcrypt.compareSync(password, existingUser.password)) {
+      editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites} );
+      
+    } else {
+      const salt = bcrypt.genSaltSync()
+      editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password: bcrypt.hashSync(password, salt), img, description, favorites} );
+
+    }
     
     if (editingUser) {
-      console.log(editingUser)
       res.status(200).json({
         response: editingUser,
         success: true
