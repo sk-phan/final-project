@@ -7,6 +7,7 @@ import { user } from "../reducers/user";
 import Autocomplete from "react-google-autocomplete";
 import styled from 'styled-components';
 
+import { API_URL } from '../utils/url';
 
 export const Signup = () => {
   const [mode, setMode] = useState("signup");
@@ -104,7 +105,7 @@ export const Signup = () => {
         }),
       }
       
-      fetch("https://abcdeddd.herokuapp.com/signup", options)
+      fetch('https://pet-app-sk.herokuapp.com/signup', options)
       .then((res) => res.json())
       .then((data) => {
         console.log(data)

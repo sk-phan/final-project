@@ -6,7 +6,7 @@ import { NavBar } from "../components/NavBar"
 import { AiOutlineEdit } from 'react-icons/ai';
 
 import styled from "styled-components"
-
+import { API_URL } from "../utils/url";
 
 export const Profile = () => {
   
@@ -58,7 +58,7 @@ export const Profile = () => {
                   img: img
                 }),
               };
-      fetch ('http://localhost:8080/edituser', options)
+      fetch (API_URL('edituser'), options)
       .then ((res) => res.json())
       .then ((data) => {
         if (data.success) {
@@ -72,7 +72,7 @@ export const Profile = () => {
 
     
     useEffect(() => {
-      fetch('http://localhost:8080/reviews')
+      fetch(API_URL('reviews'))
       .then(res => res.json())
       .then(data => {
         if(data.success) {     
@@ -95,7 +95,7 @@ export const Profile = () => {
             'Authorization': accessToken
         },
     }
-      fetch('http://localhost:8080/users', options)
+      fetch(API_URL('users'), options)
       .then((res) => res.json())
       .then((data) => {
         const userNew = data.find(item => item._id === userProfile._id)  
