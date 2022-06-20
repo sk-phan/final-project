@@ -104,9 +104,10 @@ export const Signup = () => {
         }),
       }
       
-      fetch("http://localhost:8080/signup", options)
+      fetch("https://abcdeddd.herokuapp.com/signup", options)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
           if (data.success) {
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
