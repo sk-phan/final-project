@@ -40,7 +40,7 @@ export const Userpage = () => {
   // const [endDateFilter, setEndDateFilter] = useState()
   
 
-  const [favorites, setFavorites] = useState(userData.favorites)
+  // const [favorites, setFavorites] = useState(userData.favorites)
 
 
   const [favorites, setFavorites] = useState([])
@@ -307,17 +307,18 @@ const BigContainer = styled.div`
 const SmallContainer = styled.div`
   display:flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 320px;
   gap: 20px;
   padding:10px;
 
   @media (min-width: 768px) {
    width: 700px;
+   gap:50px;
   }
 
   @media (min-width: 1025px) {
     width: 1000px;
+    gap:40px;
    }
 `
 

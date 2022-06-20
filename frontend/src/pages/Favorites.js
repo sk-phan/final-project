@@ -18,7 +18,7 @@ export const Favorites = () => {
   const userProfile = useSelector(store => store.user.userData)
 
   const accessToken = useSelector((store) => store.user.accessToken);
-  const userProfile = useSelector(state => state.user.userData)
+
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
