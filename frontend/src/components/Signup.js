@@ -94,8 +94,6 @@ export const Signup = () => {
               dispatch(user.actions.setUserData(data.response));
               dispatch(user.actions.setError(''))
             });
-              
-
           } else {  
             batch(() => {
               dispatch(user.actions.setError(data.response))
