@@ -156,6 +156,7 @@ export const Profile = () => {
                 {editImg && <input  className = "imageInput"
                     type='text'
                     name="myImage"
+                    value={img}
                     onChange={(e) => setImg(e.target.value)}
                     placeholder='Place an image link address'
                 />  }
