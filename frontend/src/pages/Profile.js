@@ -115,27 +115,6 @@ export const Profile = () => {
 
   
 
-    //Upload image
-    const upload = async (e) => {
-      const file = e.target.files[0];
-      const base64  = await convertBase64(file)
-      setImg(base64)
-    }
-    const convertBase64 = (file) => {
-      alert(file.size + " KB.");
-      return new Promise ((resolve, reject) => {
-        const fileReader = new FileReader();
-        fileReader.readAsDataURL(file);
-        fileReader.onload = () => {
-          resolve(fileReader.result)
-        }
-        fileReader.onerror = (error) => {
-          console.log(error)
-          reject(error)
-        }
-      })
-    }
-
   
     //Time checkbox
     const onTimeCheckbox = (time) => {
@@ -175,9 +154,10 @@ export const Profile = () => {
                 <ProfileImg src={img}/>
                 {!editImg && <EditBtn onClick={() => setEditImg(!editImg)}>Upload new picture</EditBtn> }
                 {editImg && <input  className = "imageInput"
-                    type='file'
+                    type='text'
                     name="myImage"
-                    onChange={(e) => upload(e)}
+                    onChange={(e) => setImg(e.target.value)}
+                    placeholder='Place an image link address'
                 />  }
               </Header>
                 <Label htmlFor="username">
@@ -444,9 +424,6 @@ const Name = styled.p`
   font-size: 2.4rem;
   font-weight: 700;
   margin: 2rem 0 1rem 0;
-`
-const UserType = styled.span`
-    font-size: 1.6rem;
 `
 
 const Reviews = styled.div`
