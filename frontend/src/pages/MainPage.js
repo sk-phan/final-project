@@ -12,7 +12,6 @@ const MainPage = () => {
     const [accordion1, setAccordion1] = useState(false)
     const [accordion2, setAccordion2] = useState(false)
     const [accordion3, setAccordion3] = useState(false)
-    const [accordion4, setAccordion4] = useState(false)
 
     const onAccordionClick1 = () => {
         if(accordion1) {
