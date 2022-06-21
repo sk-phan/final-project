@@ -17,7 +17,6 @@ export const Profile = () => {
     const [updatedData, setUpdatedData] = useState(null);
     const [username, setUsername ]= useState('');
     const [email, setEmail ]= useState('');
-    const [password, setPassword ]= useState('');
     const [animalType, setAnimalType] = useState('')
     const [preferableTime, setPreferableTime] = useState([])
     const [startDate, setStartDate] = useState('');
@@ -51,7 +50,6 @@ export const Profile = () => {
                   animalType: animalType,
                   email: email,
                   username: username, 
-                  password: password,
                   img: img
                 }),
               };
@@ -102,7 +100,6 @@ export const Profile = () => {
         setUsername(userNew.username)
         setImg(userNew.img)
         setEmail(userNew.email)
-        setPassword(userNew.password)
         setStartDate(userNew.startDate)
         setEndDate(userNew.endDate)
         setAnimalType(userNew.animalType)
@@ -200,15 +197,6 @@ export const Profile = () => {
                         type='email'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}                  
-                    />
-                </Label>
-                <Label htmlFor="password">
-                    Password
-                    <input 
-                        id='password'
-                        type='password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}                  
                     />
                 </Label>
           
