@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { user } from "../reducers/user";
 

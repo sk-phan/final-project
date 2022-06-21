@@ -1,31 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { user } from "../reducers/user";
 import { NavBar } from "../components/NavBar";
 import styled from 'styled-components'
 import moment from 'moment';
-import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
+import { BsBookmarkFill } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
+
 
 import { API_URL } from "../utils/url";
 export const Favorites = () => {
 
 
-  const [user,setUser] = useState(null)
-  const [usersData, setUsersData] = useState([])
-  const [filteredUsersData, setFilteredUsersData] = useState([])
   const userProfile = useSelector(store => store.user.userData)
-
   const accessToken = useSelector((store) => store.user.accessToken);
 
   const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch();
+  const [favorites, setFavorites] = useState(userProfile.favorites)
+  
   const navigate = useNavigate();
-  const [userData, setUserData] = useState([])
-  const [favorites, setFavorites] = useState([])
-
-
 
 
   useEffect(() => {
@@ -35,80 +28,24 @@ export const Favorites = () => {
   }, [accessToken, navigate]);
 
   useEffect(() => {
+    setLoading(true) 
     const options = {
       method: 'GET',
       headers: {
           'Authorization': accessToken
       },
   }
-    setLoading(true) 
     fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
-
+    
       const user = data.find(item => item._id === userProfile._id)
-      
-      setUserData(user)
       setFavorites(user.favorites)
 
     })
     .finally(() => setLoading(false))
 
   }, [])
-
-
-  
-
-  useEffect(() => {
-    const options = {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ 
-        userId: userData._id,
-        favorites: favorites,
-      }),
-    }
-     fetch (API_URL('edituser'), options)
-    .then ((res) => res.json())
-    .then ((data) => console.log(data))
-    .catch(error => console.log(error))
-    .finally(() => console.log(userData,'USERDATA'))
-  }, [favorites])  
-
-
-
-  const addTofavorites = async (user, e) => {
-    e.preventDefault()
-
-    if (favorites.some(item => item._id === user._id)) {
-      const newFavorites = await favorites.filter(item => item.username !== user.username );
-      setFavorites(newFavorites)
-    } 
-    else {
-      setFavorites([...favorites, user])
-    } 
-  }
-
-
-  useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-          'Authorization': accessToken
-      },
-  }
-    fetch(API_URL('users'), options)
-    .then((res) => res.json())
-    .then((data) => {
-      const useri = data.find(item => item._id === userProfile._id)  
-      setUser(useri)
-    })
-
-  }, [])
-  
-
 
 
 
@@ -128,9 +65,8 @@ export const Favorites = () => {
               <Img src={user.img} />
             </ProfileImageContainer>
             <ProfileTextContainer>
-              <ProfileTitle>@{user.username}{favorites.some(item => item._id === user._id) 
-              ? <BsBookmarkFill className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } /> 
-              : <BsBookmark className="userpage-nav-icon" onClick={ (e) => addTofavorites(user, e) } />} 
+              <ProfileTitle>@{user.username}
+               <BsBookmarkFill/> 
               </ProfileTitle> 
               <LocationText><span>📍</span>{user.location}</LocationText>
               
@@ -319,86 +255,6 @@ const Overlay = styled.div`
 
 `
 
-const FilterContainer = styled.div`
-    background: red;
-    display: ${props => props.display};
-    flex-wrap: wrap;
-    width: 320px;
-    gap: 20px;
-    padding:10px;
-    background-color: #fff;
-    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
-    border-radius:10px;
-
-`
-
-const FilterButton = styled.button`
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  gap: 1rem;
-  background-color: transparent;
-  border: solid 1.5px #000;
-  color: #000;
-  border-radius: 10px;
-  padding:7px;
-  margin: 10px;
-
-  &:hover{
-    background-color: #4C956C;
-    border: solid 1.5px #4C956C;
-    cursor: pointer;
-    color: #fff;
-  }
-  
-`
-const FilterForm = styled.form`
-`
-
-const FilterText = styled.p`
-font-family: 'Raleway', sans-serif;
-padding:0;
-margin:0;
-font-weight: 700;
-font-size: 12px;
-
-`
-
-const FilterTitleContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content:space between;
-`
-
-const ExitButton = styled.button`
-    display:flex;
-    justify-content: center;
-    align-items:center;
-    border-radius: 50%;
-    border: black solid;
-    width: 3rem;
-    height: 3rem;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-color: #F5F5F5;
-    font-weight: 600;
-    cursor:pointer;
-      background-color: #F5F5F5;
-    &:hover{
-      background-color: #FD9951;
-      cursor: pointer;
-    }
-`
-
-const RadioLabel = styled.label`
-  display:flex;
-  align-items: center;
-  font-size: 14px;
-`
-
-const RadioInput = styled.input`
-  width: fit-content;
-  color:#FD9951;
-`
 
 
 

@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { API_URL } from '../utils/url';
 
 export const Signup = () => {
-  const [mode, setMode] = useState("signup");
   const [profileType, setProfileType] = useState("")
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
@@ -23,7 +22,6 @@ export const Signup = () => {
   const [rePassword, setRePassword] = useState("")
   const [img, setImg] = useState("")
   const [description, setDescription] = useState("")
-  const [favourites, setFavourites] = useState([])
   const [showPassword, setShowPassword] = useState(false)
   const [showRePassword, setShowRePassword] = useState(false)
   
@@ -51,7 +49,7 @@ export const Signup = () => {
     setImg(base64)
   }
   const convertBase64 = (file) => {
-    alert(file.size + " KB.");
+
     return new Promise ((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -59,7 +57,6 @@ export const Signup = () => {
         resolve(fileReader.result)
       }
       fileReader.onerror = (error) => {
-        console.log(error)
         reject(error)
       }
     })
@@ -101,7 +98,7 @@ export const Signup = () => {
           password: password,
           img: img,
           description: description,
-          favourites: favourites,
+          favourites: [],
         }),
       }
       
@@ -109,13 +106,19 @@ export const Signup = () => {
       .then((res) => res.json())
       .then((data) => {
           if (data.success) {
+
+            batch(() => {
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
               dispatch(user.actions.setError(''))
+            });
+              
 
-          } else {      
+          } else {  
+            batch(() => {
               dispatch(user.actions.setError(data.response))
               dispatch(user.actions.setUserData(null));
+            })    
           }
         })
       .catch(error => console.log(error))
@@ -123,8 +126,6 @@ export const Signup = () => {
         setUsername('')
         setPassword('')
       })
-      
-
     }
 
   }, [allValid]);
@@ -133,7 +134,7 @@ export const Signup = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    if (password === rePassword) {
+    if (password === rePassword && emailValid) {
       setAllValid(true)
       dispatch(user.actions.setError(''))  
 
@@ -185,6 +186,7 @@ export const Signup = () => {
       setShowPassword(true)
     }
   }
+  
   const onClickShowRePassword = () => {
     if(showRePassword){
       setShowRePassword(false)

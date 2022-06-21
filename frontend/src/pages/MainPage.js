@@ -38,14 +38,6 @@ const MainPage = () => {
         }
     }
 
-    const onAccordionClick4 = () => {
-        if(accordion4) {
-            setAccordion4(false)
-        } else {
-            setAccordion4(true)
-        }
-    }
-
     return(
         <Main>
             <BigContainer>

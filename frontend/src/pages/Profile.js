@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { user } from "../reducers/user";
 
-import { NavBar } from "../components/NavBar"
 import { Loader } from "../components/Loader";
 
 import styled from "styled-components"

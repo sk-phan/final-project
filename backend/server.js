@@ -212,9 +212,8 @@ app.patch("/edituser", async (req,res) => {
   
   try {
 
-
     const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, img, description, favorites} );
-     
+      
     if (editingUser) {
       res.status(200).json({
         response: editingUser,

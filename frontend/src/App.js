@@ -9,7 +9,6 @@ import MainPage from "./pages/MainPage";
 import { Profile } from "./pages/Profile";
 import { Login } from "./components/Login";
 import {NotFound} from './pages/NotFound'
-import { NavBar } from "./components/NavBar";
 import {UserDetails} from './pages/UserDetails';
 import {Favorites} from './pages/Favorites'
 

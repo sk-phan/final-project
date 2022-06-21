@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from 'styled-components'
 import moment from 'moment'
 import { AiOutlineEdit } from 'react-icons/ai'
 import { MdOutlineFileDownloadDone } from 'react-icons/md'
 import { RiDeleteBin2Line } from 'react-icons/ri'
-import { user } from '../reducers/user';
 import { Loader } from "../components/Loader";
 import { API_URL } from '../utils/url';
 
@@ -15,23 +14,18 @@ export const UserDetails = () => {
 
     const [review, setReview] = useState('');
     const [reviewList, setReviewList] = useState(existingReviews);
-    const [matchReview, setMatchReview] = useState([]);
 	const { userId } = useParams()
-    const dispatch = useDispatch();
     const navigate = useNavigate()
     const accessToken = useSelector((store) => store.user.accessToken);
-    const otherUsersData = useSelector((store) => store.user.otherUsersData)
     const mainUserId = useSelector((store) => store.user.userData)
     
     const [edit, setEdit] = useState(false)
     const [editText, setEditText] = useState('')
     const [editId, setEditId] = useState('')
-    const [deleteId, setDeleteId] = useState('')
     const [loading, setLoading] = useState(false)
 
     // const userToShow = otherUsersData.find(user => user._id === userId)
     const [userToShow, setUserToShow] = useState([])
-    const userProfile = useSelector(state => state.user.userData)
 
 
     const onFormSubmit = (e) => {
