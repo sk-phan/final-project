@@ -207,23 +207,13 @@ app.post('/login', async (req, res) => {
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites}  = req.body;
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, img, description, favorites}  = req.body;
 
   
   try {
 
-    let editingUser;
-
-    const existingUser = await User.findOne({userId})
-    if (bcrypt.compareSync(password, existingUser.password)) {
-      editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password, img, description, favorites} );
+    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, img, description, favorites} );
       
-    } else {
-      const salt = bcrypt.genSaltSync()
-      editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, password: bcrypt.hashSync(password, salt), img, description, favorites} );
-
-    }
-    
     if (editingUser) {
       res.status(200).json({
         response: editingUser,

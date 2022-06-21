@@ -98,7 +98,7 @@ export const Userpage = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ 
-        userId: userData._id,
+        userId: userProfile._id,
         favorites: favorites,
       }),
     }

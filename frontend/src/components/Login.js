@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch, batch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,7 +9,6 @@ import { API_URL } from '../utils/url';
 export const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [passwordShown, setPasswordShown] = useState(false);
   const [showPassword, setShowPassword] = useState(false)
 
 

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
-import { user } from "../reducers/user";
 import { NavBar } from "../components/NavBar";
 import styled from 'styled-components'
 import moment from 'moment';
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
+
 
 import { API_URL } from "../utils/url";
 export const Favorites = () => {
@@ -35,17 +35,18 @@ export const Favorites = () => {
   }, [accessToken, navigate]);
 
   useEffect(() => {
+    console.log('hr')
+    setLoading(true) 
     const options = {
       method: 'GET',
       headers: {
           'Authorization': accessToken
       },
   }
-    setLoading(true) 
     fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
-
+    
       const user = data.find(item => item._id === userProfile._id)
       
       setUserData(user)
@@ -66,7 +67,7 @@ export const Favorites = () => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ 
-        userId: userData._id,
+        userId: userProfile._id,
         favorites: favorites,
       }),
     }
@@ -92,21 +93,21 @@ export const Favorites = () => {
   }
 
 
-  useEffect(() => {
-    const options = {
-      method: 'GET',
-      headers: {
-          'Authorization': accessToken
-      },
-  }
-    fetch(API_URL('users'), options)
-    .then((res) => res.json())
-    .then((data) => {
-      const useri = data.find(item => item._id === userProfile._id)  
-      setUser(useri)
-    })
+  //  useEffect(() => {
+  //   const options = {
+  //     method: 'GET',
+  //     headers: {
+  //         'Authorization': accessToken
+  //     },
+  // }
+  //   fetch(API_URL('users'), options)
+  //   .then((res) => res.json())
+  //   .then((data) => {
+  //     const useri = data.find(item => item._id === userProfile._id)  
+  //     setUser(useri)
+  //   })
 
-  }, [])
+  // }, [])
   
 
 

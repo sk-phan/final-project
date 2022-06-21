@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import validator from 'validator'
-import { useSelector, useDispatch, batch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import Autocomplete from "react-google-autocomplete";
@@ -10,7 +10,6 @@ import styled from 'styled-components';
 import { API_URL } from '../utils/url';
 
 export const Signup = () => {
-  const [mode, setMode] = useState("signup");
   const [profileType, setProfileType] = useState("")
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
@@ -23,7 +22,6 @@ export const Signup = () => {
   const [rePassword, setRePassword] = useState("")
   const [img, setImg] = useState("")
   const [description, setDescription] = useState("")
-  const [favourites, setFavourites] = useState([])
   const [showPassword, setShowPassword] = useState(false)
   const [showRePassword, setShowRePassword] = useState(false)
   
@@ -101,7 +99,7 @@ export const Signup = () => {
           password: password,
           img: img,
           description: description,
-          favourites: favourites,
+          favourites: [],
         }),
       }
       
@@ -123,8 +121,6 @@ export const Signup = () => {
         setUsername('')
         setPassword('')
       })
-      
-
     }
 
   }, [allValid]);
@@ -133,7 +129,7 @@ export const Signup = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    if (password === rePassword) {
+    if (password === rePassword && emailValid) {
       setAllValid(true)
       dispatch(user.actions.setError(''))  
 
