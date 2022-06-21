@@ -28,7 +28,7 @@ export const Userpage = () => {
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
-  const [favorites, setFavorites] = useState([])
+  const [favorites, setFavorites] = useState(userProfile.favorites)
 
   useEffect(() => {
     if (!accessToken) {
