@@ -116,12 +116,3 @@ const NotfoundImg = styled.img`
     }
 `
 
-const LikeButton = styled.button`
-
-    cursor: pointer;
-    z-index: 10;
-    &:hover{
-        fill:#e5f2eb;
-    }
-
-`

@@ -171,7 +171,7 @@ export const UserDetails = () => {
                             <ReviewContainer>
                                     {reviewList.length > 0 && reviewList.map(item => (
                                         <Reviews>
-                                            <img src={item.img} alt="reviewer image" />
+                                            <img src={item.img} alt="reviewer" />
                                             <div>
                                                 <ReviewHead>
                                                     <Name>@{item.username}</Name>
@@ -376,12 +376,7 @@ const Reviews = styled.div`
     font-size: 1.6rem;
   }
 `
-
-const ReviewHeading = styled.h2 `
-  font-size: 2.4rem;
-  align-self: flex-start;
-  margin: 0 0 4rem 4rem;
-`
+ 
 
 const ReviewText = styled.p`
     color: #333;

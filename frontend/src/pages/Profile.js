@@ -385,10 +385,6 @@ const RadioInput = styled.input`
   color:#FD9951;
 `
 
-const DateLabel = styled(P)`
-  margin: 0 0 0.2rem 0.2rem;
-`
-
 
 const ProfileContainer = styled.div`
   display: flex;
