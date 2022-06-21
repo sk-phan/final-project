@@ -16,6 +16,8 @@ export const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  console.log(accessToken)
 
   useEffect(() => {
     if (accessToken) {

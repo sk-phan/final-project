@@ -36,7 +36,7 @@ export const Userpage = () => {
     }
   }, [accessToken, navigate]);
 
-  
+  console.log(userProfile,'pr')
 
   useEffect(() => {
 
@@ -53,7 +53,8 @@ export const Userpage = () => {
       const user = data.find(item => item._id === userProfile._id)
       setUserData(user)
       setFavorites(user.favorites)
-      
+
+
 
       if(user.profileType === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
@@ -113,7 +114,7 @@ export const Userpage = () => {
     .then((res) => res.json())
     .then((data) => {
       const useri = data.find(item => item._id === userData._id)
-      
+
       if (useri) {
         dispatch(user.actions.setUserData(useri)) 
       }
