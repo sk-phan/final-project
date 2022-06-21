@@ -43,25 +43,7 @@ export const Signup = () => {
     }
   }, [accessToken, navigate]);
 
-  const upload = async (e) => {
-    const file = e.target.files[0];
-    const base64  = await convertBase64(file)
-    setImg(base64)
-  }
-  const convertBase64 = (file) => {
-
-    return new Promise ((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result)
-      }
-      fileReader.onerror = (error) => {
-        reject(error)
-      }
-    })
-
-  }
+  
 
 
   const validateEmail = (e) => {
@@ -272,7 +254,7 @@ export const Signup = () => {
             <div className="input-container">
               <input
                 id='rePassword'
-                className="input password-input "
+                className="input"
                 type={!showRePassword ? "password" : "text"}
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
@@ -283,16 +265,19 @@ export const Signup = () => {
               </label>
             </div>
             
-            <div className="date-container">
-              <DateLabel htmlFor='img'>
-                Profile image:*
-              </DateLabel>
-              <input  className = "imageInput"
-                      type='file'
-                      name="myImage"
-                      onChange={(e) => upload(e)}
-              />           
+            <div className="input-container"> 
+              <input  className = "input"
+                      id='image'
+                      type='text'
+                      value={img}
+                      onChange={(e) => setImg(e.target.value)}
+              />   
+              <label className="user-label" htmlFor="image">
+                Profile Image Address*
+              </label>        
           </div>
+
+         
 
           <div className="date-container">
           <P>Choose your pet type:*</P>
