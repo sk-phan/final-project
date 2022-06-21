@@ -198,7 +198,6 @@ export const Profile = () => {
                         onChange={(e) => setEmail(e.target.value)}                  
                     />
                 </Label>
-
           
                 <Heading>Pet information</Heading>
                 <ProfileContainer>

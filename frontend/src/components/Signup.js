@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import validator from 'validator'
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, batch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import Autocomplete from "react-google-autocomplete";
@@ -49,7 +49,7 @@ export const Signup = () => {
     setImg(base64)
   }
   const convertBase64 = (file) => {
-    alert(file.size + " KB.");
+
     return new Promise ((resolve, reject) => {
       const fileReader = new FileReader();
       fileReader.readAsDataURL(file);
@@ -57,7 +57,6 @@ export const Signup = () => {
         resolve(fileReader.result)
       }
       fileReader.onerror = (error) => {
-        console.log(error)
         reject(error)
       }
     })
@@ -107,13 +106,19 @@ export const Signup = () => {
       .then((res) => res.json())
       .then((data) => {
           if (data.success) {
+
+            batch(() => {
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
               dispatch(user.actions.setError(''))
+            });
+              
 
-          } else {      
+          } else {  
+            batch(() => {
               dispatch(user.actions.setError(data.response))
               dispatch(user.actions.setUserData(null));
+            })    
           }
         })
       .catch(error => console.log(error))
@@ -181,6 +186,7 @@ export const Signup = () => {
       setShowPassword(true)
     }
   }
+  
   const onClickShowRePassword = () => {
     if(showRePassword){
       setShowRePassword(false)

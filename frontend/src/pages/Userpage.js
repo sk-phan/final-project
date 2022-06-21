@@ -7,10 +7,8 @@ import styled from 'styled-components'
 import moment from 'moment';
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
-import Autocomplete from "react-google-autocomplete";
 
 import { IoIosOptions } from 'react-icons/io';
-import { batch } from "react-redux";
 import { API_URL } from "../utils/url";
 
 export const Userpage = () => {
@@ -18,7 +16,6 @@ export const Userpage = () => {
   const [usersData, setUsersData] = useState([])
   const [filteredUsersData, setFilteredUsersData] = useState([])
   const accessToken = useSelector((store) => store.user.accessToken);
-  const [profile, setProfile] = useState()
   const userProfile = useSelector(state => state.user.userData)
 
   const [userData, setUserData] = useState([])
@@ -42,6 +39,7 @@ export const Userpage = () => {
   
 
   useEffect(() => {
+
     const options = {
       method: 'GET',
       headers: {
@@ -53,10 +51,8 @@ export const Userpage = () => {
     .then((res) => res.json())
     .then((data) => {
       const user = data.find(item => item._id === userProfile._id)
-      console.log('user', user)
       setUserData(user)
       setFavorites(user.favorites)
-      setProfile(user.profileType)
       
 
       if(user.profileType === 'Pet owner'){
@@ -69,8 +65,7 @@ export const Userpage = () => {
         setUsersData(usersToShow)
         setFilteredUsersData(usersToShow)
   
-      }
-      
+      } 
 
     })
     .finally(() => setLoading(false))
@@ -87,10 +82,11 @@ export const Userpage = () => {
     else {
       setFavorites([...favorites, user])
     } 
+
+    
   }
   
   useEffect(() => {
-
 
     const options = {
       method: "PATCH",
@@ -103,10 +99,7 @@ export const Userpage = () => {
       }),
     }
      fetch (API_URL('edituser'), options)
-     .then ((res) => res.json())
-    .then ((data) => console.log(data))
-    .catch(error => console.log(error))
-    .finally(() => console.log(userData,'USERDATA'))  
+  
   }, [favorites])  
 
   useEffect(() => {
@@ -119,9 +112,11 @@ export const Userpage = () => {
     fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
-      const useri = data.find(item => item._id === userData._id) 
-      dispatch(user.actions.setUserData(useri)) 
-  
+      const useri = data.find(item => item._id === userData._id)
+      
+      if (useri) {
+        dispatch(user.actions.setUserData(useri)) 
+      }
     })
 
   }, [favorites])
@@ -178,6 +173,7 @@ const onExitClick = () => {
 }
 
 
+ 
   return (
     <>
     <NavBar /> 

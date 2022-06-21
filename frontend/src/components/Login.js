@@ -41,7 +41,6 @@ export const Login = () => {
     .then((res) => res.json())
       .then((data) => {
         if (data.success) {
-            console.log(data.response, 'data login')
           batch(() => {
             dispatch(user.actions.setUserData(data.response));
             dispatch(user.actions.setAccessToken(data.response.accessToken));
@@ -62,8 +61,6 @@ export const Login = () => {
       setShowPassword(true)
     }
   }
-
-
 
 
   return (
