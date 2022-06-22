@@ -45,8 +45,8 @@ const MainPage = () => {
                 <SmallContainer>
                     <Heading>Happy Pet, Happy Life</Heading>
                     <Subheading>
-                        Connecting pet owners and pet sitters, so there's no lonely days. 
-                        Signed up and start making life happier. 
+                        Connecting pet owners and pet sitters, so there are no more lonely days. 
+                        Join our community and make life happier.  
 
                     </Subheading> 
                     <BtnContainer>
@@ -102,6 +102,8 @@ const Logo = styled.img`
     width: 30rem;
     height: auto;
     position: absolute;  
+    top: -8rem;
+    left: -5rem;
 `
 
 const Main = styled.main`
@@ -144,10 +146,11 @@ const BigContainer = styled.div`
 const SmallContainer = styled.div`
     display:flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-evenly;
     width: 350px;
     gap: 20px;
     height: 100%;
+    min-height: 60vh;
     display: flex;
     flex-direction: column;
     align-items: center;
