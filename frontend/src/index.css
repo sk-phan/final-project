@@ -28,8 +28,15 @@ html {
     font-size: 40%;
   }
 }
+/* 0938654231 0937243435*/
 
 
+/* ----- Logo ------- */
+.logo-link {
+  position: absolute;
+  left: -30px;
+
+}
 
 /* ----Input field styling----- */
 .input-container {

@@ -3,13 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { user } from "../reducers/user";
 import { NavBar } from "../components/NavBar";
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import moment from 'moment';
 import { BsBookmarkFill, BsBookmark } from 'react-icons/bs';
 import { Loader } from "../components/Loader";
 
 import { IoIosOptions } from 'react-icons/io';
 import { API_URL } from "../utils/url";
+import logo from '../assets/logo1.svg'
+
 
 export const Userpage = () => {
 
@@ -177,8 +179,11 @@ const onExitClick = () => {
  
   return (
     <>
-    <NavBar /> 
+
+    {/* <Logo src={logo} alt="Suki & Kristiina's pet app logo" /> */}
     <Main>
+    <NavBar />
+
 		{loading && <Loader />}
 		{!loading && 
     <div>
@@ -273,25 +278,47 @@ const onExitClick = () => {
   );
 };
 
+const Container = styled.div`
+
+`
+
 const Main = styled.main`
-width: 100%;
-min-width: 100vw;
-min-height: 100vh;
+  display: flex;
+  flex-direction: row;
+  width: 100vw;
+  position: relative;
+
+/* min-height: 100vh;
 display: flex;
 justify-content: center;
 align-items: center;
-position: relative;
+position: relative; */
 `
 
+
+const Logo = styled.img`
+  width: 20rem;
+  position: absolute;
+  top: -4.4rem;
+  left: 0;
+
+`
 const BigContainer = styled.div`
   display:flex;
   flex-direction: column;
+  position: absolute;
+  left: 24%;
+  margin: 10rem;
+
+  @media (max-width: 600px) {
+        margin: 4rem 0;
+    }
 `
 
 const SmallContainer = styled.div`
   display:flex;
   flex-wrap: wrap;
-  width: 320px;
+  width: 100%;
   gap: 20px;
   padding:10px;
 
