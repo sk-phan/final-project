@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { user } from "../reducers/user";
@@ -9,6 +9,8 @@ import { BsFillPersonFill } from 'react-icons/bs';
 import { BsBookmarkFill } from 'react-icons/bs';
 import { HiOutlineLogout } from 'react-icons/hi';
 import { BiSearch } from 'react-icons/bi'
+
+import logo from '../assets/logo1.svg'
 
 
 export const NavBar = () => {
@@ -20,18 +22,22 @@ export const NavBar = () => {
         dispatch(user.actions.setDeleteAccessToken(null));
     };
 
+
     
     return (
         <Header>
-            <OpenBtn onClick={() => setDesktopSize(false)}>=</OpenBtn>
+            <OpenBtn zIndex={desktopSize ? '10' : '-10'} onClick={() => setDesktopSize(false)}>=</OpenBtn>
             <Nav 
                 translate={desktopSize ? '280px' : '0'}
                 opacity = {desktopSize ? '0' : '1'}
                 zIndex = {desktopSize ? '-2' : '5'}
+                display = {desktopSize ? 'none' : 'flex'}
             >
                 <NavHead>
-                    <Logo>Logo</Logo>
-                    <CloseBtn onClick={() => setDesktopSize(true)}>x</CloseBtn>
+                    <NavLink className='logo-link' to='/userpage'>
+                        <Logo src={logo} />
+                    </NavLink>
+´                    <CloseBtn onClick={() => setDesktopSize(true)}>x</CloseBtn>
                 </NavHead>
                 <Seach>
                     <SearchBar 
@@ -67,26 +73,28 @@ export const NavBar = () => {
 
 const Header = styled.header `
     background-color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+
+
 `
 
 const Nav = styled.nav`
-    width: 280px;
-    height: 100%;
+    width: 400px;
+    height: 100vh;
     background-color: #FCFBFB;
-    display: flex;
+    display: ${(props) => props.display};
     flex-direction: column;
     gap: 3rem;
     box-sizing: border-box;
-    padding: 2rem;
+    padding: 4rem;
     position: absolute;
     transform: translateX(${(props) => props.translate});
     opacity: ${(props) => props.opacity};
     z-index: ${(props) => props.zIndex};
     transition: ease-in-out 1s;
-
+    
+    @media (max-width: 785px) {
+        padding: 3.2rem;
+    }
 
 `
 
@@ -94,37 +102,73 @@ const NavHead = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 4rem 0;
 
 `
 
 const CloseBtn = styled.button`
-    width: 4rem;
-    height: 4rem;
+    width: 3.2rem;
+    height: 3.2rem;
     border-radius: 50%;
     background-color: transparent;
-    border: solid 1px #000;
+    border: solid 1.5px #000;
+    position: absolute;
+    right: 35px;
+    cursor: pointer;
+    font-size: 1.6rem;
+    display: none;
 
+    &:hover {
+        border: solid 1.5px #FD9951;
+        color: #FD9951;
+    }
+    @media (max-width: 785px) {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        right: 3rem;
+        width: 4rem;
+        height: 4rem;
+        font-size: 2.2rem;
+    }
 `
 
 const OpenBtn = styled(CloseBtn)`
+    left: 10rem;
+    top: 4.4rem;
+    display: none;
+    z-index: ${(props) => props.zIndex};
+
+    @media (max-width: 785px) {
+        display: inline-block;
+        left: 3rem;
+    }
     
 `
 
-const Logo = styled.p`
-    font-size: 2.4rem;
+const Logo = styled.img`
+    width: 30rem;
+    height: auto;
+ 
+    
+
 `
 
 const NavEl = styled(NavLink) `
     font-size: 1.8rem;
     color: #000;
     background-color: #F6F4F4;
-    padding: 1.8rem;
+    padding: 2.4rem;
     border-radius: 5px; 
     text-decoration: none;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 1rem;
+
+    @media (max-width: 785px) {
+        padding: 3.2rem;
+    }
 
 `
 
@@ -150,9 +194,6 @@ const Seach = styled.div`
         width: 100%;
         font-size: 1.8rem;
     }
-
-    /* input[type=search]::-ms-clear {  display: none; width : 0; height: 0; }
-    input[type=search]::-ms-reveal {  display: none; width : 0; height: 0; } */
 
     svg {
         fill: #000;
