@@ -224,14 +224,14 @@ export const Signup = () => {
             <div className="input-container">
               <input
                 id="email"
-                className="input-email"
+                className="input"
                 type="email"
                 pattern=".+@globex\.com"
                 value={email}
                 onChange={(e) => validateEmail(e)}
                 required
               />
-              <label className="email" htmlFor="email">
+              <label className="user-label" htmlFor="email">
                 Email*
               </label>
             </div>
@@ -251,11 +251,12 @@ export const Signup = () => {
             </div>
             <div className="input-container">
               <input
-                id='rePassword'
+                id="rePassword"
                 className="input"
                 type={!showRePassword ? "password" : "text"}
                 value={rePassword}
                 onChange={(e) => setRePassword(e.target.value)}
+                required
               />
               <button type="button" onClick={onClickShowRePassword} className="show-button">{!showRePassword ? <span>Show</span> : <span>Unshow</span>}</button>
               <label className="user-label" htmlFor="rePassword">
@@ -264,11 +265,13 @@ export const Signup = () => {
             </div>
             
             <div className="input-container"> 
-              <input  className = "input"
-                      id='image'
-                      type='text'
+              <input  
+                      className = "input"
+                      id="image"
+                      type="text"
                       value={img}
                       onChange={(e) => setImg(e.target.value)}
+                      required
               />   
               <label className="user-label" htmlFor="image">
                 Profile Image Address*
@@ -387,6 +390,9 @@ export const Signup = () => {
 }
 
 const ExitButton = styled.button`
+    display:flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     border: black solid;
     width: 3rem;

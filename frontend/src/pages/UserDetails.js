@@ -166,7 +166,8 @@ export const UserDetails = () => {
                                 <span>{moment(userToShow.startDate).format('MMM Do YY')} - {moment(userToShow.endDate).format('MMM Do YY')}</span>
                                 <span>{userToShow.description}</span>
                             </ProfileDetail>
-                        </ProfileText>                         
+                        </ProfileText> 
+                        <SendEmail href={`mailto:${userToShow.email}`}>Contact {userToShow.username}</SendEmail>             
                         <div>
                             <ReviewContainer>
                                     {reviewList.length > 0 && reviewList.map(item => (
@@ -440,6 +441,28 @@ const EditBtn = styled.button`
     &:hover {
         font-size: 2.2rem;
         color: #ec8941;
+    }
+
+`
+
+const SendEmail = styled.a`
+    font-size: 1.8rem;
+    font-weight: 700;
+    width: fit-content;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: transparent;
+    border: solid 1.5px #4C956C;
+    color: #4C956C;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    text-decoration:none;
+
+    &:hover{
+        background-color: #4C956C;
+        color: #FEFEE3;
+        cursor:pointer;
     }
 
 `

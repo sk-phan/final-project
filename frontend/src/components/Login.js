@@ -10,6 +10,7 @@ export const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState('')
 
 
   const accessToken = useSelector((store) => store.user.accessToken);
@@ -42,12 +43,14 @@ export const Login = () => {
     fetch(API_URL('login'), options)
     .then((res) => res.json())
       .then((data) => {
+        console.log('DATAAAA:', data)
         if (data.success) {
           batch(() => {
             dispatch(user.actions.setUserData(data.response));
             dispatch(user.actions.setAccessToken(data.response.accessToken));
           });
         } else {
+          setErrorMessage(data.response)
           batch(() => {
             dispatch(user.actions.setUserData(null));
             dispatch(user.actions.setAccessToken(null));
@@ -99,6 +102,7 @@ export const Login = () => {
               
                 
             </div>
+            <Error>{errorMessage}</Error>
             <LoginButton disabled={username === '' || password === ''} type='submit'>Log in</LoginButton>
         </Form>
         <P>Don't have an account? <LinkText to='/signup'>Sign up</LinkText></P>
@@ -108,6 +112,9 @@ export const Login = () => {
 }
 
 const ExitButton = styled.button`
+    display:flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     border: black solid;
     width: 3rem;
@@ -212,5 +219,13 @@ const LinkText = styled(Link)`
     color: #FD9951;
     font-weight: 600;
     text-decoration:none;
+`
+
+const Error = styled.p`
+  color: red;
+  font-size: 1.4rem;
+  margin: 0 2rem;
+  text-align: center;
+  font-weight: 700;
 `
 
