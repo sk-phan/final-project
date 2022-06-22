@@ -114,7 +114,6 @@ export const Userpage = () => {
     .then((res) => res.json())
     .then((data) => {
       const useri = data.find(item => item._id === userData._id)
-
       if (useri) {
         dispatch(user.actions.setUserData(useri)) 
       }
@@ -183,7 +182,8 @@ const onExitClick = () => {
 		{!loading && 
     <div>
     {showFilt &&
-        <FilterContainer display={showFilt ? 'flex' : 'none'}>
+       <FilterBackground>
+  <FilterContainer display={showFilt ? 'flex' : 'none'}>
         <FilterTitleContainer>
           <ProfileTitle>FILTERS</ProfileTitle>
           <ExitButton onClick={onExitClick}>x</ExitButton>
@@ -225,6 +225,7 @@ const onExitClick = () => {
             </FilterTitleContainer>
         </FilterForm>
         </FilterContainer>
+       </FilterBackground>
         }
    {!showFilt && <BigContainer>
         <FilterButton onClick={onFilterClick}><FilterText>FILTER </FilterText> <IoIosOptions /></FilterButton>
@@ -273,19 +274,30 @@ const onExitClick = () => {
   );
 };
 
+const Container = styled.div`
+
+
+`
+
 const Main = styled.main`
-width: 100%;
-min-width: 100vw;
-min-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-position: relative;
+  display: flex;
+  width: 100vw;
+  gap: 3rem;
+  background-color: #fafafa;
+ 
+ @media (min-width: 785px) {
+    flex-direction: row;
+ }
 `
 
 const BigContainer = styled.div`
   display:flex;
   flex-direction: column;
+  margin: 10rem 0;
+
+  @media (max-width: 600px) {
+        margin: 4rem 0;
+    }
 `
 
 const SmallContainer = styled.div`
@@ -311,8 +323,9 @@ const UserContainer = styled(Link)`
    display:flex;
    flex-direction: column;
    overflow:hidden;
-   width: 150px;
+   width: 180px;
    height: 250px;
+   padding: 2rem;
    background-color: #fff;
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
    border-radius:10px;
@@ -434,9 +447,19 @@ const Overlay = styled.div`
 
 `
 
+const FilterBackground = styled.div`
+   width: 60%;
+   height: 100vh;
+   position: absolute;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+
+`
+
 const FilterContainer = styled.div`
-    background: red;
-    display: ${props => props.display};
+    display: ${props => props.display}; 
     flex-wrap: wrap;
     width: 320px;
     gap: 20px;
@@ -444,6 +467,7 @@ const FilterContainer = styled.div`
     background-color: #fff;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
     border-radius:10px;
+
 
 `
 

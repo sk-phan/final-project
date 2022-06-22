@@ -25,8 +25,6 @@ export const NavBar = () => {
         <Header>
             <OpenBtn onClick={() => setDesktopSize(false)}>=</OpenBtn>
             <Nav 
-                translate={desktopSize ? '280px' : '0'}
-                opacity = {desktopSize ? '0' : '1'}
                 zIndex = {desktopSize ? '-2' : '5'}
             >
                 <NavHead>
@@ -73,20 +71,23 @@ const Header = styled.header `
 `
 
 const Nav = styled.nav`
-    width: 280px;
-    height: 100%;
-    background-color: #FCFBFB;
+    width: 400px;
+    height: 100vh;
+    background-color: #fff;
     display: flex;
     flex-direction: column;
     gap: 3rem;
     box-sizing: border-box;
-    padding: 2rem;
-    position: absolute;
-    transform: translateX(${(props) => props.translate});
-    opacity: ${(props) => props.opacity};
+    padding: 4rem;
+    //position: absolute;
     z-index: ${(props) => props.zIndex};
     transition: ease-in-out 1s;
+    
+    @media (max-width: 785px) {
+        padding: 3.2rem;
+        display: ${(props) => props.display};
 
+    }
 
 `
 
@@ -132,7 +133,7 @@ const Seach = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
-    background-color: #fff;
+    background-color: #fafafa;
     padding: 0.5rem 1rem;
     border-radius: 5px;
     box-sizing: border-box;
