@@ -4,6 +4,7 @@ import heroCat from '../asset/catHero.png'
 import balls from '../assets/decoration_balls.svg'
 import { useNavigate } from "react-router-dom";
 import { Footer } from "../components/Footer";
+import logo from "../assets/logo1.svg"
 
 
 const MainPage = () => {
@@ -39,6 +40,7 @@ const MainPage = () => {
 
     return(
         <Main>
+            <Logo src={logo} />
             <BigContainer>
                 <SmallContainer>
                     <Heading>Happy Pet, Happy Life</Heading>
@@ -95,6 +97,12 @@ const MainPage = () => {
 }
 
 export default MainPage
+
+const Logo = styled.img`
+    width: 30rem;
+    height: auto;
+    position: absolute;  
+`
 
 const Main = styled.main`
     width: 100%;
