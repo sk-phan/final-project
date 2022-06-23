@@ -334,8 +334,7 @@ const FormContainer = styled.div`
 @media (max-width: 785px) {
   min-height: 100vh;
   overflow: none;
-  padding-top: 4rem;
-
+  
 
 }
 
@@ -343,8 +342,14 @@ const FormContainer = styled.div`
 
 const FormWrapper = styled.div`
   width: 700px;
-  padding: 6rem 4rem 4rem 4rem;
   box-sizing: border-box;
+
+  @media (max-width: 785px) {
+    width: 300px;
+    padding-top: 10rem;
+    
+
+  }
 `
 
 
@@ -389,6 +394,10 @@ const Label = styled.label`
   input {
     align-self: flex-start;
     width: 45rem;
+
+   @media (max-width: 785px) {
+    width: 35rem;
+   }    
   }
   
 `

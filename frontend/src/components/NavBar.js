@@ -15,7 +15,7 @@ import logo from '../assets/logo1.svg'
 
 export const NavBar = () => {
     const [searchInput, setSearchInput] = useState('');
-    const [desktopSize, setDesktopSize] = useState(false)
+    const [desktopSize, setDesktopSize] = useState(true)
     const dispatch = useDispatch();
 
     const onClickLogout = () => {
@@ -109,6 +109,7 @@ const CloseBtn = styled.button`
     border-radius: 50%;
     background-color: transparent;
     border: solid 1.5px #000;
+    color: #000;
     right: 35px;
     cursor: pointer;
     font-size: 1.6rem;
