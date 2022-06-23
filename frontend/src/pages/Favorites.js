@@ -84,7 +84,7 @@ export const Favorites = () => {
 
           })}
         
-        { favorites.length === 0 && <ProfileTitle>You have no favorites users yet...</ProfileTitle> }
+        { favorites.length === 0 && <EmptyTitle>You have no favorites users yet...</EmptyTitle> }
         </SmallContainer>
        
 
@@ -113,17 +113,18 @@ const BigContainer = styled.div`
 const SmallContainer = styled.div`
   display:flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 320px;
   gap: 20px;
   padding:10px;
 
   @media (min-width: 768px) {
    width: 700px;
+   gap:50px;
   }
 
   @media (min-width: 1025px) {
     width: 1000px;
+    gap:40px;
    }
 `
 
@@ -181,6 +182,20 @@ const ProfileTextContainer = styled.div`
     
 `
 const ProfileTitle = styled.h1`
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  margin:0;
+  color: #000;
+  @media (min-width: 768px) {
+    font-size: 18px;
+   }
+   display:flex;
+   width: 100%;
+   justify-content: space-between;
+`
+
+const EmptyTitle = styled.h1`
   font-family: 'Raleway', sans-serif;
   font-weight: 700;
   font-size: 12px;

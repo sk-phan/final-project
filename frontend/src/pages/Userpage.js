@@ -179,12 +179,11 @@ const onExitClick = () => {
  
   return (
     <>
+    <NavBar />
    <Main>
-      <NavBar />
-
 		{loading && <Loader />}
 		{!loading && 
-    <div>
+    <>
     {showFilt &&
         <FilterContainer display={showFilt ? 'flex' : 'none'}>
         <FilterTitleContainer>
@@ -229,7 +228,8 @@ const onExitClick = () => {
         </FilterForm>
         </FilterContainer>
         }
-   {!showFilt && <BigContainer>
+   {!showFilt && 
+   <BigContainer>
         <FilterButton onClick={onFilterClick}><FilterText>Filter </FilterText> <IoIosOptions /></FilterButton>
         
         <SmallContainer>
@@ -269,7 +269,7 @@ const onExitClick = () => {
        
 
     </BigContainer>}
-     </div>
+     </>
     }
     </Main>
     </>
@@ -291,11 +291,13 @@ const Heading = styled.div`
 `
 
 const Main = styled.main`
+  width: 100%;
+  min-width: 100vw;
+  min-height: 100vh;
   display: flex;
-  flex-direction: row;
-  width: 100vw;
+  justify-content: center;
+  align-items: center;
   position: relative;
-
 `
 
 
@@ -314,24 +316,12 @@ const Logo = styled.p`
 const BigContainer = styled.div`
   display:flex;
   flex-direction: column;
-  position: absolute;
-  left: 20%;
-  padding-left: 10px;
-  margin: 10rem;
-
-  @media (max-width: 785px) {
-        margin: 10rem 0;
-        top: 4rem;
-        width: 60%;
-        align-items: center;
-        justify-content: center;
-    }
 `
 
 const SmallContainer = styled.div`
   display:flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: 320px;
   gap: 20px;
   padding:10px;
 
@@ -347,18 +337,16 @@ const SmallContainer = styled.div`
 `
 
 const UserContainer = styled(Link)`
-   position: relative;
-   display:flex;
-   flex-direction: column;
-   overflow:hidden;
-   min-width: 180px;
-   width: 200px;
-   height: 280px;
-   padding: 2rem;
-   background-color: #fff;
-   box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
-   border-radius:10px;
-   text-decoration: none;
+  position: relative;
+  display:flex;
+  flex-direction: column;
+  overflow:hidden;
+  width: 150px;
+  height: 250px;
+  background-color: #fff;
+  box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
+  border-radius:10px;
+  text-decoration: none;
 
    @media (min-width: 768px) {
     width: 200px;
@@ -486,10 +474,6 @@ const FilterContainer = styled.div`
     background-color: #fff;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
     border-radius:10px;
-    position: absolute;
-    top: 10rem;
-    left: 5rem;
-
 `
 
 const FilterButton = styled.button`
@@ -503,7 +487,7 @@ const FilterButton = styled.button`
   color: #000;
   border-radius: 10px;
   padding:7px;
-  margin: 10px 0;
+  margin: 0 10px;
 
   &:hover{
     background-color: #4C956C;
