@@ -15,7 +15,7 @@ import logo from '../assets/logo1.svg'
 
 export const NavBar = () => {
     const [searchInput, setSearchInput] = useState('');
-    const [desktopSize, setDesktopSize] = useState(false)
+    const [desktopSize, setDesktopSize] = useState(true)
     const dispatch = useDispatch();
 
     const onClickLogout = () => {
@@ -81,19 +81,23 @@ const Nav = styled.nav`
     width: 400px;
     height: 100vh;
     background-color: #FCFBFB;
-    display: ${(props) => props.display};
+    //display: ${(props) => props.display};
+    display: flex;
     flex-direction: column;
     gap: 3rem;
     box-sizing: border-box;
     padding: 4rem;
     position: absolute;
-    transform: translateX(${(props) => props.translate});
-    opacity: ${(props) => props.opacity};
     z-index: ${(props) => props.zIndex};
     transition: ease-in-out 1s;
     
     @media (max-width: 785px) {
         padding: 3.2rem;
+        width: 300px;
+        height: 100vh;
+        top: 0;
+        display: ${(props) => props.display};
+
     }
 
 `
@@ -112,7 +116,6 @@ const CloseBtn = styled.button`
     border-radius: 50%;
     background-color: transparent;
     border: solid 1.5px #000;
-    position: absolute;
     right: 35px;
     cursor: pointer;
     font-size: 1.6rem;
@@ -126,7 +129,6 @@ const CloseBtn = styled.button`
         display: flex;
         align-items: center;
         justify-content: center;
-        right: 3rem;
         width: 4rem;
         height: 4rem;
         font-size: 2.2rem;
@@ -134,14 +136,11 @@ const CloseBtn = styled.button`
 `
 
 const OpenBtn = styled(CloseBtn)`
-    left: 10rem;
-    top: 4.4rem;
     display: none;
     z-index: ${(props) => props.zIndex};
 
     @media (max-width: 785px) {
         display: inline-block;
-        left: 3rem;
     }
     
 `
