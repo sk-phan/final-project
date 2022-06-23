@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { user } from "../reducers/user";
+import { useNavigate } from "react-router-dom";
 
 import { Loader } from "../components/Loader";
 
-import styled from "styled-components"
+import styled from "styled-components/macro"
 import { API_URL } from "../utils/url";
+
 
 export const Profile = () => {
   
@@ -29,7 +31,10 @@ export const Profile = () => {
 
    const [loader, setLoader] = useState(false)
 
+   const navigate = useNavigate();
+
     const preferTimeOption = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
+
 
 
   
@@ -127,6 +132,7 @@ export const Profile = () => {
 
     return (
     <Main>
+      <BackBtn type='button' onClick={() => navigate(-1)}>Back</BackBtn>
       {loader && <Loader />}
       {!loader && <Container>
         <SmallContainer>
@@ -266,17 +272,55 @@ align-items: center;
 position: relative;
 `
 
+const BackBtn = styled.button`
+  position: absolute;
+  top: 3rem;
+  left: 0;
+
+  border: none;
+  cursor: pointer;
+  color: #000;
+  text-decoration: underline;
+  background-color: transparent;
+  padding: 1.5rem;
+  width: 12rem;
+  font-weight: 600;
+  font-size: 1.6rem;
+  transition: all 0.4s ease;
+  z-index: 10;
+
+
+    &:link, &:visited {
+      color: #000;
+    }
+    &:hover, &:active {
+      left: -10px;
+      color: #FD9951;
+    }
+
+`
+
 
 const Container = styled.div`
   height: 100vh;
   box-sizing: border-box;
-  background-color: #fff;
+  
   `
 
 const SmallContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     height: 100vh;
+    
+    @media (max-width: 785px) {
+      flex-direction: column-reverse;
+      width: 375px;
+      overflow: scroll;
+      min-height: 100vh;
+      height: 100%;
+    }
+
+
 
 `
 
@@ -288,6 +332,14 @@ const FormContainer = styled.div`
   justify-content: center;
   background-color: #fafafa;
   overflow-y: scroll;
+
+
+@media (max-width: 785px) {
+  min-height: 100vh;
+  overflow: none;
+
+
+}
 
 `
 
@@ -403,6 +455,7 @@ const Side = styled.div`
   width: 60rem;
   min-width: 20rem;
   height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;

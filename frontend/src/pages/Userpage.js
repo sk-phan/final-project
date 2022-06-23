@@ -179,10 +179,11 @@ const onExitClick = () => {
  
   return (
     <>
-
-    {/* <Logo src={logo} alt="Suki & Kristiina's pet app logo" /> */}
-    <Main>
-    <NavBar />
+   <Main>
+      <Heading>
+        <NavBar />
+        <Logo>Suki & Kriss</Logo>
+      </Heading>
 
 		{loading && <Loader />}
 		{!loading && 
@@ -232,7 +233,7 @@ const onExitClick = () => {
         </FilterContainer>
         }
    {!showFilt && <BigContainer>
-        <FilterButton onClick={onFilterClick}><FilterText>FILTER </FilterText> <IoIosOptions /></FilterButton>
+        <FilterButton onClick={onFilterClick}><FilterText>Filter </FilterText> <IoIosOptions /></FilterButton>
         
         <SmallContainer>
           {filteredUsersData.length > 0 && filteredUsersData.map(user => {
@@ -278,7 +279,17 @@ const onExitClick = () => {
   );
 };
 
-const Container = styled.div`
+const Heading = styled.div`
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 20;
+  width: 100vw;
+  position: absolute;
+  height: 60px;
+  padding: 0 3rem;
+
 
 `
 
@@ -288,30 +299,35 @@ const Main = styled.main`
   width: 100vw;
   position: relative;
 
-/* min-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-position: relative; */
 `
 
 
-const Logo = styled.img`
-  width: 20rem;
-  position: absolute;
-  top: -4.4rem;
-  left: 0;
+const Logo = styled.p`
+  font-size: 2rem;
+  font-weight: 700;
+  display: none;
+  
+  @media (max-width: 785px) {
+    display: inline-block;
+    position: absolute;
+    left: 40%;
+  }
 
 `
 const BigContainer = styled.div`
   display:flex;
   flex-direction: column;
   position: absolute;
-  left: 24%;
+  left: 20%;
+  padding-left: 10px;
   margin: 10rem;
 
-  @media (max-width: 600px) {
-        margin: 4rem 0;
+  @media (max-width: 785px) {
+        margin: 10rem 0;
+        top: 4rem;
+        width: 60%;
+        align-items: center;
+        justify-content: center;
     }
 `
 
@@ -338,8 +354,10 @@ const UserContainer = styled(Link)`
    display:flex;
    flex-direction: column;
    overflow:hidden;
-   width: 150px;
-   height: 250px;
+   min-width: 180px;
+   width: 200px;
+   height: 280px;
+   padding: 2rem;
    background-color: #fff;
    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
    border-radius:10px;
@@ -477,6 +495,7 @@ const FilterContainer = styled.div`
 const FilterButton = styled.button`
   display: flex;
   align-items: center;
+  align-self: flex-end;
   width: fit-content;
   gap: 1rem;
   background-color: transparent;
@@ -484,7 +503,7 @@ const FilterButton = styled.button`
   color: #000;
   border-radius: 10px;
   padding:7px;
-  margin: 10px;
+  margin: 10px 0;
 
   &:hover{
     background-color: #4C956C;
