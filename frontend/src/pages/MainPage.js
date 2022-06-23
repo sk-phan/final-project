@@ -47,7 +47,6 @@ const MainPage = () => {
                     <Subheading>
                         Connecting pet owners and pet sitters, so there are no more lonely days. 
                         Join our community and make life happier.  
-
                     </Subheading> 
                     <BtnContainer>
                         <LoginBtn onClick={() => navigate('/login')}>Log in</LoginBtn>
@@ -63,29 +62,31 @@ const MainPage = () => {
                 <SmallContainer2>
                     <FAQHeading>Frequently Asked Questions</FAQHeading>
                     <div className="accordionContainer">
-                        <button onClick={onAccordionClick1} className={accordion1 ? "accordionButtonOpen" :"accordionButtonClosed"} >Question one?</button>
+                        <button onClick={onAccordionClick1} className={accordion1 ? "accordionButtonOpen" :"accordionButtonClosed"} >What is this project about?</button>
                         {accordion1 ? 
                         <div className="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-                            sed do eiusmod tempor incididunt ut labore et dolore magna 
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            This is a final project of Technigo's boot camp spring '22 made by Suki and Kristiina. We wanted to create a realistic 
+                            app that combines many aspects that we learnt during the boot camp. We are both animal lovers 
+                            and that's how this app idea slowly came alive.
+                                
+                            
                         </div> : <></>}
-                        <button onClick={onAccordionClick2} className={accordion2 ? "accordionButtonOpen" :"accordionButtonClosed"}>Question two?</button>
+                        <button onClick={onAccordionClick2} className={accordion2 ? "accordionButtonOpen" :"accordionButtonClosed"}>How does the app work?</button>
                         {accordion2 ? 
                         <div className="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-                            sed do eiusmod tempor incididunt ut labore et dolore magna 
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            To be able to see the content of our app, we ask you kindly to sign up. Remember to fill in all the required inputs.
+                            You can pretend to be either a pet owner or a pet sitter. As a profile image we ask to provide a link to the image. 
+                            You can search nice animal/profile pictures from unsplash/pexel or if you want to use your own photo but you don't have a 
+                            photo of yourself available online, you can upload in and host it using for example https://imgbb.com/. 
+                            
                         </div> : <></>}
                         <button onClick={onAccordionClick3} className={accordion3 ? "accordionButtonOpen" :"accordionButtonClosed"}>Question three?</button>
                         {accordion3 ? 
                         <div className="panel">
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
                             sed do eiusmod tempor incididunt ut labore et dolore magna 
                             aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                            ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                            ullamco laboris nisi ut aliquip ex ea commodo consequat.
                         </div> : <></>}
                     </div>
                 </SmallContainer2>
@@ -193,9 +194,8 @@ const BigContainer2 = styled.div`
 const SmallContainer2 = styled.div`
     display:flex;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 20px;
     height: 100%;
+    min-height: 60vh;
     width: 350px;
     display: flex;
     flex-direction: column;
@@ -215,11 +215,9 @@ const SmallContainer2 = styled.div`
    box-shadow: none;
    align-items: flex-start;
    justify-content: flex-start;
-   gap: 30px;
   }
 
   @media (min-width: 1025px) {
-    gap: 20px;
    }
 `
 
@@ -352,6 +350,8 @@ const FAQHeading = styled.h1`
     text-align: center;
     letter-spacing: 0.035em;
     width: 17ch;
+    padding:0;
+    margin:0 0 5px 0;
     @media (min-width: 768px){
         width: 100%;
     }
