@@ -145,7 +145,7 @@ export const UserDetails = () => {
                     <ImageContainer>
                         <Img src={userToShow.img}/>
                     </ImageContainer>
-                    <TextContainer>
+                    <TextContainer> 
                         <ProfileTitle>@{userToShow.username}</ProfileTitle>
                         <ProfileText>
                             <ProfileTag>
@@ -167,8 +167,16 @@ export const UserDetails = () => {
                                 <span>{userToShow.description}</span>
                             </ProfileDetail>
                         </ProfileText> 
-                        <SendEmail href={`mailto:${userToShow.email}`}>Contact {userToShow.username}</SendEmail>             
-                        <div>
+                        <SendEmail href={`mailto:${userToShow.email}`}>Contact {userToShow.username}</SendEmail>     
+                        <Form onSubmit={onFormSubmit}>
+                            <ReviewInput
+                                value={review}
+                                onChange={(e) => setReview(e.target.value)}
+                                placeholder='write review here 🐶' 
+                                width = {review}
+                            ></ReviewInput>
+                            <SubmitBtn type='submit' display = {review}>Add</SubmitBtn>
+                        </Form>        
                             <ReviewContainer>
                                     {reviewList.length > 0 && reviewList.map(item => (
                                         <Reviews>
@@ -197,16 +205,6 @@ export const UserDetails = () => {
                                         </Reviews>
                                     ))}
                             </ReviewContainer>
-                        <Form onSubmit={onFormSubmit}>
-                            <ReviewInput
-                                value={review}
-                                onChange={(e) => setReview(e.target.value)}
-                                placeholder='write review here 🐶' 
-                                width = {review}
-                            ></ReviewInput>
-                            <SubmitBtn type='submit' display = {review}>Add</SubmitBtn>
-                        </Form>
-                        </div>
                     </TextContainer>
                 </SmallContainer>
             </BigContainer>}
@@ -273,9 +271,13 @@ const SmallContainer = styled.div`
 `
  const ImageContainer = styled.div`
       overflow:hidden;
+      width: 300px;
+      
 
    @media (min-width: 768px) {
-    width: 600px;
+    width: 350px;
+    align-self:flex-start;
+    padding-top:20px;
 
    }
  `
@@ -284,18 +286,21 @@ const SmallContainer = styled.div`
     width:100%;
     height:100%;
     object-fit: cover;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
+    border-radius:10px;
  `
 
  const TextContainer = styled.div`
    display:flex;
    flex-direction: column;
-   width: 200px;
+   width: 320px;
+   height:100vh;
    box-sizing: border-box;
    padding: 2rem;
+   gap: 2rem;
 
    @media (min-width: 768px) {
     align-self: flex-start;
-    gap: 2rem;
     width:400px;
    } 
  `
@@ -305,24 +310,21 @@ const SmallContainer = styled.div`
   font-weight: 700;
   margin:0;
   color: #000;
+  font-size: 3.2rem;
 
-
-  @media (min-width: 768px) {
-    font-size: 3.2rem;
-  }
 `
 
 const ProfileText = styled.div`
   font-family: 'Raleway', sans-serif;
   font-weight: 500;
-  font-size: 10px;
   margin:0;
   letter-spacing: 0.5px;
+  font-size: 16px;
+  flex-direction: row;
+  display: flex;
+  gap:2rem;
 
   @media (min-width: 768px) {
-    font-size: 1.6rem;
-    display: flex;
-    flex-direction: row;
     gap: 4rem;
    }
 `
@@ -331,6 +333,7 @@ const ProfileTag = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1.6rem;
+    width: fit-content;
 `
 
 const ProfileDetail = styled(ProfileTag)`
@@ -344,11 +347,7 @@ const SpanBold = styled.span`
 `
 
 const ReviewContainer = styled.div`
-    margin-top: 10rem;
-    height: 300px;
-    border-top: solid 0.5px #000;
-    overflow: scroll;
-
+    overflow-y: scroll;
 `
 
 const Reviews = styled.div`
