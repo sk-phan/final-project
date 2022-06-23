@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { useDispatch } from "react-redux";
 import { user } from "../reducers/user";
 
@@ -15,7 +15,7 @@ import logo from '../assets/logo1.svg'
 
 export const NavBar = () => {
     const [searchInput, setSearchInput] = useState('');
-    const [desktopSize, setDesktopSize] = useState(true)
+    const [desktopSize, setDesktopSize] = useState(false)
     const dispatch = useDispatch();
 
     const onClickLogout = () => {
@@ -78,27 +78,20 @@ const Header = styled.header `
 `
 
 const Nav = styled.nav`
-    width: 400px;
+    width: 320px;
     height: 100vh;
     background-color: #FCFBFB;
-    //display: ${(props) => props.display};
-    display: flex;
+    display: ${(props) => props.display};
     flex-direction: column;
     gap: 3rem;
     box-sizing: border-box;
     padding: 4rem;
     position: absolute;
+    top: 0;
     z-index: ${(props) => props.zIndex};
     transition: ease-in-out 1s;
-    
-    @media (max-width: 785px) {
-        padding: 3.2rem;
-        width: 300px;
-        height: 100vh;
-        top: 0;
-        display: ${(props) => props.display};
+     
 
-    }
 
 `
 
@@ -119,30 +112,24 @@ const CloseBtn = styled.button`
     right: 35px;
     cursor: pointer;
     font-size: 1.6rem;
-    display: none;
+    z-index: 10;
+    position: absolute;
+    top: 20px;
+    right: 10px;
 
     &:hover {
         border: solid 1.5px #FD9951;
         color: #FD9951;
     }
-    @media (max-width: 785px) {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 4rem;
-        height: 4rem;
-        font-size: 2.2rem;
-    }
+
 `
 
 const OpenBtn = styled(CloseBtn)`
-    display: none;
     z-index: ${(props) => props.zIndex};
-
-    @media (max-width: 785px) {
-        display: inline-block;
-    }
-    
+    position: absolute;
+    left: 20px;
+    top: 20px;
+   
 `
 
 const Logo = styled.img`
