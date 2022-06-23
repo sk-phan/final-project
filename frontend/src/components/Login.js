@@ -50,7 +50,7 @@ export const Login = () => {
             dispatch(user.actions.setAccessToken(data.response.accessToken));
           });
         } else {
-          setErrorMessage(data.response)
+          setErrorMessage('data.response')
           batch(() => {
             dispatch(user.actions.setUserData(null));
             dispatch(user.actions.setAccessToken(null));
