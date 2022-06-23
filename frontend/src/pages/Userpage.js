@@ -180,10 +180,7 @@ const onExitClick = () => {
   return (
     <>
    <Main>
-      <Heading>
-        <NavBar />
-        <Logo>Suki & Kriss</Logo>
-      </Heading>
+      <NavBar />
 
 		{loading && <Loader />}
 		{!loading && 
@@ -489,6 +486,9 @@ const FilterContainer = styled.div`
     background-color: #fff;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.04);
     border-radius:10px;
+    position: absolute;
+    top: 10rem;
+    left: 5rem;
 
 `
 

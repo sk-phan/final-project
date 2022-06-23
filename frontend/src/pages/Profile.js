@@ -132,7 +132,7 @@ export const Profile = () => {
 
     return (
     <Main>
-      <BackBtn type='button' onClick={() => navigate(-1)}>Back</BackBtn>
+      <BackBtn type='button' onClick={() => navigate(-1)}> 	&#60; Back</BackBtn>
       {loader && <Loader />}
       {!loader && <Container>
         <SmallContainer>
@@ -263,8 +263,7 @@ export const Profile = () => {
 }
 
 const Main = styled.main`
-width: 100%;
-min-width: 100vw;
+width: 100vw;
 min-height: 100vh;
 display: flex;
 justify-content: center;
@@ -276,7 +275,6 @@ const BackBtn = styled.button`
   position: absolute;
   top: 3rem;
   left: 0;
-
   border: none;
   cursor: pointer;
   color: #000;
@@ -285,7 +283,7 @@ const BackBtn = styled.button`
   padding: 1.5rem;
   width: 12rem;
   font-weight: 600;
-  font-size: 1.6rem;
+  font-size: 1.8rem;
   transition: all 0.4s ease;
   z-index: 10;
 
@@ -315,7 +313,6 @@ const SmallContainer = styled.div`
     @media (max-width: 785px) {
       flex-direction: column-reverse;
       width: 375px;
-      overflow: scroll;
       min-height: 100vh;
       height: 100%;
     }
@@ -337,6 +334,7 @@ const FormContainer = styled.div`
 @media (max-width: 785px) {
   min-height: 100vh;
   overflow: none;
+  padding-top: 4rem;
 
 
 }
@@ -386,11 +384,11 @@ const Label = styled.label`
   margin-bottom: 3.2rem;
   gap: 1.2rem;
   font-size: 1.6rem;
-  width: 30rem;
+  width: 100%;
 
   input {
     align-self: flex-start;
-    width: 50rem;
+    width: 45rem;
   }
   
 `
@@ -463,6 +461,10 @@ const Side = styled.div`
   box-sizing: border-box;
   background-color: #ffff;
   overflow: scroll;
+
+  @media (max-width:785px) {
+    display: none;
+  }
 
 `
 
