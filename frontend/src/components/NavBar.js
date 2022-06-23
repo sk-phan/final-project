@@ -14,7 +14,6 @@ import logo from '../assets/logo1.svg'
 
 
 export const NavBar = ( {search, setSearch} ) => {
-    const [searchInput, setSearchInput] = useState('');
     const [desktopSize, setDesktopSize] = useState(true)
     const dispatch = useDispatch();
 
@@ -22,7 +21,6 @@ export const NavBar = ( {search, setSearch} ) => {
         dispatch(user.actions.setDeleteAccessToken(null));
     };
     
-    console.log(search)
  
     return (
         <Header>
@@ -44,7 +42,7 @@ export const NavBar = ( {search, setSearch} ) => {
                         type='search'
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
-                        placeholder='search'
+                        placeholder="search username"
                     />
                     <button><BiSearch/></button>
 
