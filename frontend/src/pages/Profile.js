@@ -134,26 +134,13 @@ export const Profile = () => {
     <Main>
       <BackBtn type='button' onClick={() => navigate(-1)}> 	&#60; Back</BackBtn>
       {loader && <Loader />}
-      {!loader && <Container>
+      {!loader && 
+      
+      <Container>
         <SmallContainer>
-          <Side>
-            <ReviewHeading>Your reviews</ReviewHeading>
-            <ReviewList>
-              {reviews.length > 0 && reviews.map(item => {
-                return <Reviews key={item._id}>
-                <img src={item.img} alt={item.username + 'image'} />
-                <div>
-                  <Name>@{item.username}</Name>
-                  <ReviewText>
-                    {item.reviewText}
-                  </ReviewText>
-                </div>
-              </Reviews>
-              })}
-              {reviews.length === 0 && <EmptyReview>You have no review</EmptyReview>}
-            </ReviewList>
-          </Side>
-          {updatedData && <FormContainer>
+          {updatedData && 
+          <>
+          <FormContainer>
             <FormWrapper>
             <Form onSubmit={onSubmit}>
               <Header>
@@ -253,8 +240,25 @@ export const Profile = () => {
             <SubmitBtn type="submit">Save profile</SubmitBtn>
             </Form>
             </FormWrapper>
-          </FormContainer>}
+          </FormContainer>
+          <ReviewHeading>Your reviews</ReviewHeading>
+            <ReviewList>
+              {reviews.length > 0 && reviews.map(item => {
+                return <Reviews key={item._id}>
+                <img src={item.img} alt={item.username + 'image'} />
+                <div>
+                  <Name>@{item.username}</Name>
+                  <ReviewText>
+                    {item.reviewText}
+                  </ReviewText>
+                </div>
+              </Reviews>
+              })}
+              {reviews.length === 0 && <EmptyReview>You have no review</EmptyReview>}
+            </ReviewList>
+          </>}
         </SmallContainer>
+        
       </Container>}
     </Main>
 
@@ -263,12 +267,13 @@ export const Profile = () => {
 }
 
 const Main = styled.main`
-width: 100vw;
-min-height: 100vh;
-display: flex;
-justify-content: center;
-align-items: center;
-position: relative;
+    width: 100%;
+    min-width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative; 
 `
 
 const BackBtn = styled.button`
@@ -307,34 +312,27 @@ const Container = styled.div`
 
 const SmallContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
-    height: 100vh;
-    
-    @media (max-width: 785px) {
-      flex-direction: column-reverse;
-      width: 375px;
-      min-height: 100vh;
-      height: 100%;
-    }
-
-
-
+    flex-direction: column;
+    min-height: 100vh;
 `
 
 const FormContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: auto;
+  min-height:100%;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  background-color: #fafafa;
-  overflow-y: scroll;
+  background: #fafafa;
+  padding:60px 0 0 60px;
+  
+
 
 
 @media (max-width: 785px) {
   min-height: 100vh;
   overflow: none;
-  
+  padding:30px 0 0 30px;
 
 }
 
@@ -479,11 +477,12 @@ const Side = styled.div`
 
 const ReviewList = styled.div`
       width: 100%;
-      height: 100vh;
+      height: auto;
       display: flex;
       flex-direction: column;
       gap: 2rem;
       overflow: scroll;
+      margin-top:2rem;
 `
 const Name = styled.p`
   font-size: 2.4rem;
@@ -493,12 +492,17 @@ const Name = styled.p`
 
 const Reviews = styled.div`
   height: 15rem;
-  padding: 2rem;
+  padding-left: 60px;
   box-sizing: border-box;
   border-bottom: solid 1px #eee;
   display: flex;
   flex-direction: row;
   gap: 2rem;
+  padding:0 0 0 60px;
+      @media (max-width: 785px) {
+        padding:0 0 0 30px;
+      
+      }
 
   div {
     width: 20rem;
@@ -524,7 +528,11 @@ const Reviews = styled.div`
 const ReviewHeading = styled.h2 `
   font-size: 2.4rem;
   align-self: flex-start;
-  margin: 2rem;
+  margin: 2rem 0 0 60px;
+  @media (max-width: 785px) {
+    padding:0 0 0 30px;
+  
+  }
 `
 
 const ReviewText = styled.p`

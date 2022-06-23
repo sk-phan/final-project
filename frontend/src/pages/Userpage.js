@@ -518,7 +518,7 @@ const FilterButton = styled.button`
   color: #000;
   border-radius: 10px;
   padding:7px;
-  margin: 0 10px;
+  margin: 20px 10px 10px 0;
 
   &:hover{
     background-color: #4C956C;
