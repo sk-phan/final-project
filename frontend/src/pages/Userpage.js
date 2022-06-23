@@ -21,16 +21,18 @@ export const Userpage = () => {
   const userProfile = useSelector(state => state.user.userData)
 
   const [userData, setUserData] = useState([])
+  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showFilt, setShowFilt] = useState(false)
-
+   
   const [animalFilter, setAnimalFilter] = useState('all')
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
   const [favorites, setFavorites] = useState(userProfile.favorites)
+
 
   useEffect(() => {
     if (!accessToken) {
@@ -38,7 +40,6 @@ export const Userpage = () => {
     }
   }, [accessToken, navigate]);
 
-  console.log(userProfile,'pr')
 
   useEffect(() => {
 
@@ -119,10 +120,12 @@ export const Userpage = () => {
 
       if (useri) {
         dispatch(user.actions.setUserData(useri)) 
-      }
+      } 
     })
 
   }, [favorites])
+
+
 
 
 const onFilterSubmit = (e) => {
@@ -176,10 +179,33 @@ const onExitClick = () => {
 }
 
 
+useEffect(() => {
+  const options = {
+    method: 'GET',
+    headers: {
+        'Authorization': accessToken
+    },
+}
+  fetch(API_URL('users'), options)
+  .then((res) => res.json())
+  .then((data) => {
+    const filterData = data.filter(item => item.username.includes(search))
+    if (filterData.length > 0 && search !== '') {
+      setFilteredUsersData(filterData)
+    } else if (search === ''){
+      setFilteredUsersData(usersData)
+    }
+  })
+}, [search])
+
+  
  
   return (
     <>
-    <NavBar />
+    <NavBar 
+        search={search} 
+        setSearch = {setSearch}
+    />
    <Main>
 		{loading && <Loader />}
 		{!loading && 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components/macro";
 import { useDispatch } from "react-redux";
@@ -13,7 +13,7 @@ import { BiSearch } from 'react-icons/bi'
 import logo from '../assets/logo1.svg'
 
 
-export const NavBar = () => {
+export const NavBar = ( {search, setSearch} ) => {
     const [searchInput, setSearchInput] = useState('');
     const [desktopSize, setDesktopSize] = useState(true)
     const dispatch = useDispatch();
@@ -21,9 +21,9 @@ export const NavBar = () => {
     const onClickLogout = () => {
         dispatch(user.actions.setDeleteAccessToken(null));
     };
-
-
     
+    console.log(search)
+ 
     return (
         <Header>
             <OpenBtn zIndex={desktopSize ? '10' : '-10'} onClick={() => setDesktopSize(false)}>=</OpenBtn>
@@ -42,8 +42,8 @@ export const NavBar = () => {
                 <Seach>
                     <SearchBar 
                         type='search'
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
                         placeholder='search'
                     />
                     <button><BiSearch/></button>
@@ -136,9 +136,6 @@ const OpenBtn = styled(CloseBtn)`
 const Logo = styled.img`
     width: 30rem;
     height: auto;
- 
-    
-
 `
 
 const NavEl = styled(NavLink) `
@@ -180,6 +177,7 @@ const Seach = styled.div`
         outline: none; 
         width: 100%;
         font-size: 1.8rem;
+        z-index: 10;
     }
 
     svg {
