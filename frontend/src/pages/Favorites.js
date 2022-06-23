@@ -199,14 +199,13 @@ const EmptyTitle = styled.h1`
   font-family: 'Raleway', sans-serif;
   font-weight: 700;
   font-size: 12px;
-  margin:0;
   color: #000;
   @media (min-width: 768px) {
     font-size: 18px;
    }
    display:flex;
    width: 100%;
-   justify-content: space-between;
+   justify-content:center;
 `
 
 const ProfileText = styled.p`

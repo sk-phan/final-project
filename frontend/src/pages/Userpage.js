@@ -293,7 +293,7 @@ useEffect(() => {
 
           })}
           
-         { filteredUsersData.length === 0 && <ProfileTitle>Sorry, no matching users...</ProfileTitle> }
+         { filteredUsersData.length === 0 && <EmptyTitle>Sorry, no matching users...</EmptyTitle > }
         
 
         </SmallContainer>
@@ -574,6 +574,19 @@ const RadioLabel = styled.label`
 const RadioInput = styled.input`
   width: fit-content;
   color:#FD9951;
+`
+
+const EmptyTitle = styled.h1`
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  color: #000;
+  @media (min-width: 768px) {
+    font-size: 18px;
+   }
+   display:flex;
+   width: 100%;
+   justify-content:center;
 `
 
 
