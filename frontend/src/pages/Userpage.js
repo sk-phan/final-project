@@ -57,8 +57,6 @@ export const Userpage = () => {
       setUserData(user)
       setFavorites(user.favorites)
 
-
-
       if(user.profileType === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
         setUsersData(usersToShow)
@@ -178,8 +176,10 @@ const onExitClick = () => {
   setShowFilt(false)
 }
 
+console.log(filteredUsersData)
 
 useEffect(() => {
+  setFilteredUsersData(userData)
   const options = {
     method: 'GET',
     headers: {
@@ -189,11 +189,16 @@ useEffect(() => {
   fetch(API_URL('users'), options)
   .then((res) => res.json())
   .then((data) => {
-    const filterData = data.filter(item => item.username.includes(search))
-    if (filterData.length > 0 && search !== '') {
+    const filterData = data.filter(item => {
+      let name = item.username.toLowerCase();
+      return name.includes(search.toLowerCase())
+    })
+    if (filterData.length >= 0 && search !== '') {
       setFilteredUsersData(filterData)
-    } else if (search === ''){
-      setFilteredUsersData(usersData)
+    } else {
+      if (usersData.length > 0) {
+        setFilteredUsersData(usersData)
+      }
     }
   })
 }, [search])
