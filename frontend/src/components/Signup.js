@@ -85,7 +85,7 @@ export const Signup = () => {
         }),
       }
       
-      fetch('http://localhost:8080/signup', options)
+      fetch(API_URL('signup'), options)
       .then((res) => res.json())
       .then((data) => {
           if (data.success) {
@@ -98,6 +98,7 @@ export const Signup = () => {
             batch(() => {
               dispatch(user.actions.setUserData(null));
             })    
+            console.log(data.response)
             setError(data.response)
           }
         })
