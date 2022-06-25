@@ -23,6 +23,7 @@ export const Signup = () => {
   const [img, setImg] = useState("")
   const [description, setDescription] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [error, setError] = useState('')
   const [showRePassword, setShowRePassword] = useState(false)
   
   const [emailValid, setEmailValid] = useState(false)
@@ -31,7 +32,7 @@ export const Signup = () => {
   const [allValid, setAllValid] = useState(false)
 
   const accessToken = useSelector((store) => store.user.accessToken);
-  const error = useSelector((store) => store.user.error)
+  //const error = useSelector((store) => store.user.error)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -51,10 +52,10 @@ export const Signup = () => {
 
     if(validator.isEmail(email)) {
       setEmailValid(true)
-      dispatch(user.actions.setError(''))
+      setError('')
     } else {
       setEmailValid(false)
-      dispatch(user.actions.setError('Enter valid email'))
+     setError('Please enter valid email')
     }
   }
 
@@ -84,31 +85,27 @@ export const Signup = () => {
         }),
       }
       
-      fetch(API_URL('signup'), options)
+      fetch('http://localhost:8080/signup', options)
       .then((res) => res.json())
       .then((data) => {
           if (data.success) {
-
+            setError('')
             batch(() => {
               dispatch(user.actions.setAccessToken(data.response.accessToken));
               dispatch(user.actions.setUserData(data.response));
-              dispatch(user.actions.setError(''))
             });
           } else {  
             batch(() => {
-              dispatch(user.actions.setError(data.response))
               dispatch(user.actions.setUserData(null));
             })    
+            setError(data.response)
           }
         })
       .catch(error => console.log(error))
-      .finally(() => {
-        setUsername('')
-        setPassword('')
-      })
+      
     }
 
-  }, [allValid]);
+  }, [allValid, error]);
 
 
   const onFormSubmit = (e) => {
@@ -116,11 +113,13 @@ export const Signup = () => {
 
     if (password === rePassword && emailValid) {
       setAllValid(true)
-      dispatch(user.actions.setError(''))  
-
+      setError('')
+    } else if (password !== rePassword) {
+      setAllValid(false);
+      setError('password does not match')
     } else {
       setAllValid(false);
-      dispatch(user.actions.setError('password does not match'))  
+      setError('Please enter valid email')
     }
   };
 
@@ -140,9 +139,10 @@ export const Signup = () => {
       password === ''      
       ) {
         setDisable(false)
-        dispatch(user.actions.setError('Please fill in all required input'))
+        setError('Please fill in all required input')
 
       } else {
+        setError('')
         setDisable(true)
 
       }

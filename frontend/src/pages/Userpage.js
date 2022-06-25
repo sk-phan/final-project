@@ -21,18 +21,16 @@ export const Userpage = () => {
   const userProfile = useSelector(state => state.user.userData)
 
   const [userData, setUserData] = useState([])
-  const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showFilt, setShowFilt] = useState(false)
-   
+
   const [animalFilter, setAnimalFilter] = useState('all')
   const [serviceFilter, setServiceFilter] = useState([])
   const serviceOptions = ['2-3 hours', ' > 5 hours', 'overnights', 'weekends', 'longer periods'];
 
   const [favorites, setFavorites] = useState(userProfile.favorites)
-
 
   useEffect(() => {
     if (!accessToken) {
@@ -40,6 +38,7 @@ export const Userpage = () => {
     }
   }, [accessToken, navigate]);
 
+  console.log(userProfile,'pr')
 
   useEffect(() => {
 
@@ -50,12 +49,14 @@ export const Userpage = () => {
       },
   }
     setLoading(true) 
-    fetch(API_URL('users'), options)
+    fetch('http://localhost:8080/users', options)
     .then((res) => res.json())
     .then((data) => {
       const user = data.find(item => item._id === userProfile._id)
       setUserData(user)
       setFavorites(user.favorites)
+
+
 
       if(user.profileType === 'Pet owner'){
         const usersToShow = data.filter(user => user.profileType === 'Pet sitter')
@@ -100,7 +101,7 @@ export const Userpage = () => {
         favorites: favorites,
       }),
     }
-     fetch (API_URL('edituser'), options)
+     fetch ('http://localhost:8080/edituser', options)
   
   }, [favorites])  
 
@@ -111,19 +112,17 @@ export const Userpage = () => {
           'Authorization': accessToken
       },
   }
-    fetch(API_URL('users'), options)
+    fetch('http://localhost:8080/users', options)
     .then((res) => res.json())
     .then((data) => {
       const useri = data.find(item => item._id === userData._id)
 
       if (useri) {
         dispatch(user.actions.setUserData(useri)) 
-      } 
+      }
     })
 
   }, [favorites])
-
-
 
 
 const onFilterSubmit = (e) => {
@@ -176,41 +175,11 @@ const onExitClick = () => {
   setShowFilt(false)
 }
 
-console.log(filteredUsersData)
 
-useEffect(() => {
-  setFilteredUsersData(userData)
-  const options = {
-    method: 'GET',
-    headers: {
-        'Authorization': accessToken
-    },
-}
-  fetch(API_URL('users'), options)
-  .then((res) => res.json())
-  .then((data) => {
-    const filterData = data.filter(item => {
-      let name = item.username.toLowerCase();
-      return name.includes(search.toLowerCase())
-    })
-    if (filterData.length >= 0 && search !== '') {
-      setFilteredUsersData(filterData)
-    } else {
-      if (usersData.length > 0) {
-        setFilteredUsersData(usersData)
-      }
-    }
-  })
-}, [search])
-
-  
  
   return (
     <>
-    <NavBar 
-        search={search} 
-        setSearch = {setSearch}
-    />
+    <NavBar />
    <Main>
 		{loading && <Loader />}
 		{!loading && 
@@ -293,7 +262,7 @@ useEffect(() => {
 
           })}
           
-         { filteredUsersData.length === 0 && <EmptyTitle>Sorry, no matching users...</EmptyTitle > }
+         { filteredUsersData.length === 0 && <ProfileTitle>Sorry, no matching users...</ProfileTitle> }
         
 
         </SmallContainer>
@@ -518,7 +487,7 @@ const FilterButton = styled.button`
   color: #000;
   border-radius: 10px;
   padding:7px;
-  margin: 20px 10px 10px 0;
+  margin: 0 10px;
 
   &:hover{
     background-color: #4C956C;
@@ -574,19 +543,6 @@ const RadioLabel = styled.label`
 const RadioInput = styled.input`
   width: fit-content;
   color:#FD9951;
-`
-
-const EmptyTitle = styled.h1`
-  font-family: 'Raleway', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  color: #000;
-  @media (min-width: 768px) {
-    font-size: 18px;
-   }
-   display:flex;
-   width: 100%;
-   justify-content:center;
 `
 
 
