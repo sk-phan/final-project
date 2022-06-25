@@ -26,12 +26,12 @@ const UserSchema = new mongoose.Schema({
     username: {
       type: String,
       required: true,
-      //unique: true,
+      unique: true,
     },
       email: {
       type: String,
       required: true,
-      //unique: true,
+      unique: true,
     },
     animalType: {
       type: String,
@@ -143,16 +143,17 @@ app.get("/users", async (req, res) => {
  app.post('/signup', async (req, res) => {
     const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img, description, favorites } = req.body
     
-  
+   
     try {
       const salt = bcrypt.genSaltSync()
-      const existingUser = await User.findOne({ email } || { username });
+      const existingUser = await User.findOne({ username });
+      console.log(existingUser)
 
       if (password.length < 8) {
         throw 'Password must be at least 8 characters long'
       } else if (existingUser) {
         throw 'Account already exists, please log in'
-      }
+      } 
   
       const newUser = await new User({
         profileType,
@@ -174,6 +175,7 @@ app.get("/users", async (req, res) => {
         success: true
         })
     } catch(error) {
+      console.log(error)
         res.status(400).json({ response: error, success: false })
     }
 })
