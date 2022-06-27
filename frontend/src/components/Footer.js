@@ -1,12 +1,57 @@
 import React from 'react';
 import styled from 'styled-components'
+import logo from "../assets/white-logo.svg"
+import { AiFillGithub } from 'react-icons/ai';
+import { AiFillLinkedin } from 'react-icons/ai';
+import { AiOutlineGlobal } from 'react-icons/ai'
+
 
 export const Footer = () => {
     return(
         <FooterContainer>
+            <Logo src={logo} alt='Pet app logp' />
             <SmallContainer>
-                <FooterText>KRIS AND SUKI</FooterText>
-                <FooterText>Pet Sitter App</FooterText>
+                <LinkContainer>
+                  <Link>
+                    <AiFillGithub />
+                    <a href='https://github.com/kolkri'>
+                       Kristiina's Github
+                    </a>
+                  </Link>
+                  <Link>
+                    <AiFillLinkedin />
+                    <a href='https://www.linkedin.com/in/kristiina-kolu-41631b1a4/'> 
+                       Kristiina's Linkedin
+                    </a>
+                  </Link>
+                  <Link>
+                    <AiOutlineGlobal />
+                    <a href='https://kristiina-kolu-portfolio.netlify.app'>
+                        Kristiina's portfolio
+                    </a>
+                  </Link>
+                </LinkContainer>
+                <LinkContainer>
+                <Link>
+                    <AiFillGithub />
+                    <a href='https://github.com/sukiphan97'>
+                       Suki's Github
+                    </a>
+                  </Link>
+                  <Link>
+                    <AiFillLinkedin />
+                    <a href='https://www.linkedin.com/in/nhung19/'> 
+                        Suki's Linkedin
+                    </a>
+                  </Link>
+                  <Link>
+                    <AiOutlineGlobal />
+                    <a href='https://sukinhungphan.netlify.app'>
+                        Suki's portfolio
+                    </a>
+                  </Link>
+
+                </LinkContainer>
             </SmallContainer>
 
         </FooterContainer>
@@ -15,23 +60,42 @@ export const Footer = () => {
 
 const FooterContainer = styled.div`
     width:100vw;
-    height: 200px;
+    height: 500px;
     background: #FD9951;
     color: #FEFEE3;
     display:flex;
-    justify-content:center;
+    flex-direction: column;
+    justify-content:space-between;
     align-items:center;
+
+    @media (min-width: 768px) {
+       flex-direction: row;
+       height: 200px;
+       overflow: hidden;
+       }
+     
 `
 const SmallContainer = styled.div`
     display:flex;
     flex-direction: column;
-    justify-content: center;
-    width: 350px;
-    gap: 20px;
+    gap: 5rem;
     height: 100%;
+
+    svg {
+        color: #FEFEE3;
+        width: 3rem;
+        height: 3rem;
+
+    }
 
     @media (min-width: 768px) {
         width: 700px;
+        width: 3rem;
+        height: 3rem;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
        }
      
        @media (min-width: 1025px) {
@@ -39,13 +103,34 @@ const SmallContainer = styled.div`
         }
 `
 
-const FooterText = styled.p`
-    color: #FEFEE3; 
-    font-family: 'Raleway', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    letter-spacing: 0.035em;
-    padding:0;
-    margin:0;
+const LinkContainer = styled.div`
+    display:flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    
+`
+
+const Link = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+
+    a:link, a:visited {
+        color: #FEFEE3;
+        font-size: 1.8rem;
+        text-decoration: none;
+    }
+    
+    a:hover, a:active {
+        color: #eee;
+        text-decoration: underline;
+    }
+`
+
+
+const Logo = styled.img`
+   width: 25rem;
+   height: 25rem;
+   object-fit: cover;
 `
