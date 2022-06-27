@@ -1,7 +1,7 @@
 # About the project
 We want to build a pet app where peole can join as pet sitters and volunteer to help pet owners to take care of their pets. The app was created by using React, Redux, Style Components for front-end and Node.js, MongoDb, Express.js for back-end.
 
-#Collaborators:
+# Collaborators:
 The project was made by Kristiina Kolu and Suki Nhung Phan.
 
 # View it live
