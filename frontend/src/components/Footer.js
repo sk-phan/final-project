@@ -61,6 +61,7 @@ export const Footer = () => {
 const FooterContainer = styled.div`
     width:100vw;
     height: 500px;
+    padding-bottom: 2rem;
     background: #FD9951;
     color: #FEFEE3;
     display:flex;
@@ -71,7 +72,7 @@ const FooterContainer = styled.div`
     @media (min-width: 768px) {
        flex-direction: row;
        height: 200px;
-       overflow: hidden;
+       overflowg: hidden;
        }
      
 `
