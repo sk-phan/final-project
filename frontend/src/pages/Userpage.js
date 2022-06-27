@@ -49,7 +49,7 @@ export const Userpage = () => {
       },
   }
     setLoading(true) 
-    fetch('http://localhost:8080/users', options)
+    fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
       const user = data.find(item => item._id === userProfile._id)
@@ -101,7 +101,7 @@ export const Userpage = () => {
         favorites: favorites,
       }),
     }
-     fetch ('http://localhost:8080/edituser', options)
+     fetch(API_URL('edituser'), options)
   
   }, [favorites])  
 
@@ -112,7 +112,7 @@ export const Userpage = () => {
           'Authorization': accessToken
       },
   }
-    fetch('http://localhost:8080/users', options)
+    fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
       const useri = data.find(item => item._id === userData._id)
