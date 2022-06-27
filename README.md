@@ -5,7 +5,7 @@ We want to build a pet app where peole can join as pet sitters and volunteer to 
 https://sk-petapp.netlify.app
 
 Please feel free to use our dummy account to log in and view the insight. 
-Username: MaxS
+Username: MaxS 
 Password: password
 
 # Features
