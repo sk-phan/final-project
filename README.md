@@ -1,5 +1,8 @@
 # About the project
-We want to build a pet app where peole can join as pet sitters and volunteer to help pet owners to take care of their pets. The app was created by using React, Redux, Style Components for front-end and MongoDb, Express.js for back-end
+We want to build a pet app where peole can join as pet sitters and volunteer to help pet owners to take care of their pets. The app was created by using React, Redux, Style Components for front-end and Node.js, MongoDb, Express.js for back-end.
+
+# Collaborators:
+The project was made by Kristiina Kolu and Suki Nhung Phan.
 
 # View it live
 https://sk-petapp.netlify.app
@@ -19,7 +22,7 @@ Please feel free to use our dummy account to log in and view the insight.
 - User can log out
 
 # Process
-The project was made by Kristiina Kolu and Suki Nhung Phan. It tooks us 3 weeks to complete. Our proccess:
+It tooks us 3 weeks to complete. Our proccess:
  1. Setting up the ideas on white board
  2. Building the prototype in Figma
  3. Bulding the back-end
