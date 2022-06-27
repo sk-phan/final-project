@@ -80,13 +80,10 @@ const MainPage = () => {
                             photo of yourself available online, you can upload in and host it using for example https://imgbb.com/. 
                             
                         </div> : <></>}
-                        <button onClick={onAccordionClick3} className={accordion3 ? "accordionButtonOpen" :"accordionButtonClosed"}>Question three?</button>
+                        <button onClick={onAccordionClick3} className={accordion3 ? "accordionButtonOpen" :"accordionButtonClosed"}>Which technologies did we use?</button>
                         {accordion3 ? 
                         <div className="panel">
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
-                            sed do eiusmod tempor incididunt ut labore et dolore magna 
-                            aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
-                            ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            The front-end part was built by using HTML, CSS, React, Style Components and the back-end was built by Node.js, Express.js and Mongo DB
                         </div> : <></>}
                     </div>
                 </SmallContainer2>
