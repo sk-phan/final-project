@@ -1,3 +1,5 @@
+<img width="1377" alt="Screen Shot 2022-06-29 at 3 58 46 PM" src="https://user-images.githubusercontent.com/91788124/176442446-9d0a7fb0-1c75-44e3-8a75-9e2f552d9294.png">
+ 
 # About the project
 This is a final project of Technigo's boot camp spring '22. We wanted to build a pet app to connect pet owner and pet sitters. The app was created by using React, Redux, Style Components for front-end and Node.js, MongoDb, Express.js for back-end.
 
