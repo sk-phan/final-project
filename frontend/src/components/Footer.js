@@ -58,30 +58,28 @@ export const Footer = () => {
     )
 }
 
-const FooterContainer = styled.div`
+const FooterContainer = styled.footer`
     width:100vw;
-    height: 500px;
-    padding-bottom: 2rem;
+    height: auto;
     background: #FD9951;
     color: #FEFEE3;
     display:flex;
     flex-direction: column;
     justify-content:space-between;
     align-items:center;
-    overflow: hidden;
+    box-sizing: border-box;
+
 
     @media (min-width: 768px) {
        flex-direction: row;
-       height: 200px;
-       overflowg: hidden;
        }
      
 `
 const SmallContainer = styled.div`
     display:flex;
-    flex-direction: column;
     gap: 5rem;
-    height: 100%;
+    height: fit-content;
+    margin: 0 0 5rem 0;
 
     svg {
         color: #FEFEE3;
@@ -91,18 +89,10 @@ const SmallContainer = styled.div`
     }
 
     @media (min-width: 768px) {
-        width: 700px;
-        width: 3rem;
-        height: 3rem;
-        flex-direction: row;
         align-items: center;
         justify-content: center;
-
+        margin: 0 20rem 0 0;
        }
-     
-       @media (min-width: 1025px) {
-         width: 1000px;
-        }
 `
 
 const LinkContainer = styled.div`
