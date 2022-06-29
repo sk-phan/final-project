@@ -61,5 +61,7 @@ npm start
 - Putting more time to the responsive desing and the styling
 
 - Adding possibility to upload a profile picture (now we are just asking a link to the picture). We managed to convert the uploaded images to base64 format and display them on the logged in page. However, after delpoying the heroku link the app ran very slowly, we think that this was maybe because of the large size of images. After running out of time, we decided to stay just with the image link. 
+
+- We could also combine and simplify our styled components, because we are using the same styling in several pages. 
  
  
