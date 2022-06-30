@@ -274,6 +274,7 @@ const Main = styled.main`
     justify-content: center;
     align-items: center;
     position: relative; 
+    box-sizing: border-box;
 `
 
 const BackBtn = styled.button`
@@ -305,15 +306,14 @@ const BackBtn = styled.button`
 
 
 const Container = styled.div`
-  height: 100vh;
+  height: auto;
   box-sizing: border-box;
-  
   `
 
 const SmallContainer = styled.div`
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    box-sizing: border-box;
 `
 
 const FormContainer = styled.div`
@@ -324,7 +324,8 @@ const FormContainer = styled.div`
   display: flex;
   justify-content: center;
   background: #fafafa;
-  padding:60px 0 0 60px;
+  padding-left: 60px;
+  
   
 
 
@@ -332,7 +333,8 @@ const FormContainer = styled.div`
 @media (max-width: 785px) {
   min-height: 100vh;
   overflow: none;
-  padding:30px 0 0 30px;
+  padding-left: 40px;
+ 
 
 }
 
@@ -341,10 +343,11 @@ const FormContainer = styled.div`
 const FormWrapper = styled.div`
   width: 700px;
   box-sizing: border-box;
+  padding-top: 10rem;
 
   @media (max-width: 785px) {
     width: 300px;
-    padding-top: 10rem;
+    
     
 
   }
@@ -379,6 +382,7 @@ const InputContainer = styled.div`
   display: flex;
   width: 100%;
   gap: 5rem;
+  box-sizing: border-box;
 `
 
 const Label = styled.label`
@@ -455,26 +459,6 @@ const EditBtn = styled(SubmitBtn)`
    width: 18rem;
    margin-bottom: 0;
 `
-
-const Side = styled.div`
-  width: 60rem;
-  min-width: 20rem;
-  height: 100vh;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 6rem 4rem 4rem 4rem;
-  box-sizing: border-box;
-  background-color: #ffff;
-  overflow: scroll;
-
-  @media (max-width:785px) {
-    display: none;
-  }
-
-`
-
 const ReviewList = styled.div`
       width: 100%;
       height: auto;
