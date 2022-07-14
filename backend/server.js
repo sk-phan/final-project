@@ -77,13 +77,6 @@ const UserSchema = new mongoose.Schema({
       type: Array,
     }
 })
-//QUESTION FOR 1:1 session
-//1) When the type is array and required true, it still allows to post without including them, why?
-//2) is the type for dates also a string?
-//3) how we upload and strorage an image?
-//4) should the reviews be an object, because later we will storage the review and the username who gave that review, is this done my nested schema?
-//5) how much data we can storage to mongo database with images?
-
 
 const User = mongoose.model("User", UserSchema)
 
@@ -130,6 +123,7 @@ const Review = mongoose.model("Review", ReviewSchema)
 app.get("/", (req, res ) => {
   res.status(200).json('hello')
 })
+
 //user endpoint
 app.get("/users", authenticateUser);
 app.get("/users", async (req, res) => {
@@ -138,16 +132,13 @@ app.get("/users", async (req, res) => {
   res.status(201).json(users)
 });
 
-
 //signup endpoint
  app.post('/signup', async (req, res) => {
     const { profileType, username, email, animalType, location, preferableTime, startDate, endDate, password, img, description, favorites } = req.body
-    
-   
+      
     try {
       const salt = bcrypt.genSaltSync()
       const existingUser = await User.findOne({ username });
-      console.log(existingUser)
 
       if (password.length < 8) {
         throw 'Password must be at least 8 characters long'
@@ -175,7 +166,6 @@ app.get("/users", async (req, res) => {
         success: true
         })
     } catch(error) {
-      console.log(error)
         res.status(400).json({ response: error, success: false })
     }
 })
@@ -208,13 +198,11 @@ app.post('/login', async (req, res) => {
 
 //update user information endpoint
 app.patch("/edituser", async (req,res) => {
+
+  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, img, preferableTime ,description, favorites}  = req.body;
  
-  const { userId, profileType, username, email, animalType, location, duration, startDate, endDate, img, description, favorites}  = req.body;
-
-  
   try {
-
-    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, startDate, endDate, img, description, favorites} );
+    const editingUser = await User.findByIdAndUpdate(userId, {profileType, username, email, animalType, location, duration, preferableTime, startDate, endDate, img, description, favorites} );
       
     if (editingUser) {
       res.status(200).json({
