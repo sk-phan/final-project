@@ -1,9 +1,10 @@
 import React from 'react';
-import styled from 'styled-components'
 import logo from "../assets/white-logo.svg"
 import { AiFillGithub } from 'react-icons/ai';
 import { AiFillLinkedin } from 'react-icons/ai';
 import { AiOutlineGlobal } from 'react-icons/ai'
+
+import { FooterContainer, Logo, SmallContainer, Link, LinkContainer } from '../styling/FooterStyle';
 
 
 export const Footer = () => {
@@ -58,71 +59,3 @@ export const Footer = () => {
     )
 }
 
-const FooterContainer = styled.footer`
-    width:100vw;
-    height: auto;
-    background: #FD9951;
-    color: #FEFEE3;
-    display:flex;
-    flex-direction: column;
-    justify-content:space-between;
-    align-items:center;
-    box-sizing: border-box;
-
-
-    @media (min-width: 768px) {
-       flex-direction: row;
-       }
-     
-`
-const SmallContainer = styled.div`
-    display:flex;
-    gap: 5rem;
-    height: fit-content;
-    margin: 0 0 5rem 0;
-
-    svg {
-        color: #FEFEE3;
-        width: 3rem;
-        height: 3rem;
-
-    }
-
-    @media (min-width: 768px) {
-        align-items: center;
-        justify-content: center;
-        margin: 0 20rem 0 0;
-       }
-`
-
-const LinkContainer = styled.div`
-    display:flex;
-    flex-direction: column;
-    gap: 2rem;
-
-    
-`
-
-const Link = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 1.6rem;
-
-    a:link, a:visited {
-        color: #FEFEE3;
-        font-size: 1.8rem;
-        text-decoration: none;
-    }
-    
-    a:hover, a:active {
-        color: #eee;
-        text-decoration: underline;
-    }
-`
-
-
-const Logo = styled.img`
-   width: 25rem;
-   height: 25rem;
-   object-fit: cover;
-`

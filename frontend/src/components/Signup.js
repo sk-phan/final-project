@@ -2,12 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
 import Autocomplete from "react-google-autocomplete";
-import styled from 'styled-components';
 
 import { API_URL } from '../utils/url';
+
+import { Main, ExitButton, FormContainer, Form,
+  FormTitle, FormSubTitle, SignupButton, P, LinkText, 
+  RadioLabel, RadioInput, DateLabel, ProfileContainer, Error } from '../styling/SignUpStyle';
 
 export const Signup = () => {
   const [profileType, setProfileType] = useState("")
@@ -32,7 +35,6 @@ export const Signup = () => {
   const [allValid, setAllValid] = useState(false)
 
   const accessToken = useSelector((store) => store.user.accessToken);
-  //const error = useSelector((store) => store.user.error)
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,7 +57,7 @@ export const Signup = () => {
       setError('')
     } else {
       setEmailValid(false)
-     setError('Please enter valid email')
+      setError('Please enter valid email')
     }
   }
 
@@ -98,7 +100,6 @@ export const Signup = () => {
             batch(() => {
               dispatch(user.actions.setUserData(null));
             })    
-            console.log(data.response)
             setError(data.response)
           }
         })
@@ -389,145 +390,4 @@ export const Signup = () => {
 
   );
 }
-
-const ExitButton = styled.button`
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    border: black solid;
-    width: 3rem;
-    height: 3rem;
-    position: absolute;
-    right:1.5rem;
-    top:1.5rem;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    background-color: #F5F5F5;
-    font-weight: 600;
-    cursor:pointer;
-      background-color: #F5F5F5;
-    &:hover{
-      background-color: #FD9951;
-      cursor: pointer;
-    }
-`
-
-const Main = styled.main`
-    width: 100%;
-    min-width: 100vw;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url("https://images.unsplash.com/photo-1551730459-92db2a308d6a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80") no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-`
-
-const FormContainer = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 2rem;    
-    width: 35rem;
-    box-sizing: border-box;
-    padding: 2rem;
-    margin:2rem;
-    background:rgba(255,255,255, 0.9);
-    position:relative;
-`
-const Form = styled.form`
-    display:flex;
-    flex-direction: column;
-    
-`
-
-const FormTitle = styled.h1`
-    font-family: 'Raleway', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 24px;
-    line-height: 28px;
-    letter-spacing: 0.035em;
-    text-align:center;
-`
-
-const FormSubTitle = styled.p`
-    font-family: 'Raleway', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 19px;
-    text-align: center;
-    color: #666666;
-    margin: 0 0 2rem 0;
-    padding:0;
-`
-
-
-const SignupButton = styled.button`
-    border: none;
-    background-color: #FD9951;
-    border-radius: 1rem;
-    cursor: pointer;
-    color: #fff;
-    padding: 1.5rem;
-    margin: 24px 12px 12px 12px;
-    font-weight: 600;
-    font-size: 1.6rem;
-
-    &:disabled {
-      background-color: #fdc7a0;
-    }
-
-    &:hover {
-      background-color: #ec8941;
-    }
-`
- 
-const P = styled.p`
-    font-family: 'Raleway', sans-serif;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.6rem;
-`
-
-const LinkText = styled(Link)`
-    font-family: 'Raleway', sans-serif;
-    font-size: 1.6rem;
-    color: #FD9951;
-    font-weight: 600;
-    text-decoration:none;
-`
-
-
-const RadioLabel = styled.label`
-  display:flex;
-  align-items: center;
-  font-size: 14px;
-`
-
-const RadioInput = styled.input`
-  width: fit-content;
-  color:#FD9951;
-`
-
-const DateLabel = styled(P)`
-  margin: 0 0 0.2rem 0.2rem;
-`
-
-
-const ProfileContainer = styled.div`
-  display: flex;
-  justify-content: space-evenly;
-`
-
-const Error = styled.p`
-  color: red;
-  font-size: 1.4rem;
-  margin: 12px;
-`
 
