@@ -1,1 +1,1 @@
-const BASE_URL = 'https://final-project-sk-pet-app.herokuapp.com/'
+const BASE_URL = 'https://final-project-nhzw4jdita-lz.a.run.app/'
