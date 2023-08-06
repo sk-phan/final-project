@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-// import validator from 'validator'
+import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
@@ -29,7 +29,7 @@ export const Signup = () => {
   const [error, setError] = useState('')
   const [showRePassword, setShowRePassword] = useState(false)
   
-  // const [emailValid, setEmailValid] = useState(false)
+  const [emailValid, setEmailValid] = useState(false)
 
   const [disabled, setDisable] = useState(false)
   const [allValid, setAllValid] = useState(false)
@@ -52,13 +52,13 @@ export const Signup = () => {
   const validateEmail = (e) => {
     setEmail(e.target.value)
 
-    // if(validator.isEmail(email)) {
-    //   setEmailValid(true)
-    //   setError('')
-    // } else {
-    //   setEmailValid(false)
-    //   setError('Please enter valid email')
-    // }
+    if(validator.isEmail(email)) {
+      setEmailValid(true)
+      setError('')
+    } else {
+      setEmailValid(false)
+      setError('Please enter valid email')
+    }
   }
 
 
@@ -113,17 +113,18 @@ export const Signup = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    setAllValid(true)
-    // if (password === rePassword && emailValid) {
-    //   setAllValid(true)
-    //   setError('')
-    // } else if (password !== rePassword) {
-    //   setAllValid(false);
-    //   setError('password does not match')
-    // } else {
-    //   setAllValid(false);
-    //   setError('Please enter valid email')
-    // }
+    
+    if (password === rePassword && emailValid) {
+      setAllValid(true)
+      setError('')
+    } else if (password !== rePassword) {
+      setAllValid(false);
+      setError('password does not match')
+    }
+    else if (emailValid) {
+      setAllValid(true);
+      setError("")
+    }
   };
 
 
