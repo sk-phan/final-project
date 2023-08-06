@@ -58,6 +58,7 @@ export const Userpage = () => {
     fetch(API_URL('users'), options)
     .then((res) => res.json())
     .then((data) => {
+      console.log(data)
       const user = data.find(item => item._id === userProfile._id)
       setUserData(user)
       setFavorites(user.favorites)
