@@ -19,5 +19,8 @@
         "express-list-endpoints": "^6.0.0",
         "mongoose": "^6.3.0",
         "nodemon": "^2.0.15"
+    },
+    "devDependencies": {
+        "@flydotio/dockerfile": "^0.4.2"
     }
 }

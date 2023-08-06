@@ -106,22 +106,24 @@ export const Signup = () => {
       .catch(error => console.log(error))
       
     }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allValid, error]);
 
 
   const onFormSubmit = (e) => {
     e.preventDefault();
 
+    
     if (password === rePassword && emailValid) {
       setAllValid(true)
       setError('')
     } else if (password !== rePassword) {
       setAllValid(false);
       setError('password does not match')
-    } else {
-      setAllValid(false);
-      setError('Please enter valid email')
+    }
+    else if (emailValid) {
+      setAllValid(true);
+      setError("")
     }
   };
 
@@ -148,7 +150,7 @@ export const Signup = () => {
         setDisable(true)
 
       }
-  }, [ email, username, password, animalType, location, preferableTime, startDate, endDate, password])
+  }, [ email, username, animalType, location, preferableTime, startDate, endDate, password])
 
 
 
@@ -228,7 +230,6 @@ export const Signup = () => {
                 id="email"
                 className="input"
                 type="email"
-                pattern=".+@globex\.com"
                 value={email}
                 onChange={(e) => validateEmail(e)}
                 required

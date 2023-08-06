@@ -1,3 +1,3 @@
-const BASE_URL = 'https://final-project-nhzw4jdita-lz.a.run.app'
+const BASE_URL = 'https://petapptechnigo.fly.dev'
 
 export const API_URL = (slug) => `${BASE_URL}/${slug}`

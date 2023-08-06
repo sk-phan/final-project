@@ -1,13 +1,18 @@
 import express from "express"
-import mongoose from "mongoose"
 import cors from 'cors'
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 
 
-const mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/final-project'
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
-mongoose.Promise = Promise
+const mongoUrl = "mongodb+srv://sukiphan97:Nhung1912@cluster0.u4ldkxy.mongodb.net/?retryWrites=true&w=majority"
+
+
+const mongoose = require('mongoose')
+
+mongoose.set('strictQuery', false)
+
+
+mongoose.connect(mongoUrl)
 
 const port = process.env.PORT || 8080
 const app = express()
