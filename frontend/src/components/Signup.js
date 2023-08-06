@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import validator from 'validator'
+// import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
@@ -29,7 +29,7 @@ export const Signup = () => {
   const [error, setError] = useState('')
   const [showRePassword, setShowRePassword] = useState(false)
   
-  const [emailValid, setEmailValid] = useState(false)
+  // const [emailValid, setEmailValid] = useState(false)
 
   const [disabled, setDisable] = useState(false)
   const [allValid, setAllValid] = useState(false)
@@ -106,7 +106,7 @@ export const Signup = () => {
       .catch(error => console.log(error))
       
     }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allValid, error]);
 
 
