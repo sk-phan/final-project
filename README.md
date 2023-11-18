@@ -10,7 +10,7 @@ The project was made by Kristiina Kolu and Suki Nhung Phan.
 https://sk-petapp.netlify.app
 
 Please feel free to use our dummy account to log in and view the insight. 
-- Username: test_user 
+- Username: test
 - Password: password
 
 # Features
