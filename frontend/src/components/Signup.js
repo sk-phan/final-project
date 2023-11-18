@@ -4,7 +4,6 @@ import validator from 'validator'
 import { useSelector, useDispatch, batch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { user } from "../reducers/user";
-import Autocomplete from "react-google-autocomplete";
 
 import { API_URL } from '../utils/url';
 
@@ -113,17 +112,13 @@ export const Signup = () => {
   const onFormSubmit = (e) => {
     e.preventDefault();
 
-    
-    if (password === rePassword && emailValid) {
+    console.log(password === rePassword)
+    if (password === rePassword) {
       setAllValid(true)
       setError('')
     } else if (password !== rePassword) {
       setAllValid(false);
       setError('password does not match')
-    }
-    else if (emailValid) {
-      setAllValid(true);
-      setError("")
     }
   };
 
@@ -186,7 +181,7 @@ export const Signup = () => {
         <ExitButton onClick={() => navigate('/')}>X</ExitButton>
         <FormTitle> Create an account </FormTitle>
         <FormSubTitle> Make pet experience better </FormSubTitle>
-        <Form>
+        <Form onSubmit={onFormSubmit}>
             <div className="date-container">
               <P>Choose profile type:</P>
               <ProfileContainer>
@@ -356,15 +351,14 @@ export const Signup = () => {
            </div> 
 
            <div className="input-container">
-            <Autocomplete
-                  apiKey='AIzaSyCx9GDxuqn4TaVuYIYTb4YGdRGI-YdZIiA'
-                  className="inputLocation"
-                  placeholder=''
-                  onPlaceSelected={(place) => {
-                    setLocation(place.formatted_address)
-                  }}
-            />         
-              <label className="user-label" htmlFor="description">
+              <input
+                id="location"
+                className="input"
+                type="text"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+              <label className="user-label" htmlFor="email">
                 Location
               </label>
             </div>
